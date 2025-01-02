@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+
+// Colors
+$dark-purple: #8b5dff;
+$white: #ffffff;
+$gray-white: #f7f7f7;
+$gray: #aaa;
+$yellow: #e0a825;
+
+:root {
+  @include mat.button-overrides(
+    (
+      filled-container-color: $dark-purple,
+      filled-label-text-color: $white,
+      outlined-label-text-color: $dark-purple,
+      outlined-outline-color: $dark-purple,
+      outlined-state-layer-color: $dark-purple,
+    )
+  );
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: $gray-white;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+main {
+  max-width: 850px;
+  margin: auto;
+}

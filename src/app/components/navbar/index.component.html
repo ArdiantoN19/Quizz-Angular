@@ -1,0 +1,16 @@
+<header>
+  <nav>
+    <a href="#" class="nav-brand">Quizz</a>
+    <ul [class]="{ 'nav-menu': true, show: isDrawerOpen }">
+      <li><a href="#" class="nav-link active">Home</a></li>
+      <li><a href="#" class="nav-link">Features</a></li>
+      <li><a href="#" class="nav-link">About Us</a></li>
+      <li><a href="#" class="nav-link">Contact Us</a></li>
+      <button class="btn-signin" mat-stroked-button>Sign In</button>
+    </ul>
+    <button class="btn-signin" mat-stroked-button>Sign In</button>
+    <button class="btn-action" (click)="onOpenDrawerHandler()">
+      <mat-icon aria-label="navigation-action" fontIcon="menu"></mat-icon>
+    </button>
+  </nav>
+</header>

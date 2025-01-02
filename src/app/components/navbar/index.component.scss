@@ -1,0 +1,126 @@
+@use "../../../styles.scss" as *;
+
+header {
+  padding: 20px 30px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  a {
+    all: unset;
+    cursor: pointer;
+  }
+
+  .nav-brand {
+    font-size: 2rem;
+    font-weight: bold;
+    color: $dark-purple;
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    list-style: none;
+
+    .nav-link {
+      font-weight: 400;
+      position: relative;
+      transition: all 0.125s linear;
+
+      &:hover,
+      &.active {
+        color: $dark-purple;
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: -7px;
+          left: 50%;
+          width: 40%;
+          height: 4px;
+          transform: translateX(-50%);
+          background-color: $dark-purple;
+          border-radius: 5px;
+        }
+      }
+    }
+
+    .btn-signin {
+      display: none;
+    }
+  }
+
+  .btn-action {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 769px) {
+  nav {
+    .nav-menu {
+      position: fixed;
+      width: 45%;
+      top: 0;
+      padding: 0 30px;
+      right: -100%;
+      background-color: $white;
+      height: 100dvh;
+      gap: 25px;
+      justify-content: start;
+      padding-top: 70px;
+      align-items: start;
+      flex-direction: column;
+      transition: right 0.5s ease-in-out;
+      z-index: 100;
+
+      &.show {
+        right: 0;
+        box-shadow: -50vw 0 0 100px rgba(black, 0.3);
+      }
+
+      .nav-link {
+        &:hover,
+        &.active {
+          &::after {
+            width: 100%;
+          }
+        }
+      }
+
+      .btn-signin {
+        display: block;
+      }
+    }
+
+    .btn-signin {
+      display: none;
+    }
+
+    .btn-action {
+      all: unset;
+      color: $dark-purple;
+      display: block;
+      padding: 5px;
+      cursor: pointer;
+      z-index: 100;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  nav {
+    .nav-menu {
+      width: 70%;
+    }
+  }
+}
