@@ -1,0 +1,41 @@
+<section class="testimonial-section">
+  <div class="container">
+    <div>
+      <p class="subtitle font-cursive">What's user says?</p>
+      <h2 class="title">
+        Hear real experiences from those who have tried it and see how this quiz
+        sharpens the brain
+      </h2>
+    </div>
+    <div class="wrapper">
+        <mat-card class="card" appearance="outlined">
+           <div class="left">
+                <div class="img">
+                    <img [ngSrc]="'/images/potrait/' + testimoni().photo" alt="scholl girl smile" fill priority>
+                </div>
+           </div>
+           <div class="right">
+                <h3 class="testimoni-name">
+                    {{testimoni().name}}
+                </h3>
+                <p class="testimoni-job">
+                    {{testimoni().job}}
+                </p>
+                <p class="testimoni-description">
+                    {{testimoni().description}}
+                </p>
+                <div class="testimoni-rating">
+                    @for (item of testimoni().rating; track item) {
+                        <mat-icon fontIcon="star" class="yellow"/>
+                    }
+                </div>
+           </div>
+        </mat-card>
+        <div class="wrapper-indicator">
+            @for(item of testimoniLength; track item;) {
+                <button [class]="{'indicator': true, 'active': activeTestimoni() == item}" (click)="onChangeActiveTestimoni(item)"></button>
+            }
+        </div>
+    </div>
+  </div>
+</section>
