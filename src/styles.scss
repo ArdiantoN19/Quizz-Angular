@@ -3,10 +3,15 @@
 
 // Colors
 $dark-purple: #8b5dff;
+$purple: #ac8df9;
 $white: #ffffff;
 $gray-white: #f7f7f7;
 $gray: #aaa;
-$yellow: #e0a825;
+$yellow: #f9b822;
+
+// Breakpoints
+$max-width-tablet: 769px;
+$max-width-mobile: 500px;
 
 :root {
   @include mat.button-overrides(
@@ -16,6 +21,7 @@ $yellow: #e0a825;
       outlined-label-text-color: $dark-purple,
       outlined-outline-color: $dark-purple,
       outlined-state-layer-color: $dark-purple,
+      outlined-label-text-font: 'Nunito',
     )
   );
 }
@@ -36,10 +42,29 @@ body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Nunito", "Helvetica Neue", sans-serif;
 }
 
-main {
+.container {
   max-width: 850px;
   margin: auto;
+}
+
+.font-cursive {
+  font-family: cursive;
+  font-style: italic;
+}
+
+.yellow {
+  color: $yellow;
+}
+
+.purple {
+  color: $dark-purple;
+}
+
+@media screen and (max-width: $max-width-tablet) {
+  .container {
+    padding: 0 30px;
+  }
 }
