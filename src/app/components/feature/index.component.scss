@@ -1,0 +1,79 @@
+@use '../../../styles.scss' as *;
+
+$cardColors: (primary: $purple, secondary: $yellow, tertiary: $dark-purple);
+
+.feature-section {
+    margin-top: 90px;
+    padding-bottom: 40px;
+
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .feature-list {
+        margin-top: 45px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+
+        @each $key, $value in $cardColors {
+            .card-#{$key} {
+                background-color: $value;
+                color: #111112;
+                border: none;
+                padding-top: 60px;
+                position: relative;
+                overflow: hidden;
+
+                .icon {
+                    position: absolute;
+                    top: 0;
+                    width: 60px;
+                    height: 60px;
+                    font-size: 2.5rem;
+                    background-color: $gray-white;
+                    color: $value;
+                    border-bottom-left-radius: 50%;
+                    border-bottom-right-radius: 50%;
+                    display: grid;
+                    place-items: center;
+                    border: none;
+                }
+
+                .description {
+                    margin-top: 20px;
+                    font-size: 1.01rem;
+                }
+
+                .bg-icon {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    width: 80px;
+                    height: 80px;
+                    font-size: 6rem;
+                    filter: opacity(30%);
+                }
+            }
+        }
+
+    }
+}
+
+@media screen and (max-width: $max-width-tablet) {
+    .feature-section {
+        .feature-list {
+            margin-top: 30px;
+            gap: 13px;
+        }
+    }
+}
+
+@media screen and (max-width: $max-width-mobile) {
+    .feature-section {
+        .feature-list {
+            gap: 20px;
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+}

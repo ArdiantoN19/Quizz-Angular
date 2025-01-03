@@ -1,7 +1,7 @@
 @use "../../../styles.scss" as *;
 
 header {
-  padding: 20px 30px;
+  padding: 20px 0;
   position: sticky;
   top: 0;
   left: 0;
@@ -13,6 +13,9 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: $gray-white;
+  width: 100%;
+
 
   a {
     all: unset;
@@ -65,13 +68,12 @@ nav {
   }
 }
 
-@media screen and (max-width: 769px) {
+@media screen and (max-width: $max-width-tablet) {
   nav {
     .nav-menu {
       position: fixed;
       width: 45%;
       top: 0;
-      padding: 0 30px;
       right: -100%;
       background-color: $white;
       height: 100dvh;

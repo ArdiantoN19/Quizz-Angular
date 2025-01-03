@@ -3,7 +3,8 @@
 .hero-section {
   position: relative;
   margin-top: 70px;
-  padding: 30px 30px 40px 30px;
+  padding-top: 30px;
+  padding-bottom: 40px;
 
   .tagline {
     max-width: 600px;
@@ -14,7 +15,7 @@
       text-align: center;
       margin-bottom: 30px;
 
-      span {
+      .font-cursive {
         font-family: cursive;
         font-style: italic;
 
@@ -60,17 +61,28 @@
 
   .img-bottom-right {
     position: absolute;
-    bottom: -5%;
+    bottom: 10%;
     right: 2%;
     width: 140px;
-    height: 135px;
+    height: 132px;
+  }
+
+  .icon-grid::before {
+    content: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="60" cy="60" r="15" fill="rgb(139, 93, 255)"/><circle cx="128" cy="60" r="15" fill="rgb(139, 93, 255)"/><circle cx="196" cy="60" r="15" fill="rgb(139, 93, 255)"/><circle cx="60" cy="128" r="15" fill="rgb(139, 93, 255)"/><circle cx="128" cy="128" r="15" fill="rgb(139, 93, 255)"/><circle cx="196" cy="128" r="15" fill="rgb(139, 93, 255)"/><circle cx="60" cy="196" r="15" fill="rgb(139, 93, 255)"/><circle cx="128" cy="196" r="15" fill="rgb(139, 93, 255)"/><circle cx="196" cy="196" r="15" fill="rgb(139, 93, 255)"/></svg>');
+    position: absolute;
+    top: -10px;
+    right: 0;
+    display: block;
+    width: 100px;
+    height: 100px;
+    opacity: .8;
   }
 }
 
-@media screen and (max-width: 769px) {
+@media screen and (max-width: $max-width-tablet) {
   .hero-section {
     margin-top: 10px;
-    
+
     .img-top-left {
       top: 25%;
       left: 4%;
@@ -84,10 +96,17 @@
       height: 100px;
       width: 100px;
     }
+
+    .icon-grid::before {
+      width: 60px;
+      height: 60px;
+      right: 5%;
+      top: 30%;
+    }
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: $max-width-mobile) {
   .hero-section {
     margin-top: 20px;
 
@@ -97,8 +116,11 @@
       }
     }
 
-    .img-bottom-right, .img-top-left {
+    .img-bottom-right,
+    .img-top-left,
+    .icon-grid::before  {
       display: none;
     }
+    
   }
 }

@@ -1,0 +1,73 @@
+@use '../../../styles.scss' as *;
+
+.cta-section {
+    margin-top: 80px;
+    padding-bottom: 40px;
+
+    .wrapper {
+        display: flex;
+        justify-content: center;
+
+        .left {
+            width: 65%;
+
+            .title {
+                font-size: 2.5rem;
+                line-height: 3.1rem;
+                margin-bottom: 25px;
+            }
+
+            .description {
+                color: $gray;
+                font-size: .9rem;
+                margin-bottom: 30px;
+                max-width: 500px;
+            }
+        }
+
+        .right {
+            position: relative;
+            width: 35%;
+            height: auto;
+            scale: 1.05;
+        }
+    }
+}
+
+@media screen and (max-width: $max-width-tablet) {
+    .cta-section {
+        .wrapper {
+            gap: 0;
+            .left {
+                width: 60%;
+                .description {
+                   width: 400px; 
+                }
+            }
+    
+            .right {
+                width: 43%;
+                height: 350px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $max-width-mobile) {
+    .cta-section {
+        margin-top: 30px;
+        .wrapper {
+            flex-direction: column-reverse;
+            gap: 30px;
+
+            .left {
+                width: 100%;
+            }
+
+            .right {
+                width: 100%;
+                height: 400px;
+            }
+        }
+    }
+}

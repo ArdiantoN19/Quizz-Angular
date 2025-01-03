@@ -1,0 +1,39 @@
+<section class="feature-section container">
+  <div>
+    <h2 class="title">
+      Our <span class="purple font-cursive">Interactive</span>
+    </h2>
+    <h2>Features</h2>
+  </div>
+
+  <div class="feature-list">
+    @for(feature of features; track feature.title) {
+    <mat-card appearance="outlined" class="{{ feature.class }}">
+      <mat-card-header>
+        <mat-icon
+          aria-hidden="false"
+          aria-label="icon"
+          fontIcon="{{ feature.icon }}"
+          class="icon"
+        ></mat-icon>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-card-title class="font-cursive">
+          <h3>{{ feature.title }}</h3>
+        </mat-card-title>
+        <p class="description">
+          {{ feature.description }}
+        </p>
+        <mat-icon
+          aria-hidden="false"
+          aria-label="icon"
+          fontIcon="{{ feature.icon }}"
+          class="bg-icon"
+        ></mat-icon>
+      </mat-card-content>
+    </mat-card>
+    } @empty {
+    <p>Data not found</p>
+    }
+  </div>
+</section>
