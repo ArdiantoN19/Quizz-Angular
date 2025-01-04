@@ -56,7 +56,7 @@ export class TestimonialComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.intervalTestimoni = setInterval(() => {
             this.activeTestimoni.update((val) => (val + 1) % this.testimoniLength.length);
-        }, 3000);
+        }, 5000);
     }
 
     ngOnDestroy(): void {

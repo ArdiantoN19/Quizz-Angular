@@ -1,0 +1,88 @@
+@use "../../../styles.scss" as *;
+
+.contact-us-section {
+  padding-top: 60px;
+  padding-bottom: 60px;
+
+  .wrapper {
+    display: flex;
+    height: 500px;
+    gap: 30px;
+
+    .left {
+      position: relative;
+      width: 45%;
+
+      .img {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 500px;
+        overflow: hidden;
+        border-radius: 1.3rem;
+      }
+    }
+
+    .right {
+      width: 55%;
+
+      .header {
+        margin-bottom: 30px;
+        .title {
+          font-size: 2rem;
+          margin-bottom: 15px;
+        }
+
+        .subtitle {
+          color: $gray;
+          font-size: 0.9rem;
+        }
+      }
+
+      .form {
+        width: 100%;
+
+        .form-field {
+          width: 100%;
+          margin-bottom: 10px;
+
+          .error-message {
+            position: absolute;
+            left: 2px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $max-width-tablet) {
+  .contact-us-section {
+    .wrapper {
+      .left {
+        width: 50%;
+      }
+
+      .right {
+        width: 50%;
+      }
+    }
+  }
+} 
+
+@media screen and (max-width: $max-width-mobile) {
+  .contact-us-section {
+    .wrapper {
+      flex-direction: column;
+
+      .left {
+        display: none;
+      }
+
+      .right {
+        width: 100%;
+      }
+    }
+  }
+} 

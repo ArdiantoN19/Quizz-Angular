@@ -1,0 +1,47 @@
+import { NgOptimizedImage } from '@angular/common';
+import { Component } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { ErrorCustomMessageService } from '../../utils/errorCustomMessage.service';
+
+@Component({
+  selector: 'contact-us-app',
+  templateUrl: 'index.component.html',
+  styleUrl: 'index.component.scss',
+  imports: [
+    NgOptimizedImage,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
+})
+export class ContactUsApp {
+  constructor(private errorCustomMessageService: ErrorCustomMessageService) {}
+
+  contactForm = new FormGroup({
+    name: new FormControl<string>('', [Validators.required]),
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
+    message: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(5),
+    ]),
+  });
+
+  getErrorMessage(name: 'name' | 'email' | 'message') {
+    return this.errorCustomMessageService.getMessage(this.contactForm.get(name) as any, name)
+  }
+
+  onSubmitHandler() {
+    console.log(this.contactForm.value)
+  }
+}

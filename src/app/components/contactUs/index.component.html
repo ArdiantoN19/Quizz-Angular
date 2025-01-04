@@ -1,0 +1,51 @@
+<section class="contact-us-section">
+  <div class="wrapper container">
+    <div class="left">
+      <div class="img">
+        <img
+          ngSrc="/images/man-reading-book.jpg"
+          alt="Curly woman happiness"
+          fill
+          priority
+        />
+      </div>
+    </div>
+    <div class="right">
+      <div class="header">
+        <h2 class="title">
+          We'd Love to <span class="font-cursive purple">Hear From You!</span>
+        </h2>
+        <p class="subtitle">
+          Have a question or suggestion? Reach out to us and we'll get back to
+          you as soon as possible.
+        </p>
+      </div>
+      <form
+        class="form"
+        [formGroup]="contactForm"
+        (ngSubmit)="onSubmitHandler()"
+      >
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Name</mat-label>
+          <input type="text" matInput formControlName="name" required />
+          <mat-error class="error-message">{{ getErrorMessage("name") }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input type="email" matInput formControlName="email" required />
+          <mat-error class="error-message">{{ getErrorMessage("email") }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Message</mat-label>
+          <textarea matInput formControlName="message" required></textarea>
+          <mat-error class="error-message">{{ getErrorMessage("message") }}</mat-error>
+        </mat-form-field>
+        <!-- <button type="submit" mat-flat-button [disabled]="contactForm.invalid"> -->
+        <button type="submit" mat-flat-button>
+          Submit
+          <mat-icon fontIcon="outgoing_mail" />
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

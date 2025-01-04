@@ -5,10 +5,11 @@ import { HeroApp } from './components/hero/index.component';
 import { FeatureApp } from "./components/feature/index.component";
 import { CtaComponent } from "./components/cta/index.component";
 import { TestimonialComponent } from "./components/testimonial/index.component";
+import { ContactUsApp } from "./components/contactUs/index.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarApp, HeroApp, FeatureApp, CtaComponent, TestimonialComponent],
+  imports: [RouterOutlet, NavbarApp, HeroApp, FeatureApp, CtaComponent, TestimonialComponent, ContactUsApp],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

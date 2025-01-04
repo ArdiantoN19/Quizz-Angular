@@ -6,7 +6,7 @@ $dark-purple: #8b5dff;
 $purple: #ac8df9;
 $white: #ffffff;
 $gray-white: #f7f7f7;
-$gray: #aaa;
+$gray: #a0a0a0;
 $yellow: #f9b822;
 $black: #111111;
 
@@ -25,6 +25,13 @@ $max-width-mobile: 500px;
       outlined-label-text-font: 'Nunito',
     )
   );
+
+  @include mat.form-field-overrides((
+    outlined-caret-color: $dark-purple,
+    outlined-focus-label-text-color: $dark-purple,
+    outlined-focus-outline-color: $dark-purple,
+    outlined-label-text-font: 'Nunito'
+  ));
 }
 
 *,
@@ -39,6 +46,7 @@ html,
 body {
   height: 100%;
   background-color: $gray-white;
+  scroll-behavior: smooth;
 }
 
 body {
