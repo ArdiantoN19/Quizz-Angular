@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -9,10 +9,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: 'index.component.scss',
   imports: [MatButtonModule, MatIconModule, MatTooltipModule],
 })
-export class NavbarApp {
+export class NavbarAppComponent {
   isDrawerOpen: boolean = false;
+  isShowShadow: boolean = false;
 
-  onOpenDrawerHandler() {
+  @HostListener('window:scroll',[])
+  onShowShadow(): void {
+    this.isShowShadow = window.scrollY > 50
+  }
+
+  onOpenDrawerHandler(): void {
     this.isDrawerOpen = !this.isDrawerOpen;
   }
 }

@@ -1,11 +1,17 @@
 @use "../../../styles.scss" as *;
 
 header {
-  padding: 20px 0;
+  padding: 15px 0;
   position: sticky;
   top: 0;
   left: 0;
   width: 100%;
+  z-index: 1000;
+  background-color: $gray-white;
+
+  &.shadow {
+    box-shadow: 0 0px 18px rgba(black, 0.125);
+  }
 }
 
 nav {
@@ -13,9 +19,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: $gray-white;
   width: 100%;
-
 
   a {
     all: unset;
@@ -80,6 +84,7 @@ nav {
       gap: 25px;
       justify-content: start;
       padding-top: 70px;
+      padding-left: 25px;
       align-items: start;
       flex-direction: column;
       transition: right 0.5s ease-in-out;
