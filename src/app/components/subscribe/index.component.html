@@ -1,0 +1,17 @@
+<section class="subscribe-section container">
+  <div class="wrapper">
+    <mat-icon fontIcon="mail" class="icon" />
+    <div>
+      <h3 class="title">Subscribe Newsletter</h3>
+      <p class="subtitle">
+        You'll never miss our news. Take a good opportunity when join us.
+      </p>
+    </div>
+    <form [formGroup]="subscribeForm" (ngSubmit)="onSubmitHandler()">
+        <div class="form-group">
+            <input class="form-control" autocomplete="off" formControlName="email" type="email" name="email" id="subscribeEmail" placeholder="Ex.JohnDoe@example.com" required>
+            <button mat-raised-button type="submit" [disabled]="subscribeForm.invalid">Subscribe</button>
+        </div>
+    </form>
+  </div>
+</section>

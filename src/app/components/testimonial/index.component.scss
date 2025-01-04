@@ -50,12 +50,26 @@
           top: 0;
           left: 0;
         }
+
+        &::before {
+            content: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201440%20320%22%3E%3Cpath%20fill%3D%22%23f9b822%22%20fill-opacity%3D%221%22%20d%3D%22M0%2C224L26.7%2C234.7C53.3%2C245%2C107%2C267%2C160%2C245.3C213.3%2C224%2C267%2C160%2C320%2C122.7C373.3%2C85%2C427%2C75%2C480%2C96C533.3%2C117%2C587%2C171%2C640%2C176C693.3%2C181%2C747%2C139%2C800%2C117.3C853.3%2C96%2C907%2C96%2C960%2C106.7C1013.3%2C117%2C1067%2C139%2C1120%2C128C1173.3%2C117%2C1227%2C75%2C1280%2C48C1333.3%2C21%2C1387%2C11%2C1413%2C5.3L1440%2C0L1440%2C320L1413.3%2C320C1386.7%2C320%2C1333%2C320%2C1280%2C320C1226.7%2C320%2C1173%2C320%2C1120%2C320C1066.7%2C320%2C1013%2C320%2C960%2C320C906.7%2C320%2C853%2C320%2C800%2C320C746.7%2C320%2C693%2C320%2C640%2C320C586.7%2C320%2C533%2C320%2C480%2C320C426.7%2C320%2C373%2C320%2C320%2C320C266.7%2C320%2C213%2C320%2C160%2C320C106.7%2C320%2C53%2C320%2C27%2C320L0%2C320Z%22%2F%3E%3C%2Fsvg%3E');
+            position: absolute;
+            right: -105px;
+            top: 0;
+            width: 350px;
+            height: 230px;
+            rotate: 90deg;
+        }
+        
       }
 
       .right {
+        position: relative;
         flex: 1 1;
         padding: 20px;
         color: $black;
+        z-index: 10;
+        padding-left: 30px;
 
         .testimoni-name {
             font-size: 2.125rem;
@@ -112,6 +126,9 @@
         .wrapper {
             .card {
                 height: 265px;
+                .right {
+                    padding-left: 35px;
+                }
             }
         }
     }
@@ -132,6 +149,7 @@
                     flex-basis: 30px;
                     border-top-left-radius: inherit;
                     border-top-right-radius: inherit;
+
                     .img {
                         height: 110px;
                         width: 80px;
@@ -140,6 +158,10 @@
                     }
 
                     .img::before {
+                        display: none;
+                    }
+
+                    &::before {
                         display: none;
                     }
                 }

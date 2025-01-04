@@ -36,6 +36,6 @@ const features: TFeature[] = [
     imports: [MatCardModule, MatIconModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatureApp {
+export class FeatureAppComponent {
     features: TFeature[] = features
 }

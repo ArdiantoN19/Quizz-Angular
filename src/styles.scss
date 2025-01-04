@@ -19,10 +19,16 @@ $max-width-mobile: 500px;
     (
       filled-container-color: $dark-purple,
       filled-label-text-color: $white,
+      filled-label-text-font: 'Nunito',
       outlined-label-text-color: $dark-purple,
       outlined-outline-color: $dark-purple,
       outlined-state-layer-color: $dark-purple,
       outlined-label-text-font: 'Nunito',
+      outlined-ripple-color: rgba($purple, .2),
+      protected-label-text-color: $dark-purple,
+      protected-label-text-font: 'Nunito',
+      protected-ripple-color: rgba($purple, .2),
+      protected-state-layer-color: $purple,
     )
   );
 

@@ -40,8 +40,7 @@
           <textarea matInput formControlName="message" required></textarea>
           <mat-error class="error-message">{{ getErrorMessage("message") }}</mat-error>
         </mat-form-field>
-        <!-- <button type="submit" mat-flat-button [disabled]="contactForm.invalid"> -->
-        <button type="submit" mat-flat-button>
+        <button type="submit" mat-flat-button matTooltip="Send message to Us">
           Submit
           <mat-icon fontIcon="outgoing_mail" />
         </button>

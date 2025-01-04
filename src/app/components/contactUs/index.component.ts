@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ErrorCustomMessageService } from '../../utils/errorCustomMessage.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'contact-us-app',
@@ -23,9 +24,10 @@ import { ErrorCustomMessageService } from '../../utils/errorCustomMessage.servic
     ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
+    MatTooltipModule
   ],
 })
-export class ContactUsApp {
+export class ContactUsAppComponent {
   constructor(private errorCustomMessageService: ErrorCustomMessageService) {}
 
   contactForm = new FormGroup({
@@ -42,6 +44,17 @@ export class ContactUsApp {
   }
 
   onSubmitHandler() {
+    const checkValidInput = Object.values(this.contactForm.value).some((value) => value && value !== undefined)
+    if(!checkValidInput) {
+      console.log('not valid input')
+      return;
+    }
+
     console.log(this.contactForm.value)
+    this.contactForm.setValue({
+      name: 'Ex.John Doe',
+      email: 'Ex.johndoe@gmail.com',
+      message: 'Ex.Your message'
+    })
   }
 }

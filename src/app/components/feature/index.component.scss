@@ -72,7 +72,7 @@ $cardColors: (primary: $purple, secondary: $yellow, tertiary: $dark-purple);
 @media screen and (max-width: $max-width-mobile) {
     .feature-section {
         .feature-list {
-            gap: 20px;
+            gap: 25px;
             grid-template-columns: repeat(1, 1fr);
         }
     }
