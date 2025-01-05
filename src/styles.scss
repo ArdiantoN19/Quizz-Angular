@@ -78,6 +78,10 @@ body {
   color: $dark-purple;
 }
 
+.btn {
+  padding: 22px 24px;
+}
+
 @media screen and (max-width: $max-width-tablet) {
   .container {
     padding: 0 30px;

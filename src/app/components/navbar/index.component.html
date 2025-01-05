@@ -2,10 +2,10 @@
   <nav class="container">
     <a href="#" class="nav-brand">Quizz</a>
     <ul [class]="{ 'nav-menu': true, 'show': isDrawerOpen }">
-      <li><a href="#" class="nav-link active">Home</a></li>
-      <li><a href="#" class="nav-link">Features</a></li>
-      <li><a href="#" class="nav-link">About Us</a></li>
-      <li><a href="#" class="nav-link">Contact Us</a></li>
+      <li><a [routerLink]="['/']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
+      <li><a [routerLink]="['/feature']" class="nav-link" routerLinkActive="active">Features</a></li>
+      <li><a [routerLink]="['/about-us']" class="nav-link" routerLinkActive="active">About Us</a></li>
+      <li><a [routerLink]="['/contact-us']" class="nav-link" routerLinkActive="active">Contact Us</a></li>
       <button class="btn-signin" mat-stroked-button>Sign In</button>
     </ul>
     <button class="btn-signin" mat-stroked-button matTooltip="Sign In to Quizz">Sign In</button>

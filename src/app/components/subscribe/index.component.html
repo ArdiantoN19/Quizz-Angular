@@ -10,7 +10,7 @@
     <form [formGroup]="subscribeForm" (ngSubmit)="onSubmitHandler()">
         <div class="form-group">
             <input class="form-control" autocomplete="off" formControlName="email" type="email" name="email" id="subscribeEmail" placeholder="Ex.JohnDoe@example.com" required>
-            <button mat-raised-button type="submit" [disabled]="subscribeForm.invalid">Subscribe</button>
+            <button mat-raised-button type="submit" [disabled]="subscribeForm.invalid" class="btn">Subscribe</button>
         </div>
     </form>
   </div>
