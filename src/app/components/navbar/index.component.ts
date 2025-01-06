@@ -23,6 +23,7 @@ export class NavbarAppComponent implements OnInit {
     this.route.events.pipe(
       filter((event) => event instanceof NavigationEnd)
     ).subscribe(() => {
+      this.isDrawerOpen = false
       this.currentRoute = encodeURIComponent(this.route.url == '/' ? '/home' : this.route.url)
     })
   }
