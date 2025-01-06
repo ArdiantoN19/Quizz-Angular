@@ -1,18 +1,31 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'navbar-app',
   templateUrl: 'index.component.html',
   styleUrl: 'index.component.scss',
   imports: [MatButtonModule, MatIconModule, MatTooltipModule, RouterLink, RouterLinkActive],
+  encapsulation: ViewEncapsulation.None
 })
-export class NavbarAppComponent {
+export class NavbarAppComponent implements OnInit {
   isDrawerOpen: boolean = false;
   isShowShadow: boolean = false;
+  currentRoute: string = '';
+
+  constructor(private route: Router) {}
+
+  ngOnInit(): void {
+    this.route.events.pipe(
+      filter((event) => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.currentRoute = encodeURIComponent(this.route.url == '/' ? '/home' : this.route.url)
+    })
+  }
 
   @HostListener('window:scroll',[])
   onShowShadow(): void {

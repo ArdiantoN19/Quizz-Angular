@@ -3,6 +3,7 @@ import { HomePageApp } from '../../pages/frontend/home/index.component';
 import { FeaturePageApp } from '../../pages/frontend/feature/index.component';
 import { AboutUsPageApp } from '../../pages/frontend/aboutUs/index.component';
 import { ContactUsPageApp } from '../../pages/frontend/contactUs/index.component';
+import { LoginAppComponent } from '../../components/auth/login/index.component';
 
 export const routes: Route[] = [
   {
@@ -28,5 +29,10 @@ export const routes: Route[] = [
     path: 'contact-us',
     title: 'contact-us-quizz',
     component: ContactUsPageApp,
+  },
+  {
+    path: 'login',
+    title: 'login-quizz',
+    component: LoginAppComponent,
   },
 ];

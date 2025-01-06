@@ -4,6 +4,7 @@ import { ContactUsAppComponent } from "../../../components/contactUs/index.compo
 @Component({
     selector: 'contact-us-page-app',
     templateUrl: 'index.component.html',
+    styleUrl: 'index.component.scss',
     imports: [ContactUsAppComponent]
 })
 export class ContactUsPageApp {}

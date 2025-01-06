@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 
@@ -35,6 +35,7 @@ const features: TFeature[] = [
     styleUrl: 'index.component.scss',
     imports: [MatCardModule, MatIconModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None
 })
 export class FeatureAppComponent {
     features: TFeature[] = features

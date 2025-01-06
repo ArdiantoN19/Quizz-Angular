@@ -1,4 +1,8 @@
-<navbar-app/>
+@if (!isAuthPage) {
+    <navbar-app/>
+}
 <router-outlet/>
-<scroll-to-top-app/>
-<footer-app/>
+@if (!isAuthPage) {
+    <scroll-to-top-app/>
+    <footer-app/>
+}

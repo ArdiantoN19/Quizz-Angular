@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
+import { patternPassword } from ".";
 
 @Injectable({
     providedIn: 'root'
@@ -32,6 +33,10 @@ export class ErrorCustomMessageService {
             return `${labelError} must be less than ${formControl.getError('maxlength')?.requiredLength} characters`
         }
 
-        return 'error, please check your input'
+        if(formControl.hasError('pattern') && formControl.getError('pattern')?.requiredPattern === String(patternPassword)) {
+            return `${labelError} must be have at least 1 capital character, 1 small character, and 1 number`
+        }
+
+        return 'Error, please check your input'
     }
 }
