@@ -13,12 +13,25 @@
     <mat-icon fontIcon="arrow_back" />
   </button>
   <div class="login-wrapper">
-    <h1 class="login-wrapper__title">Hi there!</h1>
+    <h1 class="login-wrapper__title">Hi Quizzer!</h1>
     <p class="login-wrapper__subtitle">
-      Welcome back to <span class="purple font-cursive">Quizz 👋</span>. Let's take
-      your journey
+      Sign up to discover more - easily register now.
     </p>
-    <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmitHandler()">
+    <form class="form" [formGroup]="registerForm" (ngSubmit)="onSubmitHandler()">
+      <mat-form-field appearance="outline" class="form-group">
+        <mat-label>Fullname</mat-label>
+        <input type="text" matInput formControlName="fullname" required />
+        <mat-error class="form-group__error-message">{{
+          getErrorMessage("fullname")
+        }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-group">
+        <mat-label>Username</mat-label>
+        <input type="text" matInput formControlName="username" required />
+        <mat-error class="form-group__error-message">{{
+          getErrorMessage("username")
+        }}</mat-error>
+      </mat-form-field>
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Email</mat-label>
         <input type="email" matInput formControlName="email" required />
@@ -33,15 +46,14 @@
           getErrorMessage("password")
         }}</mat-error>
       </mat-form-field>
-      <p><mat-checkbox formControlName="rememberMe">Remember Me</mat-checkbox></p>
       <button type="submit" mat-flat-button class="btn">
-        Login
+        Sign Up
         <mat-icon fontIcon="arrow_outward" />
       </button>
     </form>
     <div class="login-wrapper__sign-up">
-      Don't have an account?
-      <a [routerLink]="['/register']" class="login-wrapper__sign-up__link">Sign Up</a>
+      Have an account?
+      <a [routerLink]="['/login']" [queryParams]="{redirectUrl:'/home'}" class="login-wrapper__sign-up__link">Sign In</a>
     </div>
   </div>
 </div>

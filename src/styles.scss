@@ -38,6 +38,14 @@ $max-width-mobile: 500px;
     outlined-focus-outline-color: $dark-purple,
     outlined-label-text-font: 'Nunito'
   ));
+
+  @include mat.checkbox-overrides((
+    label-text-color: $black,
+    selected-icon-color: $dark-purple,
+    selected-focus-icon-color: $dark-purple,
+    selected-hover-icon-color: $dark-purple,
+    selected-focus-state-layer-color: $dark-purple
+  ));
 }
 
 *,

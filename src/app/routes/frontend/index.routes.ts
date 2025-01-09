@@ -4,6 +4,7 @@ import { FeaturePageApp } from '../../pages/frontend/feature/index.component';
 import { AboutUsPageApp } from '../../pages/frontend/aboutUs/index.component';
 import { ContactUsPageApp } from '../../pages/frontend/contactUs/index.component';
 import { LoginAppComponent } from '../../components/auth/login/index.component';
+import { RegisterAppComponent } from '../../components/auth/register/index.component';
 
 export const routes: Route[] = [
   {
@@ -34,5 +35,10 @@ export const routes: Route[] = [
     path: 'login',
     title: 'login-quizz',
     component: LoginAppComponent,
+  },
+  {
+    path: 'register',
+    title: 'register-quizz',
+    component: RegisterAppComponent,
   },
 ];
