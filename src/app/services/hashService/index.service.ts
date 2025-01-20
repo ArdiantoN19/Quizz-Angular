@@ -17,8 +17,8 @@ export class HashService {
     return bytes.toString(CryptoJs.enc.Utf8);
   }
 
-  compare(data: string): boolean {
-    const dataDecode = this.decode(data);
+  compare(data: string, hashedData: string): boolean {
+    const dataDecode = this.decode(hashedData);
     return data === dataDecode;
   }
 }
