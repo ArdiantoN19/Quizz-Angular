@@ -5,7 +5,7 @@ import { NotFoundAppComponent } from "./components/404/index.component";
 export const routes: Route[] = [
     {
         path: '',
-        children: frontendRoutes
+        children: frontendRoutes,
     },
     {
         path: '**',

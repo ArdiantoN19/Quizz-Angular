@@ -5,6 +5,8 @@ import { AboutUsPageApp } from '../../pages/frontend/aboutUs/index.component';
 import { ContactUsPageApp } from '../../pages/frontend/contactUs/index.component';
 import { LoginAppComponent } from '../../components/auth/login/index.component';
 import { RegisterAppComponent } from '../../components/auth/register/index.component';
+import { roleGuard } from '../../role.guard';
+import { ROLE } from '../../services/authService/index.type';
 
 export const routes: Route[] = [
   {
@@ -20,6 +22,8 @@ export const routes: Route[] = [
     path: 'feature',
     title: 'features-quizz',
     component: FeaturePageApp,
+    canActivate: [roleGuard],
+    data: {role: ROLE.USER}
   },
   {
     path: 'about-us',
@@ -35,10 +39,12 @@ export const routes: Route[] = [
     path: 'login',
     title: 'login-quizz',
     component: LoginAppComponent,
+    canActivate: [roleGuard],
   },
   {
     path: 'register',
     title: 'register-quizz',
     component: RegisterAppComponent,
+    canActivate: [roleGuard],
   },
 ];

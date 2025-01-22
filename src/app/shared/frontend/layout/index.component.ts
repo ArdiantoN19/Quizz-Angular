@@ -20,13 +20,13 @@ const authRoutes: string[] = ['/login', '/register'];
 export class FrontendLayoutAppComponent implements OnInit {
   isAuthPage: boolean = false;
 
-  constructor(private route: Router) {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.route.events.pipe(
+    this.router.events.pipe(
         filter((event) => event instanceof NavigationEnd)
     ).subscribe((event) => {
-        const currentRoute: string = this.route.url.split('?')[0];
+        const currentRoute: string = this.router.url.split('?')[0];
         this.isAuthPage = authRoutes.includes(currentRoute)
     })
   }
