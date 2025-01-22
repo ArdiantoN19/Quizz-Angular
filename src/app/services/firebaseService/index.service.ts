@@ -11,6 +11,7 @@ import {
   getDoc,
   getDocs,
   query,
+  QueryFieldFilterConstraint,
   QuerySnapshot,
   where,
 } from '@angular/fire/firestore';
@@ -89,14 +90,13 @@ export class FirebaseService {
    */
   getCollectionDataWithObservableByQuery<T>(
     collectionName: string,
-    queryExpression: TQueryExpression
+    queryExpression: TQueryExpression[]
   ): Observable<T[]> {
     const collectionReference = collection(this.firestore, collectionName);
 
-    const { fieldName, condition, value } = queryExpression;
-    const compositeFilter = where(fieldName, condition, value);
+    const compositeFilters: QueryFieldFilterConstraint[] = queryExpression.map(({fieldName, condition, value}) => where(fieldName, condition, value))
 
-    const queryCollectionData = query(collectionReference, compositeFilter);
+    const queryCollectionData = query(collectionReference, ...compositeFilters);
     return new Observable((observer) => {
       getDocs(queryCollectionData)
         .then((querySnapshot) => {
@@ -135,14 +135,13 @@ export class FirebaseService {
 
   async getDocumentByQuery<T>(
     collectionName: string,
-    queryExpression: TQueryExpression
+    queryExpression: TQueryExpression[]
   ): Promise<T[]> {
     try {
       const collectionReference = collection(this.firestore, collectionName);
-      const { fieldName, condition, value } = queryExpression;
+      const compositeFilters: QueryFieldFilterConstraint[] = queryExpression.map(({fieldName, condition, value}) => where(fieldName, condition, value))
 
-      const compositeFilter = where(fieldName, condition, value);
-      const queryCollectionData = query(collectionReference, compositeFilter);
+      const queryCollectionData = query(collectionReference, ...compositeFilters);
 
       const docSnapshot: QuerySnapshot = await getDocs(queryCollectionData);
       const result = docSnapshot.docs.map(
