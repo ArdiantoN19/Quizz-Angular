@@ -29,3 +29,13 @@ export type TRegisterCredential = TAuthCredential & {
   username: string;
   fullname: string;
 };
+
+export type TAuthState = {
+  id: string;
+  email: string;
+  username: string;
+  avatar: string;
+  fullname: string;
+  role: ROLE | string;
+  expired: number
+}

@@ -6,9 +6,42 @@
       <li><a [routerLink]="['/feature']" class="nav-link" routerLinkActive="active">Features</a></li>
       <li><a [routerLink]="['/about-us']" class="nav-link" routerLinkActive="active">About Us</a></li>
       <li><a [routerLink]="['/contact-us']" class="nav-link" routerLinkActive="active">Contact Us</a></li>
-      <button class="btn-signin" [routerLink]="['/login']" [queryParams]="{redirectUrl: currentRoute}" mat-stroked-button>Sign In</button>
-    </ul>
-    <button class="btn-signin" [routerLink]="['/login']" [queryParams]="{redirectUrl: currentRoute}" mat-stroked-button matTooltip="Sign In to Quizz">Sign In</button>
+      @if(!authState) {
+        <button class="btn-signin" [routerLink]="['/login']" [queryParams]="{redirectUrl: currentRoute}" mat-stroked-button matTooltip="Sign In to Quizz">Sign In</button>
+      } @else {
+        <button class="btn-signin" mat-icon-button [matMenuTriggerFor]="userMenu">
+          <img [src]="authState.avatar" [alt]="authState.username">
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <h3 style="padding: 5px 13px; ">Welcome {{authState.username}}</h3>
+          <button mat-menu-item>
+            <mat-icon fontIcon="person" style="scale: .8;"/>
+            Profile
+          </button>
+          <button mat-menu-item (click)="onLogoutHandler()">
+            <mat-icon fontIcon="logout" style="scale: .8;"/>
+            Logout
+          </button>
+        </mat-menu>
+      }    </ul>
+    @if(!authState) {
+      <button class="btn-signin" [routerLink]="['/login']" [queryParams]="{redirectUrl: currentRoute}" mat-stroked-button matTooltip="Sign In to Quizz">Sign In</button>
+    } @else {
+      <button class="btn-signin" mat-icon-button [matMenuTriggerFor]="userMenu">
+        <img [src]="authState.avatar" [alt]="authState.username">
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <h3 style="padding: 5px 13px; ">Welcome {{authState.username}}</h3>
+        <button mat-menu-item>
+          <mat-icon fontIcon="person" style="scale: .8;"/>
+          Profile
+        </button>
+        <button mat-menu-item (click)="onLogoutHandler()">
+          <mat-icon fontIcon="logout" style="scale: .8;"/>
+          Logout
+        </button>
+      </mat-menu>
+    }
     <button class="btn-action btn" (click)="onOpenDrawerHandler()">
       <mat-icon aria-label="navigation-action" fontIcon="menu"></mat-icon>
     </button>

@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment.development';
 import {
   ROLE,
   TAuthCredential,
+  TAuthState,
   TRegisterCredential,
   TResponse,
   TUser,
@@ -41,12 +42,22 @@ export class AuthService {
     localStorage.removeItem(environment.auth.accountCredentialLocalStorageKey);
   }
 
+  private setAuthState(authState: TAuthState) {
+    const authStateHash = this.hashService.hash(JSON.stringify(authState));
+    localStorage.setItem(
+      environment.auth.authStateLocalStorageKey,
+      authStateHash
+    );
+  }
+
   login(credential: TAuthCredential): Observable<TResponse<unknown>> {
-    const expression: TQueryExpression = {
-      fieldName: 'email',
-      condition: '==',
-      value: credential.email,
-    };
+    const expression: TQueryExpression[] = [
+      {
+        fieldName: 'email',
+        condition: '==',
+        value: credential.email,
+      },
+    ];
 
     return this.firebaseService
       .getCollectionDataWithObservableByQuery<TUser>('users', expression)
@@ -71,6 +82,17 @@ export class AuthService {
             });
           }
 
+          const authState: TAuthState = {
+            id: user.id,
+            username: user.username,
+            fullname: user.fullname,
+            role: user.role,
+            avatar: user.avatar,
+            email: user.email,
+            expired: Date.now() + environment.auth.expired,
+          };
+
+          this.setAuthState(authState);
           return of({ status: 'success', message: 'Login successfully' });
         }),
         catchError((_err) => {
@@ -83,16 +105,39 @@ export class AuthService {
     credential: TRegisterCredential
   ): Promise<TResponse<TUser | null>> {
     try {
-      const queryExpression: TQueryExpression = {
-        fieldName: 'email',
-        condition: '==',
-        value: credential.email,
-      };
+      const queryExpressionEmail: TQueryExpression[] = [
+        {
+          fieldName: 'email',
+          condition: '==',
+          value: credential.email,
+        },
+      ];
 
       const checkIfExistEmail: TUser[] =
-        await this.firebaseService.getDocumentByQuery('users', queryExpression);
+        await this.firebaseService.getDocumentByQuery(
+          'users',
+          queryExpressionEmail
+        );
       if (checkIfExistEmail.length) {
         throw new Error('Email has been created!');
+      }
+
+      const queryExpressionUsername: TQueryExpression[] = [
+        {
+          fieldName: 'username',
+          condition: '==',
+          value: credential.username,
+        },
+      ];
+
+      const checkIfExistUsername =
+        await this.firebaseService.getDocumentByQuery(
+          'users',
+          queryExpressionUsername
+        );
+
+      if (checkIfExistUsername.length) {
+        throw new Error('Username has been created!');
       }
 
       const payload: Omit<TUser, 'id'> = {
@@ -101,13 +146,30 @@ export class AuthService {
         role: ROLE.USER,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        password: this.hashService.hash(credential.password)
+        password: this.hashService.hash(credential.password),
       };
 
-      const data: TUser = await this.firebaseService.addDocument(payload, 'users');
+      const data: TUser = await this.firebaseService.addDocument(
+        payload,
+        'users'
+      );
       return { status: 'success', message: 'Register successfully', data };
     } catch (error: any) {
       return { status: 'fail', message: error.message, data: null };
     }
+  }
+
+  getAuthState(): TAuthState | null {
+    const localAuthState = localStorage.getItem(environment.auth.authStateLocalStorageKey);
+    if(!localAuthState) return null;
+
+    const authStateDecode = this.hashService.decode(localAuthState)
+    const authState: TAuthState = JSON.parse(authStateDecode)
+
+    return authState
+  }
+
+  logout(): void {
+    localStorage.removeItem(environment.auth.authStateLocalStorageKey)
   }
 }
