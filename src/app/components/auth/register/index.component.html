@@ -46,9 +46,13 @@
           getErrorMessage("password")
         }}</mat-error>
       </mat-form-field>
-      <button type="submit" mat-flat-button class="btn">
-        Sign Up
-        <mat-icon fontIcon="arrow_outward" />
+      <button type="submit" mat-flat-button class="btn" [disabled]="isLoading">
+        {{!isLoading ? 'Sign Up' : 'Loading'}}
+        @if(!isLoading) {
+            <mat-icon fontIcon="arrow_outward"/>
+        }@else {
+            <mat-icon fontIcon="trip_origin"  [class]="{'animate-pulse': isLoading}"/>
+        }
       </button>
     </form>
     <div class="login-wrapper__sign-up">

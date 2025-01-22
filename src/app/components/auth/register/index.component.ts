@@ -13,7 +13,8 @@ import { ErrorCustomMessageService } from '../../../utils/errorCustomMessage.ser
 import { patternPassword } from '../../../utils';
 import { Location } from '@angular/common';
 import { AuthService } from '../../../services/authService/index.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'register-app',
@@ -29,10 +30,14 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class RegisterAppComponent {
+  isLoading: boolean = false;
+
   constructor(
     private errorCustomMessageService: ErrorCustomMessageService,
     private location: Location,
     private authService: AuthService,
+    private snackbar: MatSnackBar,
+    private router: Router
   ) {}
 
   registerForm = new FormGroup({
@@ -55,9 +60,27 @@ export class RegisterAppComponent {
     return this.errorCustomMessageService.getMessage(formControl as any, name);
   }
 
-  onSubmitHandler(): void {
+ async onSubmitHandler(): Promise<void> {
     if (this.registerForm.valid) {
-      console.log(this.registerForm.value)
+      const {fullname, username, email, password} = this.registerForm.value
+      if(fullname && username && email && password) {
+        this.isLoading = true;
+
+        const response = await this.authService.register({fullname, username, email, password})
+        const snackRef = this.snackbar.open(response.message, 'close')
+
+        if(response.status === 'success') {
+           this.router.navigate([`/login`], {
+            queryParams: {
+              'redirectUrl': encodeURIComponent('/home')
+            }
+          })
+        }
+
+        snackRef.afterOpened().subscribe(() => {
+          this.isLoading = false;
+        })
+      }
     }
   }
 }
