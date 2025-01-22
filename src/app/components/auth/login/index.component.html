@@ -34,9 +34,13 @@
         }}</mat-error>
       </mat-form-field>
       <p><mat-checkbox formControlName="rememberMe">Remember Me</mat-checkbox></p>
-      <button type="submit" mat-flat-button class="btn">
-        Login
-        <mat-icon fontIcon="arrow_outward" />
+      <button type="submit" mat-flat-button class="btn" [disabled]="isLoading">
+        {{!isLoading ? 'Login' : 'Loading'}}
+        @if(!isLoading) {
+            <mat-icon fontIcon="arrow_outward"/>
+        }@else {
+            <mat-icon fontIcon="trip_origin"  [class]="{'animate-pulse': isLoading}"/>
+        }
       </button>
     </form>
     <div class="login-wrapper__sign-up">

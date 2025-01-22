@@ -15,7 +15,8 @@ import { Location } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AuthService } from '../../../services/authService/index.service';
 import { HashService } from '../../../services/hashService/index.service';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'login-app',
@@ -32,11 +33,16 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class LoginAppComponent implements OnInit {
+  isLoading: boolean = false;
+
   constructor(
     private errorCustomMessageService: ErrorCustomMessageService,
     private location: Location,
     private authService: AuthService,
-    private hashService: HashService
+    private hashService: HashService,
+    private snackbar: MatSnackBar,
+    private activeRoute: ActivatedRoute,
+    private route: Router
   ) {}
 
   loginForm = new FormGroup({
@@ -82,6 +88,7 @@ export class LoginAppComponent implements OnInit {
   onSubmitHandler(): void {
     if (this.loginForm.valid) {
       const { email, password, rememberMe } = this.loginForm.value;
+      this.isLoading = true;
       
       if (!!rememberMe) {
         const data = {
@@ -93,7 +100,22 @@ export class LoginAppComponent implements OnInit {
           this.authService.removeAccountCredentialLocalStorage();
       }
 
-      console.log(this.loginForm.value)
+      if(email && password) {
+        this.authService.login({email, password}).subscribe((data) => {
+          const snackbarRef = this.snackbar.open(data.message, 'close')
+          
+          if(data.status === 'success') {
+            this.activeRoute.queryParams.subscribe((params) => {
+              const path: string = decodeURIComponent(params['redirectUrl']);
+              this.route.navigate([path])
+            })
+          }
+
+          snackbarRef.afterOpened().subscribe(() => {
+            this.isLoading = false
+          })
+        });
+      }
     }
   }
 }
