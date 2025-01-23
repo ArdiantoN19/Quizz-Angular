@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ViewEncapsulation } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -49,6 +49,7 @@ const menus: TMenu[] = [
     RouterLink,
     RouterLinkActive
   ],
+  encapsulation: ViewEncapsulation.None
 })
 export class BackendLayoutAppComponent {
   private maxWidthTablet: number = 769;
