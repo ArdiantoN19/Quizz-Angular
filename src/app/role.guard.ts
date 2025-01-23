@@ -15,6 +15,11 @@ export const roleGuard: CanActivateFn = (route, state) => {
 
   const requiredRole = route.data['role'];
 
+  if(!authState && (requiredRole || requiredRole?.length)) {
+    router.navigate(['/']);
+    return false;
+  }
+
   if (authState && authRoutes.includes(activePath) && authState['id']) {
     router.navigate(['/']);
     return false;
@@ -25,7 +30,6 @@ export const roleGuard: CanActivateFn = (route, state) => {
     authService.logout();
     return false;
   }
-
 
   if (authState && !Array.isArray(requiredRole) && authState['role'] !== requiredRole) {
     const isAdmin = ['ADMIN', 'SUPERADMIN'].includes(authState['role']);
