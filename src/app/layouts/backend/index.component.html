@@ -1,5 +1,41 @@
-<header>
-    <nav>navbar</nav>
-</header>
-<router-outlet></router-outlet>
-<footer>footer</footer>
+<mat-drawer-container class="drawer-container" [hasBackdrop]="isTabletMode">
+  <mat-drawer
+    #drawer
+    [opened]="!isTabletMode"
+    [mode]="!isTabletMode ? 'push' : 'over'"
+  >
+    <div class="brand-wrapper">
+      <h2 class="brand">Quizz</h2>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <header class="header-admin">
+      @if (isTabletMode) {
+      <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon fontIcon="menu"/>
+      </button>
+      } @if(authState) {
+      <h3 class="welcome">Welcome back, {{ authState.fullname }}</h3>
+      <div class="avatar">
+        <button mat-icon-button [matMenuTriggerFor]="avatarMenu">
+          <img [src]="authState.avatar" [alt]="authState.fullname" />
+        </button>
+        <mat-menu #avatarMenu="matMenu">
+          <h3 style="padding: 5px 13px; ">Welcome {{authState.username}}</h3>
+          <button mat-menu-item>
+            <mat-icon fontIcon="person" style="scale: 0.8" />
+            Profile
+          </button>
+          <button mat-menu-item (click)="onLogoutHandler()">
+            <mat-icon fontIcon="logout" style="scale: 0.8" />
+            Logout
+          </button>
+        </mat-menu>
+      </div>
+      }
+    </header>
+    <div class="content-admin">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

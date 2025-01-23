@@ -1,0 +1,73 @@
+@use "../../../styles.scss" as *;
+
+.drawer-container {
+  width: 100dvw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+
+  mat-drawer {
+    width: 25%;
+    border: 1px solid $purple;
+    border-radius: 0;
+    padding: 10px 30px 20px 30px;
+    background-color: $white;
+
+    .brand-wrapper {
+      width: 100%;
+      border-bottom: 1px solid $purple;
+      padding-bottom: 10px;
+
+      .brand {
+        font-size: 2rem;
+        color: $dark-purple;
+      }
+    }
+  }
+
+  mat-drawer-content {
+    position: relative;
+    width: 75%;
+
+    .header-admin {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 0px 30px;
+      height: 65px;
+      border-bottom: 1px solid $purple;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: $white;
+
+      .welcome {
+        min-width: 150px;
+      }
+    }
+
+    .content-admin {
+      width: 100%;
+      min-height: 100vh;
+      height: auto;
+      padding: 20px 30px 15px 30px;
+      background-color: $gray-white;
+    }
+  }
+}
+
+@media screen and (max-width: $max-width-tablet) {
+  .drawer-container {
+    width: 100dvw;
+  
+    mat-drawer {
+      width: 320px;
+      max-width: 350px;
+    }
+    
+    mat-drawer-content {
+      width: 100%;
+    }
+  }
+}
