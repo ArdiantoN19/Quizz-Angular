@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,7 +24,7 @@ export class BackendLayoutAppComponent {
   isTabletMode: boolean = false;
   authState: TAuthState | null = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     const innerWidth = window.innerWidth;
@@ -43,5 +43,6 @@ export class BackendLayoutAppComponent {
   onLogoutHandler(): void {
     this.authService.logout()
     this.authState = null;
+    this.router.navigate(['/'])
   }
 }
