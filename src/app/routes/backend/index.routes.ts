@@ -2,6 +2,7 @@ import { Route } from "@angular/router";
 import { DashboardPageApp } from "../../pages/backend/dashboard/index.component";
 import { roleGuard } from "../../role.guard";
 import { ROLE } from "../../services/authService/index.type";
+import { UserPageApp } from "../../pages/backend/user/index.component";
 
 export const routes: Route[] = [
     {
@@ -10,5 +11,12 @@ export const routes: Route[] = [
         component: DashboardPageApp,
         canActivate: [roleGuard],
         data: {role: [ROLE.SUPERADMIN, ROLE.ADMIN]}
-    }
+    },
+    {
+        path: 'user',
+        title: 'User',
+        component: UserPageApp,
+        canActivate: [roleGuard],
+        data: {role: [ROLE.SUPERADMIN, ROLE.ADMIN]}
+    },
 ]
