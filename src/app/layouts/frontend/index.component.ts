@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NavbarAppComponent } from '../../../components/navbar/index.component';
-import { FooterAppComponent } from '../../../components/footer/index.component';
+import { NavbarAppComponent } from '../../components/navbar/index.component';
+import { FooterAppComponent } from '../../components/footer/index.component';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { ScrollToTopAppComponent } from '../../../components/scrollToTop/index.component';
+import { ScrollToTopAppComponent } from '../../components/scrollToTop/index.component';
 import { filter } from 'rxjs';
 
 const authRoutes: string[] = ['/login', '/register'];
