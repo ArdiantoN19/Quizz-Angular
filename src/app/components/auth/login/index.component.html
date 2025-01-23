@@ -15,8 +15,8 @@
   <div class="login-wrapper">
     <h1 class="login-wrapper__title">Hi there!</h1>
     <p class="login-wrapper__subtitle">
-      Welcome back to <span class="purple font-cursive">Quizz 👋</span>. Let's take
-      your journey
+      Welcome back to <span class="purple font-cursive">Quizz 👋</span>. Let's
+      take your journey
     </p>
     <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmitHandler()">
       <mat-form-field appearance="outline" class="form-group">
@@ -28,24 +28,42 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Password</mat-label>
-        <input type="password" matInput formControlName="password" required />
+        <input
+          type="password"
+          matInput
+          formControlName="password"
+          [type]="isShowPassword ? 'text' : 'password'"
+          required
+        />
+        <button type="button" (click)="onShowPasswordHandler()" matSuffix mat-icon-button>
+          <mat-icon
+            fontIcon="{{ isShowPassword ? 'visibility' : 'visibility_off' }}"
+          />
+        </button>
         <mat-error class="form-group__error-message">{{
           getErrorMessage("password")
         }}</mat-error>
       </mat-form-field>
-      <p><mat-checkbox formControlName="rememberMe">Remember Me</mat-checkbox></p>
+      <p>
+        <mat-checkbox formControlName="rememberMe">Remember Me</mat-checkbox>
+      </p>
       <button type="submit" mat-flat-button class="btn" [disabled]="isLoading">
-        {{!isLoading ? 'Login' : 'Loading'}}
+        {{ !isLoading ? "Login" : "Loading" }}
         @if(!isLoading) {
-            <mat-icon fontIcon="arrow_outward"/>
+        <mat-icon fontIcon="arrow_outward" />
         }@else {
-            <mat-icon fontIcon="trip_origin"  [class]="{'animate-pulse': isLoading}"/>
+        <mat-icon
+          fontIcon="trip_origin"
+          [class]="{ 'animate-pulse': isLoading }"
+        />
         }
       </button>
     </form>
     <div class="login-wrapper__sign-up">
       Don't have an account?
-      <a [routerLink]="['/register']" class="login-wrapper__sign-up__link">Sign Up</a>
+      <a [routerLink]="['/register']" class="login-wrapper__sign-up__link"
+        >Sign Up</a
+      >
     </div>
   </div>
 </div>

@@ -31,6 +31,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class RegisterAppComponent {
   isLoading: boolean = false;
+  isShowPassword: boolean = false;
 
   constructor(
     private errorCustomMessageService: ErrorCustomMessageService,
@@ -53,6 +54,10 @@ export class RegisterAppComponent {
 
   goBackHandler() {
     this.location.back();
+  }
+
+  onShowPasswordHandler() {
+    this.isShowPassword = !this.isShowPassword
   }
 
   getErrorMessage(name: 'email' | 'password' | 'fullname' | 'username') {

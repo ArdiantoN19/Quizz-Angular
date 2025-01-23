@@ -41,7 +41,10 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Password</mat-label>
-        <input type="password" matInput formControlName="password" required />
+        <input type="password" matInput formControlName="password" [type]="isShowPassword ? 'text' : 'password'" required />
+        <button mat-icon-button matSuffix type="button" (click)="onShowPasswordHandler()">
+          <mat-icon fontIcon="{{isShowPassword ? 'visibility' : 'visibility_off'}}"/>
+        </button>
         <mat-error class="form-group__error-message">{{
           getErrorMessage("password")
         }}</mat-error>
