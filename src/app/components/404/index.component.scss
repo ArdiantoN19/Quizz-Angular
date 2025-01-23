@@ -1,10 +1,14 @@
 .notfound-wrapper {
     width: 100%;
-    height: 85vh;
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-bottom: 200px;
+    padding-top: 50px;
     gap: 20px;
+
+    .btn-back {
+        padding: 25px 30px;
+    }
 }
