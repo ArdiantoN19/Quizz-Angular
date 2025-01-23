@@ -14,6 +14,12 @@
         </button>
         <mat-menu #userMenu="matMenu">
           <h3 style="padding: 5px 13px; ">Welcome {{authState.username}}</h3>
+          @if (isAdmin) {
+            <button mat-menu-item [routerLink]="['/admin/dashboard']">
+              <mat-icon fontIcon="dashboard" style="scale: .8;"/>
+              Dashboard
+            </button>
+          }
           <button mat-menu-item>
             <mat-icon fontIcon="person" style="scale: .8;"/>
             Profile
@@ -32,6 +38,12 @@
       </button>
       <mat-menu #userMenu="matMenu">
         <h3 style="padding: 5px 13px; ">Welcome {{authState.username}}</h3>
+        @if (isAdmin) {
+          <button mat-menu-item [routerLink]="['/admin/dashboard']">
+            <mat-icon fontIcon="dashboard" style="scale: .8;"/>
+            Dashboard
+          </button>
+        }
         <button mat-menu-item>
           <mat-icon fontIcon="person" style="scale: .8;"/>
           Profile

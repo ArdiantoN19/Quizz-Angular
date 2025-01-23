@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { FrontendLayoutAppComponent } from './shared/frontend/layout/index.component';
+import { FrontendLayoutAppComponent } from './layouts/frontend/index.component';
+import { BackendLayoutAppComponent } from "./layouts/backend/index.component";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [FrontendLayoutAppComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
