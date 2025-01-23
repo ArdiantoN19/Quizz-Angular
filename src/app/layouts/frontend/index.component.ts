@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarAppComponent } from '../../components/navbar/index.component';
 import { FooterAppComponent } from '../../components/footer/index.component';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import {
+  NavigationEnd,
+  Router,
+  RouterOutlet,
+} from '@angular/router';
 import { ScrollToTopAppComponent } from '../../components/scrollToTop/index.component';
 import { filter } from 'rxjs';
 
@@ -23,11 +27,14 @@ export class FrontendLayoutAppComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.router.events.pipe(
-        filter((event) => event instanceof NavigationEnd)
-    ).subscribe((event) => {
+    const currentRoute: string = this.router.url.split('?')[0];
+    this.isAuthPage = authRoutes.includes(currentRoute);
+
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event) => {
         const currentRoute: string = this.router.url.split('?')[0];
-        this.isAuthPage = authRoutes.includes(currentRoute)
-    })
+        this.isAuthPage = authRoutes.includes(currentRoute);
+      });
   }
 }
