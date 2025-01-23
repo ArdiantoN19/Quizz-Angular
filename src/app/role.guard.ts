@@ -13,31 +13,31 @@ export const roleGuard: CanActivateFn = (route, state) => {
 
   const authState = authService.getAuthState();
 
-  if(authState && authRoutes.includes(activePath) && authState['id']) {
-    router.navigate(['/'])
-    return false
-  }
-  
-  if(authState && authState['expired'] < Date.now()) {
-    router.navigate(['/'])
-    authService.logout()
+  const requiredRole = route.data['role'];
+
+  if (authState && authRoutes.includes(activePath) && authState['id']) {
+    router.navigate(['/']);
     return false;
   }
 
-  if(authState && authState['role'] !== ROLE.ADMIN) {
-    router.navigate(['/'])
+  if (authState && authState['expired'] < Date.now()) {
+    router.navigate(['/']);
+    authService.logout();
     return false;
   }
 
-  // if(route.data['role'] !== ROLE.ADMIN && authState['role'] !== ROLE.ADMIN) {
-  //   router.navigate(['/'])
-  //   return false
-  // }
 
-  // if(route.data['role'] !== ROLE.USER) {
-  //   router.navigate(['/'])
-  //   return false
-  // }
+  if (authState && !Array.isArray(requiredRole) && authState['role'] !== requiredRole) {
+    const isAdmin = ['ADMIN', 'SUPERADMIN'].includes(authState['role']);
+    router.navigate([isAdmin ? '/admin/dashboard' : '/']);
+    return false;
+  }
+
+  if (authState && Array.isArray(requiredRole) && !requiredRole.includes(authState['role'])) {
+    const isAdmin = ['ADMIN', 'SUPERADMIN'].includes(authState['role']);
+    router.navigate([isAdmin ? '/admin/dashboard' : '/']);
+    return false;
+  }
 
   return true;
 };

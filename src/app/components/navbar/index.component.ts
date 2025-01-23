@@ -37,6 +37,7 @@ export class NavbarAppComponent implements OnInit {
   isShowShadow: boolean = false;
   currentRoute: string = '';
   authState: TAuthState | null = null;
+  isAdmin: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -50,7 +51,9 @@ export class NavbarAppComponent implements OnInit {
         );
       });
 
-    this.authState = this.authService.getAuthState();
+    const authState = this.authService.getAuthState();
+    this.authState = authState;
+    this.isAdmin = ['ADMIN', 'SUPERADMIN'].includes(authState?.role!);
   }
 
   @HostListener('window:scroll', [])
@@ -63,7 +66,7 @@ export class NavbarAppComponent implements OnInit {
   }
 
   onLogoutHandler() {
-    this.authService.logout()
+    this.authService.logout();
     this.authState = null;
   }
 }
