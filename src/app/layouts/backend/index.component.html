@@ -5,14 +5,29 @@
     [mode]="!isTabletMode ? 'push' : 'over'"
   >
     <div class="brand-wrapper">
-      <h2 class="brand">Quizz</h2>
+      <a [routerLink]="['/']" class="brand">Quizz</a>
+    </div>
+    <div class="menu-wrapper">
+      @for (menuItem of menuAdmin; track $index) {
+      <button
+        mat-flat-button
+        class="btn btn-menu-item"
+        [routerLink]="['/admin' + menuItem.link]"
+        routerLinkActive="active"
+      >
+        <mat-icon fontIcon="{{ menuItem.icon }}" />
+        {{ menuItem.label }}
+      </button>
+      } @empty {
+      <p>Menu not found, please config your menu first</p>
+      }
     </div>
   </mat-drawer>
   <mat-drawer-content>
     <header class="header-admin">
       @if (isTabletMode) {
       <button mat-icon-button (click)="drawer.toggle()">
-        <mat-icon fontIcon="menu"/>
+        <mat-icon fontIcon="menu" />
       </button>
       } @if(authState) {
       <h3 class="welcome">Welcome back, {{ authState.fullname }}</h3>
@@ -21,7 +36,7 @@
           <img [src]="authState.avatar" [alt]="authState.fullname" />
         </button>
         <mat-menu #avatarMenu="matMenu">
-          <h3 style="padding: 5px 13px; ">Welcome {{authState.username}}</h3>
+          <h3 style="padding: 5px 13px">Welcome {{ authState.username }}</h3>
           <button mat-menu-item>
             <mat-icon fontIcon="person" style="scale: 0.8" />
             Profile

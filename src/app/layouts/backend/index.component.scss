@@ -8,19 +8,47 @@
 
   mat-drawer {
     width: 25%;
-    border: 1px solid $purple;
     border-radius: 0;
     padding: 10px 30px 20px 30px;
     background-color: $white;
 
     .brand-wrapper {
       width: 100%;
-      border-bottom: 1px solid $purple;
       padding-bottom: 10px;
+      margin-bottom: 20px;
 
       .brand {
+        all: unset;
         font-size: 2rem;
         color: $dark-purple;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    }
+
+    .menu-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .btn-menu-item {
+        border-radius: 15px;
+        display: flex;
+        justify-content: start;
+        padding: 25px 30px;
+        background-color: transparent;
+        color: $black;
+        font-size: 1rem;
+        
+        &.active {
+          box-shadow: 0px 8px 10px rgba($purple, .3);
+          background-color: $dark-purple;
+          color: $white;
+        }
+
+        &:not(.active):hover {
+          background-color: rgba($purple, .2);
+        }
       }
     }
   }
@@ -36,11 +64,11 @@
       width: 100%;
       padding: 0px 30px;
       height: 65px;
-      border-bottom: 1px solid $purple;
+      background-color: $white;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: $white;
+      box-shadow: 3px 10px 20px rgba($black, .06);
 
       .welcome {
         min-width: 150px;
@@ -49,7 +77,7 @@
 
     .content-admin {
       width: 100%;
-      min-height: 100vh;
+      min-height: 80vh;
       height: auto;
       padding: 20px 30px 15px 30px;
       background-color: $gray-white;

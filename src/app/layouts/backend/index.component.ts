@@ -1,11 +1,40 @@
 import { Component, HostListener } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/authService/index.service';
 import { TAuthState } from '../../services/authService/index.type';
 import { MatMenuModule } from '@angular/material/menu';
+
+type TMenu = {
+    label: string;
+    icon: string;
+    link: string;
+}
+
+const menus: TMenu[] = [
+    {
+        label: 'Dashboard',
+        icon: 'dashboard',
+        link: '/dashboard'
+    },
+    {
+        label: 'Users',
+        icon: 'group',
+        link: '/user'
+    },
+    {
+        label: 'Category',
+        icon: 'palette',
+        link: '/category'
+    },
+    {
+        label: 'Quiz',
+        icon: 'extension',
+        link: '/quiz'
+    }
+]
 
 @Component({
   selector: 'backend-layout-app',
@@ -17,12 +46,15 @@ import { MatMenuModule } from '@angular/material/menu';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    RouterLink,
+    RouterLinkActive
   ],
 })
 export class BackendLayoutAppComponent {
   private maxWidthTablet: number = 769;
   isTabletMode: boolean = false;
   authState: TAuthState | null = null;
+  menuAdmin: TMenu[] = menus
 
   constructor(private authService: AuthService, private router: Router) {}
 
