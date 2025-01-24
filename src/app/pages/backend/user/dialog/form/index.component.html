@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Dialog {{data.mode}}</h2>
+<mat-dialog-content>
+       hello {{data.name}}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Close</button>
+        <button mat-button (click)="onCloseDialogHandler()">Close</button>
+</mat-dialog-actions>
