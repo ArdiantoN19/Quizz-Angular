@@ -1,0 +1,22 @@
+@use '../../../../styles.scss' as *;
+
+.form-field-filter {
+  font-size: 14px;
+  width: 250px;
+}
+
+table {
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba($black, .055);
+
+    td, th {
+      max-width: 25%;
+    }
+
+    th {
+      text-transform: capitalize;
+    }
+  }
+  

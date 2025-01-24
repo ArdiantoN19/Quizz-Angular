@@ -29,6 +29,9 @@ $max-width-mobile: 500px;
       protected-label-text-font: 'Nunito',
       protected-ripple-color: rgba($purple, .2),
       protected-state-layer-color: $purple,
+      text-label-text-color: $dark-purple,
+      text-state-layer-color: $purple,
+      text-ripple-color: rgba($purple, .2)
     )
   );
 
@@ -60,6 +63,22 @@ $max-width-mobile: 500px;
     item-icon-color: $black,
     item-label-text-font: 'Nunito',
     item-label-text-size: .8rem,
+  ));
+
+  @include mat.paginator-overrides((
+    enabled-icon-color: $dark-purple,
+    container-text-font: 'Nunito'
+  ));
+
+  @include mat.table-overrides((
+    background-color: $white,
+    header-headline-color: $black,
+    row-item-label-text-color: $black,
+    row-item-outline-color: $gray,
+    header-headline-font: 'Nunito',
+    row-item-label-text-font: 'Nunito',
+    header-headline-weight: 'bold',
+    row-item-label-text-size: .85rem
   ))
 }
 
