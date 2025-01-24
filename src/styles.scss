@@ -79,6 +79,11 @@ $max-width-mobile: 500px;
     row-item-label-text-font: 'Nunito',
     header-headline-weight: 'bold',
     row-item-label-text-size: .85rem
+  ));
+
+  @include mat.dialog-overrides((
+    subhead-font: 'Nunito',
+    supporting-text-font: 'Nunito'
   ))
 }
 
