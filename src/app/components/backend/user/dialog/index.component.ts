@@ -11,14 +11,13 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [MatButtonModule, MatIconModule]
 })
 export class DialogUserAppComponent {
-  @Input({ required: true }) mode!: 'new' | 'edit';
+  @Input() data: any;
   dialog = inject(MatDialog);
 
   onOpenDialogHandler() {
     this.dialog.open<any, TDataDialog>(DialogFormUserAppComponent, {
       data: {
         name: 'ardi',
-        mode: this.mode
       },
     });
   }

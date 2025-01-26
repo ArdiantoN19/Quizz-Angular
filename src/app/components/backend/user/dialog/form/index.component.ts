@@ -9,7 +9,6 @@ import { DialogUserAppComponent } from '../index.component';
 
 export type TDataDialog = {
     name: string;
-    mode: 'new' | 'edit'
 }
 
 @Component({

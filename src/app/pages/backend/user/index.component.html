@@ -1,4 +1,4 @@
 <title-backend-app [data]="dataTitle">
-    <dialog-user-app mode="new"/>
+    <dialog-user-app />
 </title-backend-app>
-<table-backend-app [data]="data" [columns]="columns"/>
+<table-backend-app [data]="data" [columns]="columns" [isAction]="isAction" (eventEdit)="onEditHandler($event)" (eventDelete)="onDeleteHandler($event)"/>
