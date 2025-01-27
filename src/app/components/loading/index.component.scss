@@ -1,0 +1,14 @@
+@use '../../../styles.scss' as *;
+
+.loader {
+    width: 15px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    animation: l5 1s infinite linear alternate;
+  }
+  @keyframes l5 {
+      0%  {box-shadow: 20px 0 $dark-purple, -20px 0 rgba($purple, .6);background: $dark-purple }
+      33% {box-shadow: 20px 0 $dark-purple, -20px 0 rgba($purple, .6);background: rgba($purple, .6)}
+      66% {box-shadow: 20px 0 rgba($purple, .6),-20px 0 $dark-purple; background: rgba($purple, .6)}
+      100%{box-shadow: 20px 0 rgba($purple, .6),-20px 0 $dark-purple; background: $dark-purple }
+  }
