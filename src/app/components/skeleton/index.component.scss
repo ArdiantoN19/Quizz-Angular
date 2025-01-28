@@ -1,0 +1,16 @@
+@use '../../../styles.scss' as *;
+
+$sizes: (xl: 10rem, md: 7rem, sm: 4rem, full: 60dvh);
+
+.skeleton {
+    background-color: $gray;
+    border-radius: 15px;
+    animation:pulse 1.25s infinite alternate;
+
+    @each $key, $size in $sizes {
+        &.size-#{$key} {
+            width: 100%;
+            height: $size;
+        }
+    }
+}
