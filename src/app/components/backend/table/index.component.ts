@@ -1,8 +1,10 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -12,6 +14,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgOptimizedImage } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 type TDataSource<T> = T & {
   no: number;
@@ -25,7 +29,6 @@ export type TColumn<T> = {
   columnDef: string;
   header: string;
   isImage?: boolean;
-  isAction?: boolean;
   cell: (arg: TDataSource<T>) => any; 
 };
 
@@ -39,7 +42,9 @@ export type TColumn<T> = {
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatButtonModule,
+    MatIconModule
   ],
 })
 export class TableBackendAppComponent<T extends Record<string, any>>
@@ -47,6 +52,10 @@ export class TableBackendAppComponent<T extends Record<string, any>>
 {
   @Input({ required: true }) data!: T[];
   @Input({ required: true }) columns!: TColumn<T>[];
+  @Input() isAction: boolean = false;
+
+  @Output() eventEdit = new EventEmitter<TDataSource<T>>()
+  @Output() eventDelete = new EventEmitter<TDataSource<T>>()
 
   dataSource: MatTableDataSource<TDataSource<T>> = new MatTableDataSource<
     TDataSource<T>
@@ -59,12 +68,12 @@ export class TableBackendAppComponent<T extends Record<string, any>>
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['data'] && this.data && changes['columns'] && this.columns) {
-      const copyData = this.data.map((data, index) => ({
-        no: index + 1,
-        ...data,
-      }));
+    const copyData = this.data.map((data, index) => ({
+      no: index + 1,
+      ...data,
+    }));
 
+    if (changes['data'] && this.data && changes['columns'] && this.columns) {
       this.dataSource = new MatTableDataSource(copyData);
       this.columns = [
         {
@@ -75,7 +84,24 @@ export class TableBackendAppComponent<T extends Record<string, any>>
         ...this.columns
       ]
 
+      if(this.isAction) {
+        this.columns = [
+          ...this.columns,
+          {
+            columnDef: 'action',
+            header: 'Action',
+            cell: () => `` 
+          }
+        ]
+      }
+
       this.displayedColumns = this.columns.map(({columnDef}) => columnDef);
+    }
+
+    if(changes['data']) {
+      this.dataSource = new MatTableDataSource(copyData)
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     }
   }
 
@@ -91,5 +117,13 @@ export class TableBackendAppComponent<T extends Record<string, any>>
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  onEditHandler(row: TDataSource<T>) {
+    this.eventEdit.emit(row)
+  }
+
+  onDeleteHandler(row: TDataSource<T>) {
+    this.eventDelete.emit(row)
   }
 }
