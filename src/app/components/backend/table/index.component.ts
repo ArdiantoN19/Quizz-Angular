@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgOptimizedImage } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 
 type TDataSource<T> = T & {
   no: number;
@@ -44,7 +45,8 @@ export type TColumn<T> = {
     MatPaginatorModule,
     NgOptimizedImage,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltip
   ],
 })
 export class TableBackendAppComponent<T extends Record<string, any>>

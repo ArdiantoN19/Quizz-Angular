@@ -19,11 +19,11 @@
         @if(isAction && column.columnDef === 'action') {
         <td mat-cell *matCellDef="let row">
           <div class="btn-action">
-            <button type="button" mat-flat-button class="btn-action__edit" (click)="onEditHandler(row)">
+            <button type="button" mat-flat-button class="btn-action__edit" (click)="onEditHandler(row)" matTooltip="Edit data">
               <mat-icon fontIcon="edit" />
               Edit
             </button>
-            <button type="button" mat-stroked-button class="btn-action__delete" (click)="onDeleteHandler(row)">
+            <button type="button" mat-stroked-button class="btn-action__delete" (click)="onDeleteHandler(row)" matTooltip="Delete data">
               <mat-icon fontIcon="delete" />
               Delete
             </button>
