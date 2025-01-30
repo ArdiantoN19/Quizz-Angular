@@ -1,0 +1,14 @@
+<div class="dialog">
+  <h2 mat-dialog-title>Confirm delete data</h2>
+  <mat-dialog-content>
+    <p class="dialog-content">
+        Are you sure delete this data? data can't be repair.
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button class="btn-admin" mat-button mat-dialog-close tabindex="-1">Close</button>
+    <button class="btn-admin" mat-button (click)="onDeleteHandler()">
+      Delete
+    </button>
+  </mat-dialog-actions>
+</div>

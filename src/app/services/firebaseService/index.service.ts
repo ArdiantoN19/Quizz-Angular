@@ -3,6 +3,7 @@ import {
   addDoc,
   collection,
   collectionData,
+  deleteDoc,
   doc,
   DocumentData,
   DocumentReference,
@@ -26,7 +27,7 @@ export class FirebaseService {
 
   /**
    * This function to get many data or documents from collection reference by collection name
-   * @param collectionName
+   * @param collectionName Name of your collection that you want get
    *
    * @returns Observable data with type generic
    *
@@ -38,8 +39,8 @@ export class FirebaseService {
 
   /**
    * This function for add new document to collection
-   * @param input
-   * @param collectionName
+   * @param input Data or payload for new document
+   * @param collectionName Name of your collection that you want get
    * @returns Object with key is string same like what you input
    */
   async addDocument<T extends DocumentData>(
@@ -65,8 +66,8 @@ export class FirebaseService {
 
   /**
    * This function to get document reference by doc Id
-   * @param  collectionName
-   * @param  docId
+   * @param  collectionName Name of your collection that you want get
+   * @param  docId Document Id of your document
    * @returns Observable data with type generic
    */
   getCollectionDataWithObservableByDocId<T>(
@@ -83,8 +84,8 @@ export class FirebaseService {
 
   /**
    * This function to get document with query expression
-   * @param collectionName
-   * @param query you must type object same as TQueryExpression
+   * @param collectionName Name of your collection that you want get
+   * @param queryExpression Must type object same as TQueryExpression
    *
    * @returns Observable data with type generic
    */
@@ -116,13 +117,19 @@ export class FirebaseService {
     });
   }
 
+  /**
+   * 
+   * @param collectionName Name of your collection that you want get
+   * @param docId Document Id of your document
+   * @returns The document that have match with doc id
+   */
   async getDocumentByDocId<T>(
     collectionName: string,
     docId: string
   ): Promise<T> {
-    const collectionReference = doc(this.firestore, collectionName, docId);
+    const docRef = doc(this.firestore, collectionName, docId);
     const docSnapshot: DocumentSnapshot<DocumentData> = await getDoc(
-      collectionReference
+      docRef
     );
     if (!docSnapshot.exists()) {
       throw new Error(
@@ -133,6 +140,12 @@ export class FirebaseService {
     return { id: docSnapshot.id, ...docSnapshot.data() } as T;
   }
 
+  /**
+   * 
+   * @param collectionName Name of your collection that you want get
+   * @param queryExpression Must type object same as TQueryExpression
+   * @returns The documents that have match with queryExpression condition
+   */
   async getDocumentByQuery<T>(
     collectionName: string,
     queryExpression: TQueryExpression[]
@@ -155,5 +168,16 @@ export class FirebaseService {
     } catch (error) {
       return [];
     }
+  }
+
+  /**
+   * 
+   * @param collectionName Name of your collection that you want get
+   * @param docId Document Id of your document
+   * @returns void
+   */
+  async deleteDocumentByDocId(collectionName: string, docId: string): Promise<void> {
+    const docRef = doc(this.firestore, collectionName, docId);
+    return deleteDoc(docRef)
   }
 }
