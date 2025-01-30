@@ -9,10 +9,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmBackendAppComponent } from '../../../components/backend/user/dialog/dialogConfirm/index.component';
 import { UserService } from '../../../services/userService/index.service';
 import { TUser } from '../../../services/authService/index.type';
-import { LoadingAppComponent } from '../../../components/loading/index.component';
 import { SkeletonAppComponent } from '../../../components/skeleton/index.component';
-import { formatDate } from '../../../utils';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'user-page-app',
@@ -69,7 +68,7 @@ export class UserPageApp implements OnInit {
     {
       columnDef: 'createdAt',
       header: 'Created At',
-      cell: (element: TUser) => `${formatDate(element.createdAt)}`,
+      cell: (element: TUser) => `${formatDate(element.createdAt, 'mediumDate', 'en-US')}`,
     },
   ];
 
