@@ -8,7 +8,7 @@ import { DialogUserAppComponent } from '../../../components/backend/user/dialog/
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmBackendAppComponent } from '../../../components/backend/user/dialog/dialogConfirm/index.component';
 import { UserService } from '../../../services/userService/index.service';
-import { TUser } from '../../../services/authService/index.type';
+import { TResponse, TUser } from '../../../services/authService/index.type';
 import { SkeletonAppComponent } from '../../../components/skeleton/index.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { formatDate } from '@angular/common';
@@ -68,7 +68,8 @@ export class UserPageApp implements OnInit {
     {
       columnDef: 'createdAt',
       header: 'Created At',
-      cell: (element: TUser) => `${formatDate(element.createdAt, 'mediumDate', 'en-US')}`,
+      cell: (element: TUser) =>
+        `${formatDate(element.createdAt, 'mediumDate', 'en-US')}`,
     },
   ];
 
@@ -87,23 +88,17 @@ export class UserPageApp implements OnInit {
     console.log(data);
   }
 
-  onDeleteHandler(dataDelete: any) {
+  onDeleteHandler(dataDelete: TUser) {
     const dialogRef = this.dialog.open(DialogConfirmBackendAppComponent, {
-      data: dataDelete,
+      data: {
+        id: dataDelete.id,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(async (result: boolean) => {
-      if (result) {
-        const response = await this.userService.deleteUserById(
-          dataDelete.id
-        );
-
-        if (response.status === 'success') {
-          const users = this.data.filter((user) => dataDelete.id !== user.id);
-          this.data = users;
-        }
-        
-        this.snackbar.open(response.message, 'close');
+    dialogRef.afterClosed().subscribe(async (result: TResponse<string>) => {
+      if (result.status === 'success') {
+        const users = this.data.filter((user) => dataDelete.id !== user.id);
+        this.data = users;
       }
     });
   }
