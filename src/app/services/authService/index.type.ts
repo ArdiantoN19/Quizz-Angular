@@ -19,12 +19,6 @@ export type TUser = TAuthCredential & {
   updatedAt: string;
 };
 
-export type TResponse<T> = {
-  status: string;
-  message: string;
-  data?: T;
-};
-
 export type TRegisterCredential = TAuthCredential & {
   username: string;
   fullname: string;

@@ -5,13 +5,13 @@ import {
   TAuthCredential,
   TAuthState,
   TRegisterCredential,
-  TResponse,
   TUser,
 } from './index.type';
 import { HashService } from '../hashService/index.service';
 import { catchError, Observable, of, switchMap } from 'rxjs';
 import { FirebaseService } from '../firebaseService/index.service';
 import { TQueryExpression } from '../firebaseService/index.type';
+import { TResponse } from '../index.type';
 
 @Injectable({
   providedIn: 'root',
