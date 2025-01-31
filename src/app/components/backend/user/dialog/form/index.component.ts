@@ -5,23 +5,99 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { DialogUserAppComponent } from '../index.component';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
+import { patternPassword } from '../../../../../utils';
+import { ROLE } from '../../../../../services/authService/index.type';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ErrorCustomMessageService } from '../../../../../utils/errorCustomMessage.service';
+import { MatIconModule } from '@angular/material/icon';
+import { UserService } from '../../../../../services/userService/index.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserPageApp } from '../../../../../pages/backend/user/index.component';
 
 export type TDataDialog = {
-    name: string;
-}
+  name: string;
+};
+
+type TFormName = 'username' | 'email' | 'fullname' | 'password' | 'role';
 
 @Component({
   selector: 'dialog-form-user-app',
   templateUrl: 'index.component.html',
   styleUrl: 'index.component.scss',
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRadioModule,
+    MatIconModule
+  ],
 })
 export class DialogFormUserAppComponent {
   data = inject<TDataDialog>(MAT_DIALOG_DATA);
-  dialogRef = inject(MatDialogRef<DialogUserAppComponent>);
+  private dialogRef = inject(MatDialogRef<UserPageApp>);
+  private errorMessageService = inject(ErrorCustomMessageService);
+  private userService = inject(UserService);
+  private snackbar = inject(MatSnackBar)
 
-  onCloseDialogHandler() {
-    this.dialogRef.close('closed success');
+  protected defaultPassword: string = 'Password123.';
+  roles: string[] = Object.keys(ROLE);
+  isShowPassword: boolean = false;
+
+  userForm = new FormGroup({
+    username: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
+    email: new FormControl('', [Validators.email, Validators.required]),
+    fullname: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
+    password: new FormControl(this.defaultPassword, [
+      Validators.required,
+      Validators.pattern(patternPassword),
+    ]),
+    role: new FormControl(ROLE.USER, [Validators.required]),
+  });
+
+  getErrorMessage(name: TFormName): string {
+    return this.errorMessageService.getMessage(
+      this.userForm.get(name) as any,
+      name
+    );
+  }
+
+  onShowPasswordHandler(): void {
+    this.isShowPassword = !this.isShowPassword
+  }
+
+  async onSubmitHandler() {
+    if(this.userForm.valid) {
+      const payload = {
+        username: this.userForm.value.username!,
+        email: this.userForm.value.email!,
+        password: this.userForm.value.password!,
+        fullname: this.userForm.value.fullname!,
+        role: this.userForm.value.role!,
+      }
+
+      const response = await this.userService.addUser(payload)
+
+      if(response.status === 'success') {
+        this.dialogRef.close(response);
+      }
+
+      this.snackbar.open(response.message, 'close')
+    }
   }
 }

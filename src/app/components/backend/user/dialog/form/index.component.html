@@ -1,8 +1,75 @@
-<h2 mat-dialog-title>Dialog</h2>
-<mat-dialog-content>
-       hello {{data.name}}
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-        <button mat-button mat-dialog-close>Close</button>
-        <button mat-button (click)="onCloseDialogHandler()">Close</button>
-</mat-dialog-actions>
+<div class="dialog">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>New User</h2>
+    <small class="dialog-description">You can add user here.</small>
+  </div>
+  <form class="form" [formGroup]="userForm" (ngSubmit)="onSubmitHandler()">
+    <mat-dialog-content>
+      <mat-form-field class="form-field" appearance="outline">
+        <input type="text" matInput formControlName="username" required />
+        <mat-label> Username </mat-label>
+        <mat-error class="error-message">{{
+          getErrorMessage("username")
+        }}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
+        <input type="email" matInput formControlName="email" required />
+        <mat-label> Email </mat-label>
+        <mat-error class="error-message">{{
+          getErrorMessage("email")
+        }}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
+        <input type="text" matInput formControlName="fullname" required />
+        <mat-label> Fullname </mat-label>
+        <mat-error class="error-message">{{
+          getErrorMessage("fullname")
+        }}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
+        <input
+          [type]="isShowPassword ? 'text' : 'password'"
+          matInput
+          formControlName="password"
+          readonly
+          required
+        />
+        <mat-label> Password </mat-label>
+        <mat-error class-="error-message">{{
+          getErrorMessage("password")
+        }}</mat-error>
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="onShowPasswordHandler()"
+        >
+          <mat-icon
+            fontIcon="{{ isShowPassword ? 'visibility' : 'visibility_off' }}"
+          />
+        </button>
+        <mat-hint class="form-hint" align="start"
+          >Default password is: {{ defaultPassword }}</mat-hint
+        >
+      </mat-form-field>
+      <mat-radio-group
+        aria-labelledby="radio-button-role"
+        class="form-radio"
+        formControlName="role"
+      >
+        <mat-label> Role </mat-label>
+        @for (role of roles; track $index) {
+        <mat-radio-button [value]="role" required>
+          {{ role }}
+        </mat-radio-button>
+        }
+      </mat-radio-group>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Close</button>
+      <button type="submit" mat-button [disabled]="userForm.invalid">
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

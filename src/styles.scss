@@ -84,6 +84,15 @@ $max-width-mobile: 500px;
   @include mat.dialog-overrides((
     subhead-font: 'Nunito',
     supporting-text-font: 'Nunito'
+  ));
+
+  @include mat.radio-overrides((
+    label-text-font: 'Nunito',
+    selected-focus-icon-color: $dark-purple,
+    selected-hover-icon-color: $dark-purple,
+    selected-icon-color: $dark-purple,
+    selected-pressed-icon-color: $dark-purple,
+    checked-ripple-color: $dark-purple
   ))
 }
 
@@ -137,6 +146,26 @@ body {
 
 .animate-pulse {
   animation: pulse .8s linear infinite;
+}
+
+.dialog {
+  min-width: 370px;
+
+  .dialog-header {
+    .mat-mdc-dialog-title {
+      padding: 6px 24px 2px;
+    }
+
+    .dialog-description {
+      padding: 0 24px 13px;
+      color: $gray;
+   }
+  }
+  mat-dialog-content {
+      margin-top: 10px;
+      margin-bottom: 15px;
+      padding: 0;
+  }
 }
 
 @media screen and (max-width: $max-width-tablet) {

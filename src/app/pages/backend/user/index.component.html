@@ -1,8 +1,17 @@
 <title-backend-app [data]="dataTitle">
-    <dialog-user-app />
+  <button mat-flat-button class="btn-admin" (click)="onOpenDialogNewUser()">
+    <mat-icon fontIcon="add" />
+    Add
+  </button>
 </title-backend-app>
 @if (isLoading) {
-    <skeleton-app size="full"/>
+<skeleton-app size="full" />
 } @else {
-    <table-backend-app [data]="data" [columns]="columns" [isAction]="isAction" (eventEdit)="onEditHandler($event)" (eventDelete)="onDeleteHandler($event)"/>
+<table-backend-app
+  [data]="data"
+  [columns]="columns"
+  [isAction]="isAction"
+  (eventEdit)="onEditHandler($event)"
+  (eventDelete)="onDeleteHandler($event)"
+/>
 }

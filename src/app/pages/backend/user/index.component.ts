@@ -4,14 +4,16 @@ import {
   TableBackendAppComponent,
   TColumn,
 } from '../../../components/backend/table/index.component';
-import { DialogUserAppComponent } from '../../../components/backend/user/dialog/index.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmBackendAppComponent } from '../../../components/backend/user/dialog/dialogConfirm/index.component';
 import { UserService } from '../../../services/userService/index.service';
-import { TResponse, TUser } from '../../../services/authService/index.type';
+import { TUser } from '../../../services/authService/index.type';
 import { SkeletonAppComponent } from '../../../components/skeleton/index.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { formatDate } from '@angular/common';
+import { TResponse } from '../../../services/index.type';
+import { MatIconModule } from '@angular/material/icon';
+import { DialogFormUserAppComponent } from '../../../components/backend/user/dialog/form/index.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'user-page-app',
@@ -20,14 +22,14 @@ import { formatDate } from '@angular/common';
   imports: [
     TitleBackendAppComponent,
     TableBackendAppComponent,
-    DialogUserAppComponent,
     SkeletonAppComponent,
+    MatIconModule,
+    MatButtonModule
   ],
 })
 export class UserPageApp implements OnInit {
-  dialog = inject(MatDialog);
-  userService = inject(UserService);
-  snackbar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
+  private userService = inject(UserService);
 
   isLoading: boolean = true;
 
@@ -82,6 +84,16 @@ export class UserPageApp implements OnInit {
 
       this.isLoading = false;
     })();
+  }
+
+  onOpenDialogNewUser(): void {
+    const dialogRef = this.dialog.open(DialogFormUserAppComponent)
+
+    dialogRef.afterClosed().subscribe((result: TResponse<TUser>) => {
+      if(result.status === 'success' && result.data) {
+        this.data = [...this.data, result.data]
+      }
+    })
   }
 
   onEditHandler(data: any) {
