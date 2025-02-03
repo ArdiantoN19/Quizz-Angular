@@ -73,6 +73,12 @@ export class UserPageApp implements OnInit {
       cell: (element: TUser) =>
         `${formatDate(element.createdAt, 'mediumDate', 'en-US')}`,
     },
+    {
+      columnDef: 'updatedAt',
+      header: 'Updated At',
+      cell: (element: TUser) =>
+        `${formatDate(element.updatedAt, 'mediumDate', 'en-US')}`,
+    },
   ];
 
   ngOnInit(): void {
@@ -87,7 +93,12 @@ export class UserPageApp implements OnInit {
   }
 
   onOpenDialogNewUser(): void {
-    const dialogRef = this.dialog.open(DialogFormUserAppComponent)
+    const dialogRef = this.dialog.open(DialogFormUserAppComponent, {
+      data: {
+        mode: 'new',
+        data: null
+      }
+    })
 
     dialogRef.afterClosed().subscribe((result: TResponse<TUser>) => {
       if(result.status === 'success' && result.data) {
@@ -97,7 +108,26 @@ export class UserPageApp implements OnInit {
   }
 
   onEditHandler(data: any) {
-    console.log(data);
+    const dialogRef = this.dialog.open(DialogFormUserAppComponent, {
+      data: {
+        mode: 'edit',
+        data
+      }
+    })
+
+    dialogRef.afterClosed().subscribe((result: TResponse<TUser>) => {
+      if(result.status === 'success' && result.data) {
+        let copyData = [...this.data];
+        copyData = copyData.map((data) => {
+          if(result.data && data.id === result.data.id) {
+            return {...result.data}
+          }
+          return data;
+        })
+
+        this.data = copyData
+      }
+    })
   }
 
   onDeleteHandler(dataDelete: TUser) {

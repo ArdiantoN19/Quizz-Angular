@@ -3,7 +3,7 @@ import { FirebaseService } from '../firebaseService/index.service';
 import { TAuthState, TUser } from '../authService/index.type';
 import { AuthService } from '../authService/index.service';
 import { TResponse } from '../index.type';
-import { TPayloadAddUser } from './index.type';
+import { TPayloadUser } from './index.type';
 import { environment } from '../../../environments/environment.development';
 import { HashService } from '../hashService/index.service';
 
@@ -46,7 +46,27 @@ export class UserService {
     };
   }
 
-  async addUser(payload: TPayloadAddUser): Promise<TResponse<TUser>> {
+  async getUserById(id: string): Promise<TResponse<TUser>> {
+    try {
+      const user = await this.firebaseService.getDocumentByDocId<TUser>(
+        'users',
+        id
+      );
+
+      return {
+        status: 'success',
+        message: 'Success get user',
+        data: user,
+      };
+    } catch (error: any) {
+      return {
+        status: 'fail',
+        message: error.message,
+      };
+    }
+  }
+
+  async addUser(payload: TPayloadUser): Promise<TResponse<TUser>> {
     try {
       const checkIfExistEmail =
         await this.firebaseService.getDocumentByQuery<TUser>('users', [
@@ -99,6 +119,40 @@ export class UserService {
     }
   }
 
+  async updateUserById(
+    id: string,
+    data: TPayloadUser
+  ): Promise<TResponse<TUser>> {
+    try {
+      const user = await this.firebaseService.getDocumentByDocId<TUser>(
+        'users',
+        id
+      );
+      
+      const payload = {
+        ...data,
+        password: this.hashService.hash(data.password),
+        updatedAt: new Date().toISOString()
+      }
+
+      await this.firebaseService.updateDocumentByDocId(`users/${id}`, payload)
+
+      return {
+        status: 'success',
+        message: 'Success update user',
+        data: {
+          ...user,
+          ...payload
+        }
+      }
+    } catch (error: any) {
+      return {
+        status: 'fail',
+        message: error.message ?? 'Error occured, please check your network',
+      };
+    }
+  }
+
   async deleteUserById(id: string): Promise<TResponse<string>> {
     try {
       const user = await this.firebaseService.getDocumentByDocId<TUser>(
@@ -115,7 +169,7 @@ export class UserService {
     } catch (error: any) {
       return {
         status: 'fail',
-        message: error.message,
+        message: error.message ?? 'Error occured, please check your network',
       };
     }
   }

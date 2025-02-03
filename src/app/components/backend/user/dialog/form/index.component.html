@@ -1,7 +1,7 @@
 <div class="dialog">
   <div class="dialog-header">
-    <h2 mat-dialog-title>New User</h2>
-    <small class="dialog-description">You can add user here.</small>
+    <h2 mat-dialog-title>{{this.data.mode === 'new' ? 'New' : 'Edit'}} User</h2>
+    <small class="dialog-description">You can {{this.data.mode === 'new' ? 'create' : 'edit'}} user here.</small>
   </div>
   <form class="form" [formGroup]="userForm" (ngSubmit)="onSubmitHandler()">
     <mat-dialog-content>
@@ -31,7 +31,7 @@
           [type]="isShowPassword ? 'text' : 'password'"
           matInput
           formControlName="password"
-          readonly
+          [readonly]="data.mode === 'new'"
           required
         />
         <mat-label> Password </mat-label>

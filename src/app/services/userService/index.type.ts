@@ -1,4 +1,4 @@
-export type TPayloadAddUser = {
+export type TPayloadUser = {
     username: string;
     email: string;
     password: string;
