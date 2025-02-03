@@ -14,6 +14,7 @@ import {
   query,
   QueryFieldFilterConstraint,
   QuerySnapshot,
+  updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -179,5 +180,17 @@ export class FirebaseService {
   async deleteDocumentByDocId(collectionName: string, docId: string): Promise<void> {
     const docRef = doc(this.firestore, collectionName, docId);
     return deleteDoc(docRef)
+  }
+
+  /**
+   * 
+   * @param path Represent collection name and document id. Ex: collectionName/docId
+   * @param docId Document Id of your document
+   * @returns void
+   */
+  async updateDocumentByDocId<T extends DocumentData>(path: string, input: T): Promise<void> {
+    const [collectionName, docId] = path.split('/')
+    const docRef = doc(this.firestore, collectionName, docId);
+    return updateDoc(docRef, input)
   }
 }
