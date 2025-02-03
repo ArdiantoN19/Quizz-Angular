@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService } from '../firebaseService/index.service';
-import { TAuthState, TUser } from '../authService/index.type';
+import { ROLE, TAuthState, TUser } from '../authService/index.type';
 import { AuthService } from '../authService/index.service';
 import { TResponse } from '../index.type';
 import { TPayloadUser } from './index.type';
@@ -35,7 +35,13 @@ export class UserService {
       ]
     );
 
-    const data = users.sort((a, b) => {
+    let data = [...users];
+
+    if(this.authState.role !== ROLE.SUPERADMIN) {
+      data = data.filter(({role}) => role !== ROLE.SUPERADMIN);
+    }
+
+    data = data.sort((a, b) => {
       return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
     });
 
