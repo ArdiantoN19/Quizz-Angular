@@ -103,7 +103,7 @@ export class UserPageApp implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe((result: TResponse<TUser>) => {
-      if(result.status === 'success' && result.data) {
+      if(!!result && result.status === 'success' && result.data) {
         this.data = [...this.data, result.data]
       }
     })
@@ -118,7 +118,7 @@ export class UserPageApp implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe((result: TResponse<TUser>) => {
-      if(result.status === 'success' && result.data) {
+      if(!!result && result.status === 'success' && result.data) {
         let copyData = [...this.data];
         copyData = copyData.map((data) => {
           if(result.data && data.id === result.data.id) {
@@ -140,7 +140,7 @@ export class UserPageApp implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async (result: TResponse<string>) => {
-      if (result.status === 'success') {
+      if (!!result && result.status === 'success') {
         const users = this.data.filter((user) => dataDelete.id !== user.id);
         this.data = users;
       }
