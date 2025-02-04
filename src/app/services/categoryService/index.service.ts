@@ -9,6 +9,8 @@ import { TQueryExpression } from '../firebaseService/index.type';
   providedIn: 'root',
 })
 export class CategoryService {
+  private collectionName: string = 'categories';
+
   constructor(private firebaseService: FirebaseService) {}
 
   getCategories(): Observable<TResponse<TCategory[]>> {
@@ -22,7 +24,7 @@ export class CategoryService {
 
     return this.firebaseService
       .getCollectionDataWithObservableByQuery<TCategory>(
-        'categories',
+        this.collectionName,
         queryExpression
       )
       .pipe(
@@ -56,7 +58,7 @@ export class CategoryService {
 
       const category = await this.firebaseService.addDocument<typeof data>(
         data,
-        'categories'
+        this.collectionName
       );
 
       return {
@@ -79,7 +81,7 @@ export class CategoryService {
         updatedAt: new Date().toISOString()
       }
 
-      const category = await this.firebaseService.getDocumentByDocId<TCategory>('categories', id);
+      const category = await this.firebaseService.getDocumentByDocId<TCategory>(this.collectionName, id);
 
       await this.firebaseService.updateDocumentByDocId<typeof data>(`categories/${id}`, data);
 
@@ -90,6 +92,25 @@ export class CategoryService {
           ...category,
           ...data
         }
+      }
+    } catch (error: any) {
+      return {
+        status: 'fail',
+        message: error.message ?? 'Error occured, please check your network'
+      }
+    }
+  }
+
+  async deleteCategoryById(id: string): Promise<TResponse<string>> {
+    try {
+      const category = await this.firebaseService.getDocumentByDocId<TCategory>(this.collectionName, id);
+
+      await this.firebaseService.deleteDocumentByDocId(this.collectionName, id);
+
+      return {
+        status: 'success',
+        message: 'Success delete category',
+        data: category.id
       }
     } catch (error: any) {
       return {
