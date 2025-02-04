@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CategoryService } from '../../../../../services/categoryService/index.service';
 import { formatSlug } from '../../../../../utils';
 import { TCategory } from '../../../../../services/categoryService/index.type';
+import { TResponse } from '../../../../../services/index.type';
 
 type TDialogData = {
     mode: 'new' | 'edit',
@@ -57,10 +58,16 @@ export class DialogFormCategoryAppComponent implements OnInit {
     async onSubmitHandler(): Promise<void> {
         if(this.categoryForm.valid) {
             const payload = {
-                name: this.categoryForm.value.name!,
-                slug: formatSlug(this.categoryForm.value.name!)
+                name: this.categoryForm.value.name!.trim(),
+                slug: formatSlug(this.categoryForm.value.name!.trim())
             }
-            const response = await this.categoryService.addCategory(payload);
+            let response: TResponse<TCategory> = {} as TResponse<TCategory>
+
+            if(this.data.mode === 'new') {
+                response = await this.categoryService.addCategory(payload);
+            } else {
+                response = await this.categoryService.updateCategoryById(this.data.data?.id!, payload)
+            }
             
             this.snackbar.open(response.message, 'close');
 

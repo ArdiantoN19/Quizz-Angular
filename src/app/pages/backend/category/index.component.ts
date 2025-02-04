@@ -101,7 +101,20 @@ export class CategoryPageApp implements OnInit {
         }
     })
 
+    dialogRef.afterClosed().subscribe((result: TResponse<TCategory>) => {
+        if(!!result && result.status === 'success' && result.data) {
+            let copyCategories = [...this.data$];
+            copyCategories = copyCategories.map((category) => {
+                if(result.data && category.id === result.data.id) {
+                    return result.data
+                }
+                
+                return category
+            })
 
+            this.data$ = copyCategories
+        }
+    })
   }
 
   onDeleteHandler(data: TCategory): void {

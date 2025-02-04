@@ -88,7 +88,7 @@ export class CategoryService {
         message: 'Succes update category',
         data: {
           ...category,
-          ...payload
+          ...data
         }
       }
     } catch (error: any) {
