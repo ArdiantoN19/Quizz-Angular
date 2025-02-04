@@ -12,6 +12,9 @@ import { TCategory } from '../../../services/categoryService/index.type';
 import { formatDate } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogFormCategoryAppComponent } from '../../../components/backend/category/dialog/form/index.component';
+import { TResponse } from '../../../services/index.type';
 
 @Component({
   selector: 'category-page-app',
@@ -23,13 +26,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatIconModule,
     SkeletonAppComponent,
     TableBackendAppComponent,
-    MatTooltipModule
+    MatTooltipModule,
   ],
 })
 export class CategoryPageApp implements OnInit {
   isLoading: boolean = true;
   private categoryService = inject(CategoryService);
   private snackbar = inject(MatSnackBar);
+  private dialog = inject(MatDialog)
 
   protected dataTitle = {
     title: 'Category',
@@ -75,8 +79,29 @@ export class CategoryPageApp implements OnInit {
     });
   }
 
+  onAddHandler(): void {
+    const dialogRef = this.dialog.open(DialogFormCategoryAppComponent, {
+        data: {
+            mode: 'new'
+        }
+    });
+    
+    dialogRef.afterClosed().subscribe((result: TResponse<TCategory>) => {
+        if(!!result && result.status === 'success' && result.data) {
+            this.data$ = [...this.data$, result.data]
+        }
+    })
+  }
+
   onEditHandler(data: TCategory): void {
-    console.log('edit', data);
+    const dialogRef = this.dialog.open(DialogFormCategoryAppComponent, {
+        data: {
+            mode: 'edit',
+            data
+        }
+    })
+
+
   }
 
   onDeleteHandler(data: TCategory): void {

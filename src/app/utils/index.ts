@@ -55,3 +55,7 @@ export const formatDate = (date: string): string => {
 
     return new Intl.DateTimeFormat('id-ID', options).format(dateTime)
 }
+
+export const formatSlug = (value: string, separator: string = '-') => {
+    return value.toLowerCase().split(' ').join(separator)
+}

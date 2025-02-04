@@ -1,0 +1,28 @@
+<div class="dialog">
+    <div class="dialog-header">
+      <h2 mat-dialog-title>{{this.data.mode === 'new' ? 'New' : 'Edit'}} Category</h2>
+      <small class="dialog-description">You can {{this.data.mode === 'new' ? 'create' : 'edit'}}  category here.</small>
+    </div>
+    <form class="form" [formGroup]="categoryForm" (ngSubmit)="onSubmitHandler()">
+      <mat-dialog-content>
+        <mat-form-field class="form-field" appearance="outline">
+          <input type="text" #name matInput formControlName="name" required />
+          <mat-label> Name </mat-label>
+          <mat-error class="error-message">{{
+             getErrorMessage("name")
+          }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+          <input type="text" matInput [value]="name.value | slug" disabled required />
+          <mat-label> Slug </mat-label>
+        </mat-form-field>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Close</button>
+        <button type="submit" mat-button [disabled]="categoryForm.invalid">
+          Submit
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+  

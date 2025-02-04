@@ -1,0 +1,16 @@
+.form {
+  width: 100%;
+
+  .form-field {
+    width: 100%;
+    margin-bottom: 15px;
+
+    .error-message {
+      margin-left: -12px;
+    }
+
+    .form-hint {
+      margin-left: -12px;
+    }
+  }
+}
