@@ -14,6 +14,7 @@ import { TResponse } from '../../../services/index.type';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogFormUserAppComponent } from '../../../components/backend/user/dialog/form/index.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'user-page-app',
@@ -24,7 +25,8 @@ import { MatButtonModule } from '@angular/material/button';
     TableBackendAppComponent,
     SkeletonAppComponent,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTooltipModule
   ],
 })
 export class UserPageApp implements OnInit {
