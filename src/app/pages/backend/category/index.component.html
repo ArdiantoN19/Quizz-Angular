@@ -1,0 +1,17 @@
+<title-backend-app [data]="dataTitle">
+  <button mat-flat-button class="btn-admin" matTooltip="Add category">
+    <mat-icon fontIcon="add" />
+    Add
+  </button>
+</title-backend-app>
+@if (isLoading) {
+<skeleton-app size="full" />
+} @else {
+<table-backend-app
+  [data]="data$"
+  [columns]="columns"
+  [isAction]="isAction"
+  (eventEdit)="onEditHandler($event)"
+  (eventDelete)="onDeleteHandler($event)"
+/>
+}
