@@ -1,0 +1,14 @@
+<title-backend-app [data]="dataTitle">
+  <button mat-flat-button class="btn-admin" matTooltip="Add Quiz">
+    <mat-icon fontIcon="add" />
+    Add
+  </button>
+</title-backend-app>
+@if (isLoading) {
+  <div class="skeleton-wrapper">
+    <skeleton-app size="xl"/>
+    <skeleton-app size="xl"/>
+  </div>
+} @else { 
+  <quiz-card-app [data]="dataQuiz$"/>
+}

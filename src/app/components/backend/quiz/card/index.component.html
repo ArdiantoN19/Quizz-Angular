@@ -1,0 +1,58 @@
+<div class="card-wrapper">
+  @for (quiz of data; track quiz.id) {
+  <mat-card class="card-item" appearance="outlined">
+    <mat-card-content class="card-item__content">
+      <img
+        class="card-item__content-image"
+        [src]="quiz.thumbnail"
+        [alt]="quiz.title"
+      />
+      <div class="card-item__content-info">
+        <div class="card-item__content-info-header">
+          <mat-card-title class="card-item__content-info-header__title"
+            >{{quiz.title}}</mat-card-title
+          >
+          <mat-slide-toggle
+            class="card-item__content-info-header__btn"
+            labelPosition="before"
+            matTooltip="Publish Quiz"
+            [checked]="quiz.isPublished"
+          >
+            Publish</mat-slide-toggle
+          >
+        </div>
+        <mat-card-subtitle class="card-item__content-info__description"
+          >{{quiz.description}}</mat-card-subtitle
+        >
+        <div class="card-item__content-info-footer">
+          <div class="card-item__content-info-footer__left">
+            <div class="card-item__content-info-footer__left__category">
+              {{quiz.category.name}}
+            </div>
+            <div class="divider"></div>
+            <p class="card-item__content-info-footer__left__question">
+              {{quiz.totalQuestion}} Questions
+            </p>
+          </div>
+          <div class="card-item__content-info-footer__action">
+            <button
+              mat-icon-button
+              class="card-item__content-info-footer__action__btn"
+            >
+              <mat-icon fontIcon="edit" />
+            </button>
+            <button
+              mat-icon-button
+              class="card-item__content-info-footer__action__btn"
+            >
+              <mat-icon fontIcon="delete" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  } @empty {
+  <div class="empty">Data Not Found</div>
+  }
+</div>

@@ -1,0 +1,113 @@
+@use '../../../../../styles.scss' as *;
+
+.card-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(350px, 1fr));
+    gap: 20px;
+
+    .card-item {
+        border-radius: 15px;
+
+        &__content {
+            width: 100%;
+            display: flex;
+            column-gap: 15px;
+
+            &-image {
+                max-width: 120px;
+                aspect-ratio: 1/1;   
+                border-radius: 7px;
+            }  
+            
+            &-info {
+                flex-grow: 1;
+
+                &-header {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+
+                    &__title {
+                        font-size: 1.2rem;
+                        font-weight: 500;
+                        max-width: 80%;
+                    }
+
+                    &__btn {
+                        scale: .9;
+                    }
+                }
+
+                &__description {
+                    font-weight: normal;
+                    font-size: .9rem;
+                    width: 70%;
+                    height: 50px;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    line-clamp: 2;
+                    -webkit-line-clamp: 2;
+                    margin-bottom: 10px;
+                }
+
+                &-footer {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    &__left {
+                        display: flex;
+                        gap: 10px;
+                        align-items: center;
+
+                        .divider {
+                            height: 20px;
+                            width: 1px;
+                            background-color: $gray;
+                        }
+
+                        &__category {
+                            background-color: $purple;
+                            font-size: .8rem;
+                            color: white;
+                            width: auto;
+                            padding: 0px 10px;
+                            border-radius: 7px;
+                            display: flex;
+                            align-items: center;
+                            height: 32px;
+                        }
+
+                        &__question {
+                            font-size: .9rem;
+                        }
+    
+                        &__action {
+                            display: flex;
+                            column-gap: 4px;
+                            justify-content: end;
+        
+                            &__btn {
+                                display: grid;
+                                place-items: center;
+        
+                                mat-icon {
+                                    font-size: 20px;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $max-width-tablet) {
+    .card-wrapper {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

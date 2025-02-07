@@ -93,6 +93,17 @@ $max-width-mobile: 500px;
     selected-icon-color: $dark-purple,
     selected-pressed-icon-color: $dark-purple,
     checked-ripple-color: $dark-purple
+  ));
+
+  @include mat.slide-toggle-overrides((
+    disabled-unselected-track-outline-color: $dark-purple,
+    selected-focus-state-layer-color: $purple,
+    selected-hover-state-layer-color: $purple,
+    selected-focus-track-color: $purple,
+    selected-pressed-track-color: $purple,
+    selected-track-color: $purple,
+    selected-hover-track-color: $purple,
+    label-text-font: 'Nunito',
   ))
 }
 
