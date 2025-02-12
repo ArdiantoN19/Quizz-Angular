@@ -119,4 +119,25 @@ export class QuizService {
         })
       );
   }
+
+  async updatePublishQuiz(id: string): Promise<TResponse<string>> {
+    try {
+        const quiz = await this.firebaseService.getDocumentByDocId<TQuiz>('quiz', id)
+
+        await this.firebaseService.updateDocumentByDocId<{isPublished: boolean}>(`quiz/${quiz.id}`, {
+            isPublished: !quiz.isPublished
+        })
+        
+        return {
+            status: 'success',
+            message: `Success ${!quiz.isPublished ? 'published' : 'unpublished'} quiz`,
+            data: id
+        }
+    } catch (error: any) {
+        return {
+            status: 'fail',
+            message: error.message
+        }
+    }
+  }
 }

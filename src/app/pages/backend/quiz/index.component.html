@@ -10,5 +10,5 @@
     <skeleton-app size="xl"/>
   </div>
 } @else { 
-  <quiz-card-app [data]="dataQuiz$"/>
+  <quiz-card-app [data]="dataQuiz$" (eventPublish)="onPublishHandler($event)" (eventDelete)="onDeleteHandler($event)"/>
 }

@@ -15,10 +15,13 @@
           <mat-slide-toggle
             class="card-item__content-info-header__btn"
             labelPosition="before"
-            matTooltip="Publish Quiz"
+            [name]="quiz.id"
+            [matTooltip]="!togglePublish.checked || !quiz.isPublished ? 'Publish Quiz' : 'Unpublish Quiz'"
             [checked]="quiz.isPublished"
+            #togglePublish
+            (change)="onPublishHandler(quiz.id)"
           >
-            Publish</mat-slide-toggle
+            {{!togglePublish.checked ? 'Publish' : 'Unpubslish'}}</mat-slide-toggle
           >
         </div>
         <mat-card-subtitle class="card-item__content-info__description"
@@ -44,6 +47,7 @@
             <button
               mat-icon-button
               class="card-item__content-info-footer__action__btn"
+              (click)="onDeleteHandler(quiz.id)"
             >
               <mat-icon fontIcon="delete" />
             </button>
