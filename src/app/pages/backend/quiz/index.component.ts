@@ -8,6 +8,7 @@ import { QuizService } from '../../../services/quizService/index.service';
 import { TQuizTransform } from '../../../services/quizService/index.type';
 import { SkeletonAppComponent } from '../../../components/skeleton/index.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'quiz-page-app',
@@ -20,6 +21,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatTooltip,
     QuizCardAppComponent,
     SkeletonAppComponent,
+    RouterLink
   ],
 })
 export class QuizPageApp implements OnInit {

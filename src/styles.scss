@@ -104,6 +104,11 @@ $max-width-mobile: 500px;
     selected-track-color: $purple,
     selected-hover-track-color: $purple,
     label-text-font: 'Nunito',
+  ));
+
+  @include mat.stepper-overrides((
+    header-selected-state-icon-background-color: $dark-purple,
+    header-edit-state-icon-background-color: $dark-purple
   ))
 }
 
