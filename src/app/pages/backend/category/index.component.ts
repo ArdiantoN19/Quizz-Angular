@@ -15,7 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogFormCategoryAppComponent } from '../../../components/backend/category/dialog/form/index.component';
 import { TResponse } from '../../../services/index.type';
-import { DialogConfirmBackendAppComponent } from '../../../components/backend/category/dialog/dialogConfirm/index.component';
+import { DialogConfirmCategoryBackendAppComponent } from '../../../components/backend/category/dialog/dialogConfirm/index.component';
 
 @Component({
   selector: 'category-page-app',
@@ -119,7 +119,7 @@ export class CategoryPageApp implements OnInit {
   }
 
   onDeleteHandler(data: TCategory): void {
-    const dialogRef = this.dialog.open(DialogConfirmBackendAppComponent, {
+    const dialogRef = this.dialog.open(DialogConfirmCategoryBackendAppComponent, {
       data: {
         id: data.id
       }

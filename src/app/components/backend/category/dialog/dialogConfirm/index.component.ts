@@ -10,11 +10,11 @@ type TDataDialog = {
 }
 
 @Component({
-    selector: 'dialog-confirm-backend-app',
+    selector: 'dialog-confirm-category-backend-app',
     templateUrl: 'index.component.html',
     imports: [MatDialogModule, MatButtonModule]
 })
-export class DialogConfirmBackendAppComponent {
+export class DialogConfirmCategoryBackendAppComponent {
     private data = inject<TDataDialog>(MAT_DIALOG_DATA)
     private dialogRef = inject(MatDialogRef<CategoryPageApp>)
     private categoryService = inject(CategoryService);
