@@ -29,8 +29,9 @@ type TPayloadEmitFormQuiz = TPayloadEmit;
 })
 export class QuizStepperAppComponent {
   private maxWidthMobile: number = 500;
-  private formQuizData!: TPayloadQuiz;
   private _formBuilder = inject(FormBuilder);
+
+  formQuizData!: TPayloadQuiz;
 
   stepperOrientation: StepperOrientation = 'horizontal' as StepperOrientation;
 
@@ -55,15 +56,13 @@ export class QuizStepperAppComponent {
   }
 
   onHandleQuizSubmitForm(data: TPayloadEmitFormQuiz) {
-    const { title, description, timer, categoryId, difficultyId, typeQuizId, thumbnail, isNext, totalQuestion } = data;
+    const { title, description, timer, categoryId, difficultyId, typeQuizId, thumbnail, totalQuestion } = data;
     const formData = {
       title, description,  timer, categoryId, difficultyId, typeQuizId, thumbnail
     }
     this.formQuizData = formData;
+    this.stepper.next()
 
-    if(isNext) {
-      this.stepper.next()
-      console.log(this.formQuizData)
-    }
+    console.log(this.formQuizData)
   }
 }

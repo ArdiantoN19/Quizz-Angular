@@ -1,5 +1,5 @@
 <mat-stepper #stepper linear class="stepper-container" [orientation]="stepperOrientation">
-  <mat-step>
+  <mat-step [completed]="formQuizData">
     <ng-template matStepLabel>Fill identity or setup quiz</ng-template>
     <ng-template matStepContent>
       <quiz-form-app (eventSubmitForm)="onHandleQuizSubmitForm($event)"/>

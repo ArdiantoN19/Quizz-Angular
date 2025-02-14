@@ -5,7 +5,9 @@ import {
   inject,
   OnInit,
   Output,
+  signal,
   ViewChild,
+  WritableSignal,
 } from '@angular/core';
 import {
   FormControl,
@@ -43,7 +45,6 @@ type TErrorName =
   | 'thumbnail';
 
 export type TPayloadEmit = {
-  isNext: boolean;
   totalQuestion: number;
 } & TPayloadQuiz;
 
@@ -107,6 +108,7 @@ export class QuizFormAppComponent implements OnInit {
     totalQuestion: new FormControl<number>(0, [
       Validators.required,
       Validators.min(1),
+      Validators.max(300)
     ]),
     thumbnail: new FormControl('', [Validators.required]),
   });
@@ -116,6 +118,8 @@ export class QuizFormAppComponent implements OnInit {
   typeQuizOptions: TOption[] = [];
   isLoading: boolean = true;
   thumbnail: TThumbnail | null = null;
+
+  isSaveClickedTime: WritableSignal<number> = signal(0);
 
   ngOnInit(): void {
     (async () => {
@@ -217,11 +221,6 @@ export class QuizFormAppComponent implements OnInit {
   }
 
   onSubmitHandler() {
-    const payloadEmit: TPayloadEmit = {
-      ...this.quizForm.value,
-      isNext: this.quizForm.valid,
-    } as TPayloadEmit;
-
     const thumbnailError = this.quizForm.get('thumbnail')?.hasError('required');
 
     if (thumbnailError) {
@@ -230,9 +229,10 @@ export class QuizFormAppComponent implements OnInit {
         error: 'Thumbnail is required',
       } as TThumbnail;
     }
-
+    
     if (this.quizForm.valid) {
-      this.eventSubmitForm.emit(payloadEmit);
+      this.isSaveClickedTime.update((clicked) => clicked+=1);
+      this.eventSubmitForm.emit(this.quizForm.value);
     }
   }
 }

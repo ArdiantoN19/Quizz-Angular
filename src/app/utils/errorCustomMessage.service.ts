@@ -37,6 +37,10 @@ export class ErrorCustomMessageService {
             return `${labelError} must be greater than ${formControl.getError('min')?.min}`
         }
 
+        if(formControl.hasError('max')) {
+            return `${labelError} must be less than ${formControl.getError('max')?.max}`
+        }
+
         if(formControl.hasError('pattern') && formControl.getError('pattern')?.requiredPattern === String(patternPassword)) {
             return `${labelError} must be have at least 1 capital character, 1 small character, and 1 number`
         }
