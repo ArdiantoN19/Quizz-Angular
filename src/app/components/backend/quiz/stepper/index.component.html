@@ -1,19 +1,9 @@
-<mat-stepper linear class="example-stepper" [orientation]="stepperOrientation">
-  <mat-step [stepControl]="firstFormGroup" label="Fill out your name">
-    <form [formGroup]="firstFormGroup">
-      <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input
-          matInput
-          placeholder="Last name, First name"
-          formControlName="firstCtrl"
-          required
-        />
-      </mat-form-field>
-      <div>
-        <button class="btn-admin" mat-flat-button matStepperNext>Next</button>
-      </div>
-    </form>
+<mat-stepper #stepper linear class="stepper-container" [orientation]="stepperOrientation">
+  <mat-step>
+    <ng-template matStepLabel>Fill identity or setup quiz</ng-template>
+    <ng-template matStepContent>
+      <quiz-form-app (eventSubmitForm)="onHandleQuizSubmitForm($event)"/>
+    </ng-template>
   </mat-step>
   <mat-step [stepControl]="secondFormGroup" label="Fill out your address">
     <form [formGroup]="secondFormGroup">

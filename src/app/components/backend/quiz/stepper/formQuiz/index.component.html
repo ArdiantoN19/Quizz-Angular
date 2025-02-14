@@ -1,0 +1,149 @@
+<form class="form" [formGroup]="quizForm" (ngSubmit)="onSubmitHandler()">
+  <div class="thumbnail-wrapper">
+    <label for="thumbnail" class="form-field-thumbnail">
+      @if (thumbnail?.src) {
+      <img
+        [src]="thumbnail?.src"
+        [alt]="thumbnail?.name"
+        class="img-thumbnail"
+      />
+      }
+      <p>Upload thumbnail</p>
+      <button
+        (click)="thumbnailInput.click()"
+        type="button"
+        mat-icon-button
+        matTooltip="Upload thumbnail"
+      >
+        <mat-icon fontIcon="add" />
+      </button>
+      <button
+        type="button"
+        [class]="{ 'btn-delete-thumbnail': true, 'd-none': !thumbnail?.src }"
+        mat-icon-button
+        matTooltip="Delete thumbnail"
+        (click)="onResetThumbnailHandler()"
+      >
+        <mat-icon fontIcon="close" />
+      </button>
+      <input
+        id="thumbnail"
+        type="file"
+        hidden
+        #thumbnailInput
+        accept="image/*"
+        (change)="onChangeThumbnailHandler($event)"
+      />
+      <small>Max size: 3 MB</small>
+      <small>Type: webp, png, jpeg, jpg</small>
+    </label>
+    <p class="name-thumbnail">{{ thumbnail?.name }}</p>
+    @if(thumbnail?.error) {
+    <mat-error class="form-error">{{ thumbnail?.error }}</mat-error>
+    }
+  </div>
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Title</mat-label>
+    <input
+      type="text"
+      matInput
+      formControlName="title"
+      placeholder="Type title here."
+      required
+    />
+    <mat-error class="form-error">{{ getErrorMessage("title") }}</mat-error>
+  </mat-form-field>
+  @if (isLoading) {
+  <div class="skeleton-wrapper">
+    <skeleton-app size="sm" />
+    <skeleton-app size="sm" />
+    <skeleton-app size="sm" />
+  </div>
+  } @else {
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Category</mat-label>
+    <mat-select formControlName="categoryId" required>
+      <mat-option disabled>--Select category--</mat-option>
+      @for (option of categoryOptions; track option.value) {
+      <mat-option [value]="option.value">{{ option.name }}</mat-option>
+      }
+    </mat-select>
+    <mat-error class="form-error">{{
+      getErrorMessage("categoryId")
+    }}</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Difficult</mat-label>
+    <mat-select formControlName="difficultyId" required>
+      <mat-option disabled>--Select difficulty--</mat-option>
+      @for (option of difficultOptions; track option.value) {
+      <mat-option [value]="option.value">{{ option.name }}</mat-option>
+      }
+    </mat-select>
+    <mat-error class="form-error">{{
+      getErrorMessage("difficultyId")
+    }}</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Type Quiz</mat-label>
+    <mat-select formControlName="typeQuizId" required>
+      <mat-option disabled>--Select type quiz--</mat-option>
+      @for (option of typeQuizOptions; track option.value) {
+      <mat-option [value]="option.value">{{ option.name }}</mat-option>
+      }
+    </mat-select>
+    <mat-error class="form-error">{{
+      getErrorMessage("typeQuizId")
+    }}</mat-error>
+  </mat-form-field>
+  }
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Total Question</mat-label>
+    <input
+      type="number"
+      matInput
+      formControlName="totalQuestion"
+      placeholder="Type total question here."
+      required
+      min="1"
+    />
+    <mat-error class="form-error">{{
+      getErrorMessage("totalQuestion")
+    }}</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Timer</mat-label>
+    <input
+      type="number"
+      matInput
+      formControlName="timer"
+      placeholder="Type timer here."
+      required
+      min="10"
+    />
+    <mat-error class="form-error">{{ getErrorMessage("timer") }}</mat-error>
+    <mat-hint class="form-hint" align="start"
+      >Format timer in second(s)</mat-hint
+    >
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Description</mat-label>
+    <textarea
+      #descriptionInput
+      matInput
+      formControlName="description"
+      maxlength="500"
+      placeholder="Type description here."
+    ></textarea>
+    <mat-error class="form-error">{{
+      getErrorMessage("description")
+    }}</mat-error>
+    <mat-hint align="end"
+      >Max Length: {{ descriptionInput.value.length }} / 500</mat-hint
+    >
+  </mat-form-field>
+  <button type="submit" mat-flat-button class="btn-admin" matTooltip="Next">
+    <mat-icon fontIcon="chevron_right" />
+    Next
+  </button>
+</form>

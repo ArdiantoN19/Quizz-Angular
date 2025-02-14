@@ -108,7 +108,9 @@ $max-width-mobile: 500px;
 
   @include mat.stepper-overrides((
     header-selected-state-icon-background-color: $dark-purple,
-    header-edit-state-icon-background-color: $dark-purple
+    header-edit-state-icon-background-color: $dark-purple,
+    container-text-font: 'Nunito',
+    header-label-text-font: 'Nunito'
   ))
 }
 

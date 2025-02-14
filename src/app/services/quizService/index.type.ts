@@ -44,3 +44,5 @@ export type TQuiz = {
     createdAt: string;
     updatedAt: string;
 }
+
+export type TPayloadQuiz = Omit<TQuiz, 'id' | 'createdAt' | 'updatedAt' | 'isPublished' | 'slug' | 'createdBy'>
