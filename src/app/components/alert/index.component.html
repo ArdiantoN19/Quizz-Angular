@@ -1,0 +1,10 @@
+<div #alert class="alert-{{ type }}">
+  <mat-icon class="alert-{{type}}-icon" [fontIcon]="iconType" />
+  <div>
+    <h5 class="alert-title">{{title}}</h5>
+    <p class="alert-message">{{ message }}</p>
+  </div>
+  <button type="button" mat-icon-button matTooltip="Dismiss alert" (click)="onDismissAlertHandler()">
+    <mat-icon fontIcon="close"/>
+  </button>
+</div>

@@ -1,0 +1,35 @@
+@use "../../../styles.scss" as *;
+
+$colors: ( success: $green, danger: $red, warning: $yellow, info: $blue );
+
+.alert {
+    &-title {
+        color: $black;
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+
+    &-message {
+        font-size: .95rem;
+    }
+
+    @each $key, $value in $colors {
+        &-#{$key} {
+            display: flex;
+            background-color: rgba($value, .05);
+            padding: 13px 20px;
+            border: 1px solid $value;
+            border-radius: 15px;
+            color: $gray;
+            column-gap: 20px;
+            align-items: center;
+
+            &-icon {
+                color: $value;
+                scale: 1.5;
+                width: 30px;
+            }
+        }
+    }
+    
+}
