@@ -21,13 +21,27 @@ $colors: ( success: $green, danger: $red, warning: $yellow, info: $blue );
             border: 1px solid $value;
             border-radius: 15px;
             color: $gray;
-            column-gap: 20px;
             align-items: center;
+            justify-content: space-between;
+            
+            &__left {
+                display: flex;
+                column-gap: 20px;
+                align-items: center;
+                
+                &__icon {
+                    color: $value;
+                    scale: 1.5;
+                    width: 30px;
+                }
 
-            &-icon {
-                color: $value;
-                scale: 1.5;
-                width: 30px;
+                &__title {
+                    @extend .alert-title;
+                }
+
+                &__message {
+                    @extend .alert-message;
+                }
             }
         }
     }
