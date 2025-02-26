@@ -1,8 +1,86 @@
-@use '../../../../../styles.scss' as *;
+@use "../../../../../styles.scss" as *;
 
 .stepper-container {
-    background-color: white;
-    border-radius: 30px;
-    box-shadow: 1px 1px 10px rgba($black, .05);
-    overflow: hidden;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: 1px 1px 10px rgba($black, 0.05);
+  overflow: hidden;
+
+  .summary-wrapper {
+    padding-top: 10px;
+    margin-bottom: 30px;
+
+    &__icon {
+      display: block;
+      font-size: 5rem;
+      padding: 0;
+      margin: 0;
+      height: 100px;
+      width: 100px;
+      color: $dark-purple;
+      margin: auto;
+      animation: ping 2s infinite;
+    }
+
+    &__title {
+        text-align: center;
+    }
+  }
+
+  .summary-setup-quiz-wrapper {
+    padding: 18px 15px;
+    border: 1px solid $gray;
+    border-radius: 13px;
+    margin-bottom: 30px;
+
+    &__list {
+      display: flex;
+      flex-direction: column;
+      list-style-type: none;
+      row-gap: 10px;
+
+      &:not(:last-child) {
+        margin-bottom: 15px;
+      }
+
+      &:not(:first-child) {
+        margin-top: 15px;
+      }
+
+      &-item {
+        position: relative;
+        color: $black;
+        padding-left: 30px;
+
+        &::before {
+          content: "";
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          background-color: $dark-purple;
+          border-radius: 5px;
+          top: 50%;
+          left: 0px;
+          transform: translateY(-50%);
+        }
+      }
+    }
+  }
+
+  .summary-action {
+    display: flex;
+    column-gap: 10px;
+  }
+}
+
+@keyframes ping {
+  0% {
+    filter: drop-shadow(0 0 0 rgba($dark-purple, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 35px rgba($dark-purple, 0.4));
+  }
+  100% {
+    filter: drop-shadow(0 0 50px rgba($dark-purple, 0));
+  }
 }

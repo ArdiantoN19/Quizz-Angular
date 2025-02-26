@@ -1,5 +1,12 @@
-import { Component, HostListener, inject, ViewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  inject,
+  ViewChild,
+} from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,10 +16,21 @@ import {
   MatStepper,
 } from '@angular/material/stepper';
 import { debounceTime, fromEvent } from 'rxjs';
-import { QuizFormAppComponent, TPayloadEmit } from './formQuiz/index.component';
-import { TPayloadQuiz } from '../../../../services/quizService/index.type';
+import { QuizFormAppComponent } from './formQuiz/index.component';
+import {
+  TPayloadQuestionStepper,
+  TPayloadQuiz,
+  TPayloadQuizStepper,
+} from '../../../../services/quizService/index.type';
+import { QuestionQuizFormAppComponent } from './formQuestion/index.component';
+import { TYPEQUIZENUM } from '../../../../utils/constant';
+import { QuizService } from '../../../../services/quizService/index.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltip } from '@angular/material/tooltip';
 
-type TPayloadEmitFormQuiz = TPayloadEmit;
+type TPayloadEmitFormQuiz = TPayloadQuizStepper;
+type TPayloadEmitFormQuestion = TPayloadQuestionStepper;
 
 @Component({
   selector: 'quiz-stepper-app',
@@ -25,19 +43,23 @@ type TPayloadEmitFormQuiz = TPayloadEmit;
     MatButtonModule,
     ReactiveFormsModule,
     QuizFormAppComponent,
+    QuestionQuizFormAppComponent,
+    MatIconModule,
+    MatDividerModule,
+    MatTooltip
   ],
 })
-export class QuizStepperAppComponent {
+export class QuizStepperAppComponent implements AfterViewInit {
   private maxWidthMobile: number = 500;
-  private _formBuilder = inject(FormBuilder);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private quizService = inject(QuizService);
 
   formQuizData!: TPayloadQuiz;
+  formQuestionData!: any;
+  protected totalQuestion: number = 0;
+  protected typeQuiz: TYPEQUIZENUM = TYPEQUIZENUM.MULTIPLE_CHOICE;
 
   stepperOrientation: StepperOrientation = 'horizontal' as StepperOrientation;
-
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
 
   @ViewChild('stepper') private stepper!: MatStepper;
 
@@ -49,20 +71,104 @@ export class QuizStepperAppComponent {
       .subscribe(() => this.checkMobileMode());
   }
 
+  ngAfterViewInit(): void {
+    const stepOne = this.stepper.steps.toArray()[0];
+    const stepTwo = this.stepper.steps.toArray()[1];
+
+    const quizData =
+      this.quizService.getSetupQuizFromLocalStorage<TPayloadQuizStepper>(0);
+    const questionData =
+      this.quizService.getSetupQuizFromLocalStorage<TPayloadQuestionStepper>(1);
+
+    if (quizData) {
+      const {
+        title,
+        description,
+        timer,
+        categoryId,
+        difficultyId,
+        typeQuizId,
+        thumbnail,
+        totalQuestion,
+        typeQuiz,
+      } = quizData;
+
+      this.formQuizData = {
+        title,
+        description,
+        timer,
+        categoryId,
+        difficultyId,
+        typeQuizId,
+        thumbnail,
+      };
+
+      this.totalQuestion = totalQuestion;
+      this.typeQuiz = typeQuiz;
+
+      stepOne.completed = true;
+      this.stepper.selectedIndex = 1;
+    }
+
+    if (quizData && questionData) {
+      this.formQuestionData = questionData;
+      stepTwo.completed = true;
+      this.stepper.selectedIndex = 2;
+    }
+    this.formQuestionData = questionData;
+
+    console.log(this.formQuizData, this.formQuestionData);
+  }
+
   @HostListener('window:resize', [])
   private checkMobileMode(): void {
     const isMobileMode = window.innerWidth < this.maxWidthMobile;
     this.stepperOrientation = !isMobileMode ? 'horizontal' : 'vertical';
   }
 
-  onHandleQuizSubmitForm(data: TPayloadEmitFormQuiz) {
-    const { title, description, timer, categoryId, difficultyId, typeQuizId, thumbnail, totalQuestion } = data;
+  onQuizSubmitFormHandler(data: TPayloadEmitFormQuiz) {
+    const {
+      title,
+      description,
+      timer,
+      categoryId,
+      difficultyId,
+      typeQuizId,
+      thumbnail,
+      totalQuestion,
+      typeQuiz,
+    } = data;
     const formData = {
-      title, description,  timer, categoryId, difficultyId, typeQuizId, thumbnail
-    }
+      title,
+      description,
+      timer,
+      categoryId,
+      difficultyId,
+      typeQuizId,
+      thumbnail,
+    };
     this.formQuizData = formData;
-    this.stepper.next()
+    this.totalQuestion = totalQuestion;
+    this.typeQuiz = typeQuiz;
 
-    console.log(this.formQuizData)
+    this.quizService.saveSetupQuizToLocalStorage(data);
+
+    this.changeDetectorRef.detectChanges();
+    this.stepper.next();
+
+    console.log(data);
+  }
+
+  onQuestionSubmitFormHandler(data: TPayloadEmitFormQuestion[]) {
+    this.formQuestionData = data;
+    this.quizService.saveSetupQuizToLocalStorage(data);
+
+    this.changeDetectorRef.detectChanges();
+    this.stepper.next();
+    console.log(data);
+  }
+
+  onSubmitHandler() {
+    console.log(this.formQuizData, this.formQuestionData)
   }
 }

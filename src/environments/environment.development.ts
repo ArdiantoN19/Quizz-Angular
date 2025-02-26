@@ -14,5 +14,6 @@ export const environment = {
         messagingSenderId: "336205938373",
         appId: "1:336205938373:web:c2e612047120848fe43aac",
         measurementId: "G-7J4MVZV7EG"
-    }
+    },
+    stepperQuizLocalStorageKey: 'stepper-quiz'
 };
