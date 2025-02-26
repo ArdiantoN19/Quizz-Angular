@@ -1,8 +1,10 @@
 import {
   Component,
+  EventEmitter,
   inject,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import {
@@ -22,15 +24,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorCustomMessageService } from '../../../../../utils/errorCustomMessage.service';
 import { TYPEQUIZENUM } from '../../../../../utils/constant';
-import { MatStepper } from '@angular/material/stepper';
-
-// questions: [
-//     {
-//         question: 'what is angular?',
-//         answers: ['answer 1', 'answer 2', 'answer 3', 'answer 4'],
-//          isCorrect: 0
-//     }
-// ]
 
 type TQuestion = {
   question: string;
@@ -56,7 +49,8 @@ type TQuestion = {
 export class QuestionQuizFormAppComponent implements OnChanges {
   @Input({ required: true }) totalQuestion!: number;
   @Input({ required: true }) typeQuiz!: TYPEQUIZENUM;
-  @Input({ required: true }) stepper!: MatStepper;
+
+  @Output() eventSubmitForm = new EventEmitter<any>();
 
   private formBuilder = inject(FormBuilder);
   private snackbar = inject(MatSnackBar);
@@ -74,7 +68,7 @@ export class QuestionQuizFormAppComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const newTotalQuestion = changes['totalQuestion'];
     const newTypeQuiz = changes['typeQuiz'];
-    
+
     if(newTotalQuestion) {
       this.totalQuestion = newTotalQuestion.currentValue;
     }
@@ -200,6 +194,8 @@ export class QuestionQuizFormAppComponent implements OnChanges {
   }
 
   onSubmitHandler() {
-    console.log(this.questionForm.value);
+    if(this.questionForm.valid) {
+      this.eventSubmitForm.emit(this.questionForm.value.questions)
+    }
   }
 }
