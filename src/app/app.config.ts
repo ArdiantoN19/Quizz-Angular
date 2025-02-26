@@ -7,6 +7,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { environment } from '../environments/environment.development';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,5 +24,9 @@ export const appConfig: ApplicationConfig = {
         verticalPosition: 'top',
       },
     },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline'}
+    }
   ],
 };
