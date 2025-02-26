@@ -1,0 +1,91 @@
+<form class="form" [formGroup]="questionForm" (ngSubmit)="onSubmitHandler()">
+  <div class="form-help">
+    <p>Help</p>
+    <button
+      matTooltip="Fill your questions and answers, then you can check one of correct answer"
+      type="button"
+      class="btn-help"
+    >
+      <mat-icon fontIcon="help" />
+    </button>
+  </div>
+  <div class="form-body" formArrayName="questions">
+    @for (question of formArrayQuestion.controls; track $index; let
+    indexQuestion = $index) {
+    <div class="form-question-wrapper">
+      <p class="question-number">{{ getQuestionNumber(indexQuestion) }}</p>
+      <div [formGroupName]="indexQuestion" class="form-question">
+        <mat-form-field class="form-field">
+          <mat-label>Question {{ getQuestionNumber(indexQuestion) }}</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="question"
+            placeholder="Type question here."
+            required
+          />
+          <mat-error class="form-field-error">{{getErrorMessage('question', indexQuestion)}}</mat-error>
+        </mat-form-field>
+        <div class="form-answer-wrapper">
+          <mat-radio-group
+            aria-labelledby="radio-button-isCorrect"
+            formControlName="isCorrect"
+            [class]="{'form-answer-radio': true, 'multiple-choice': typeQuiz === typeQuizOption[0], 'true-or-false': typeQuiz === typeQuizOption[1]}"
+          >
+            @for (answer of formArrayAnswer(indexQuestion).controls; track
+            $index; let indexAnswer = $index) {
+            <mat-radio-button [value]="indexAnswer"></mat-radio-button>
+            }
+          </mat-radio-group>
+          <div class="form-answer-list" formArrayName="answers">
+            @for (answer of formArrayAnswer(indexQuestion).controls; track
+            $index; let indexAnswer = $index) {
+            <div class="form-answer-item">
+              <mat-form-field class="form-field">
+                <mat-label>Answer {{ indexAnswer + 1 }}</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [formControlName]="indexAnswer"
+                  placeholder="Type answer here."
+                  [readonly]="typeQuiz === typeQuizOption[1]"
+                  [disabled]="typeQuiz === typeQuizOption[1]"
+                  required
+                  />
+                <mat-error class="form-field-error">{{getErrorMessage('answer', indexQuestion, indexAnswer)}}</mat-error>
+              </mat-form-field>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button
+        [matTooltip]="'Delete question ' + (indexQuestion + 1)"
+        class="btn-action btn-delete"
+        mat-icon-button
+        type="button"
+        (click)="onDeleteQuestionHandler(indexQuestion)"
+      >
+        <mat-icon fontIcon="close" />
+      </button>
+      <mat-divider />
+      @if (indexQuestion === lastQuestionIndex) {
+      <button
+        matTooltip="Add question"
+        class="btn-action btn-add"
+        mat-icon-button
+        type="button"
+        (click)="onAddQuestionHandler(typeQuiz)"
+      >
+        <mat-icon fontIcon="add" />
+      </button>
+      }
+    </div>
+    }
+  </div>
+  <button matTooltip="Save" mat-flat-button class="btn-admin" type="submit">
+    Save
+  </button>
+</form>

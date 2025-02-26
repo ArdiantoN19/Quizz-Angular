@@ -1,0 +1,139 @@
+@use "../../../../../../styles.scss" as *;
+
+.form {
+  .form-help {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    width: 100%;
+    justify-content: end;
+    margin-bottom: 20px;
+
+    .btn-help {
+      all: unset;
+      cursor: pointer;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .form-body {
+    margin-bottom: 40px;
+
+    .form-question-wrapper {
+      display: flex;
+      gap: 30px;
+      width: 100%;
+
+      &:first-child {
+        padding: 0 10px 30px 10px;
+      }
+
+      &:not(:first-child) {
+        padding: 30px 10px;
+      }
+
+      .question-number {
+        width: 40px;
+        height: 40px;
+        background-color: $dark-purple;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        color: white;
+      }
+
+      .form-question {
+        width: 100%;
+
+        .form-answer-wrapper {
+          margin-top: 12px;
+          display: flex;
+          align-items: center;
+          column-gap: 10px;
+
+          .form-answer-radio {
+            display: flex;
+            
+            &.multiple-choice {
+              height: 290px;
+            }
+
+            &.true-or-false {
+              height: 130px;
+            }
+
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 10px;
+          }
+
+          .form-answer-list {
+            width: 100%;
+
+            &-item {
+              width: 100%;
+
+              .form-field {
+                margin-bottom: 0;
+              }
+            }
+          }
+        }
+
+        & > .form-field,
+        .form-answer-wrapper .form-answer-list .form-answer-item .form-field {
+          width: 100%;
+          flex-grow: 1;
+          display: block;
+          transition: margin-bottom 0.3s ease;
+
+          &:has(.form-field-error) {
+            margin-bottom: 13px;
+          }
+
+          &-error {
+            margin-left: -15px;
+          }
+        }
+      }
+    }
+
+    .form-actions {
+      width: 100%;
+
+      .btn-action {
+        display: block;
+        width: 40px;
+        height: 40px;
+        aspect-ratio: 1/1;
+        margin-left: auto;
+        background-color: $purple;
+        color: white;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $max-width-mobile) {
+  .form {
+    .form-body {
+      .form-question-wrapper {
+        flex-direction: column;
+        gap: 20px;
+        
+        &:first-child {
+          padding: 0 0 30px 0;
+        }
+
+        &:not(:first-child) {
+          padding: 30px 0;
+        }
+      }
+    }
+  }
+}
