@@ -5,9 +5,7 @@ import {
   inject,
   OnInit,
   Output,
-  signal,
   ViewChild,
-  WritableSignal,
 } from '@angular/core';
 import {
   FormControl,
@@ -25,12 +23,14 @@ import { DifficultyService } from '../../../../../services/difficultyService/ind
 import { TypeQuizService } from '../../../../../services/typeQuizService/index.service';
 import { SkeletonAppComponent } from '../../../../skeleton/index.component';
 import { ErrorCustomMessageService } from '../../../../../utils/errorCustomMessage.service';
-import { TPayloadQuiz } from '../../../../../services/quizService/index.type';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TYPEQUIZENUM } from '../../../../../utils/constant';
+import { AlertAppComponent } from "../../../../alert/index.component";
 
 type TOption = {
   name: string;
+  slug: string;
   value: string;
 };
 
@@ -43,10 +43,6 @@ type TErrorName =
   | 'typeQuizId'
   | 'totalQuestion'
   | 'thumbnail';
-
-export type TPayloadEmit = {
-  totalQuestion: number;
-} & TPayloadQuiz;
 
 type TThumbnail = {
   src: string;
@@ -75,7 +71,8 @@ const typeImages: string[] = [
     MatSelectModule,
     SkeletonAppComponent,
     MatTooltipModule,
-  ],
+    AlertAppComponent
+],
 })
 export class QuizFormAppComponent implements OnInit {
   private categoryService = inject(CategoryService);
@@ -108,7 +105,7 @@ export class QuizFormAppComponent implements OnInit {
     totalQuestion: new FormControl<number>(0, [
       Validators.required,
       Validators.min(1),
-      Validators.max(300)
+      Validators.max(30),
     ]),
     thumbnail: new FormControl('', [Validators.required]),
   });
@@ -119,14 +116,13 @@ export class QuizFormAppComponent implements OnInit {
   isLoading: boolean = true;
   thumbnail: TThumbnail | null = null;
 
-  isSaveClickedTime: WritableSignal<number> = signal(0);
-
   ngOnInit(): void {
     (async () => {
       this.categoryService.getCategories().subscribe((result) => {
         if (result.data && result.status === 'success') {
-          this.categoryOptions = result.data.map(({ id, name }) => ({
+          this.categoryOptions = result.data.map(({ id, name, slug }) => ({
             name,
+            slug,
             value: id,
           }));
         }
@@ -141,15 +137,17 @@ export class QuizFormAppComponent implements OnInit {
         typeQuizData.status === 'success'
       ) {
         if (difficultData.data) {
-          this.difficultOptions = difficultData.data.map(({ id, name }) => ({
+          this.difficultOptions = difficultData.data.map(({ id, name, slug }) => ({
             name,
+            slug,
             value: id,
           }));
         }
 
         if (typeQuizData.data) {
-          this.typeQuizOptions = typeQuizData.data.map(({ id, name }) => ({
+          this.typeQuizOptions = typeQuizData.data.map(({ id, name, slug }) => ({
             name,
+            slug,
             value: id,
           }));
         }
@@ -229,10 +227,15 @@ export class QuizFormAppComponent implements OnInit {
         error: 'Thumbnail is required',
       } as TThumbnail;
     }
-    
+
     if (this.quizForm.valid) {
-      this.isSaveClickedTime.update((clicked) => clicked+=1);
-      this.eventSubmitForm.emit(this.quizForm.value);
+      const typeQuiz: string[] = this.quizForm.value.typeQuizId?.split(':')!;
+      
+      this.eventSubmitForm.emit({
+        ...this.quizForm.value,
+        typeQuizId: typeQuiz[1],
+        typeQuiz: typeQuiz[0] === TYPEQUIZENUM.MULTIPLE_CHOICE ? TYPEQUIZENUM.MULTIPLE_CHOICE : TYPEQUIZENUM.TRUE_OR_FALSE
+      });
     }
   }
 }
