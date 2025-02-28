@@ -236,6 +236,19 @@ export class QuizFormAppComponent implements OnInit {
         typeQuizId: typeQuiz[1],
         typeQuiz: typeQuiz[0] === TYPEQUIZENUM.MULTIPLE_CHOICE ? TYPEQUIZENUM.MULTIPLE_CHOICE : TYPEQUIZENUM.TRUE_OR_FALSE
       });
+
+      this.quizForm.reset({
+        title: '',
+        description: '',
+        categoryId: '',
+        difficultyId: '',
+        thumbnail: '',
+        timer: 0,
+        totalQuestion: 0,
+        typeQuizId: ''
+      })
+
+      this.thumbnail = null
     }
   }
 }

@@ -24,9 +24,10 @@
     <ng-template matStepLabel>Done</ng-template>
     <ng-template matStepContent>
       <div class="summary-wrapper">
-        <mat-icon fontIcon="check_circle" class="summary-wrapper__icon"/>
+        <mat-icon fontIcon="check_circle" class="summary-wrapper__icon" />
         <h3 class="summary-wrapper__title">Successfully Setup Quiz</h3>
       </div>
+      @if(formQuizData) {
       <div class="summary-setup-quiz-wrapper">
         <ul class="summary-setup-quiz-wrapper__list">
           <li class="summary-setup-quiz-wrapper__list-item">
@@ -49,12 +50,14 @@
           </li>
         </ul>
       </div>
+      }
       <div class="summary-action">
         <button
           type="button"
           class="btn-admin"
           mat-flat-button
           matTooltip="Reset quiz to step 1"
+          (click)="onResetSetupQuizHandler()"
         >
           <mat-icon fontIcon="close" />
           Reset

@@ -189,4 +189,8 @@ export class QuizService {
 
     localStorage.setItem(this.keyStepperQuiz, JSON.stringify(storeData));
   }
+
+  removeSetupQuizFromLocalStorage(): void {
+    localStorage.removeItem(this.keyStepperQuiz)
+  }
 }

@@ -28,6 +28,8 @@ import { QuizService } from '../../../../services/quizService/index.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltip } from '@angular/material/tooltip';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogResetQuizAppComponent } from './dialogResetQuiz/index.component';
 
 type TPayloadEmitFormQuiz = TPayloadQuizStepper;
 type TPayloadEmitFormQuestion = TPayloadQuestionStepper;
@@ -53,9 +55,10 @@ export class QuizStepperAppComponent implements AfterViewInit {
   private maxWidthMobile: number = 500;
   private changeDetectorRef = inject(ChangeDetectorRef);
   private quizService = inject(QuizService);
+  private dialog = inject(MatDialog)
 
-  formQuizData!: TPayloadQuiz;
-  formQuestionData!: any;
+  formQuizData!: TPayloadQuiz | null;
+  formQuestionData!: TPayloadQuestionStepper[] | null;
   protected totalQuestion: number = 0;
   protected typeQuiz: TYPEQUIZENUM = TYPEQUIZENUM.MULTIPLE_CHOICE;
 
@@ -78,7 +81,7 @@ export class QuizStepperAppComponent implements AfterViewInit {
     const quizData =
       this.quizService.getSetupQuizFromLocalStorage<TPayloadQuizStepper>(0);
     const questionData =
-      this.quizService.getSetupQuizFromLocalStorage<TPayloadQuestionStepper>(1);
+      this.quizService.getSetupQuizFromLocalStorage<TPayloadQuestionStepper[]>(1);
 
     if (quizData) {
       const {
@@ -116,8 +119,6 @@ export class QuizStepperAppComponent implements AfterViewInit {
       this.stepper.selectedIndex = 2;
     }
     this.formQuestionData = questionData;
-
-    console.log(this.formQuizData, this.formQuestionData);
   }
 
   @HostListener('window:resize', [])
@@ -155,8 +156,6 @@ export class QuizStepperAppComponent implements AfterViewInit {
 
     this.changeDetectorRef.detectChanges();
     this.stepper.next();
-
-    console.log(data);
   }
 
   onQuestionSubmitFormHandler(data: TPayloadEmitFormQuestion[]) {
@@ -165,7 +164,23 @@ export class QuizStepperAppComponent implements AfterViewInit {
 
     this.changeDetectorRef.detectChanges();
     this.stepper.next();
-    console.log(data);
+  }
+
+  onResetSetupQuizHandler() {
+    const dialogRef = this.dialog.open(DialogResetQuizAppComponent)
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result) {
+        this.quizService.removeSetupQuizFromLocalStorage();
+        this.totalQuestion = 0;
+        this.typeQuiz = TYPEQUIZENUM.MULTIPLE_CHOICE
+        
+        this.formQuizData = null
+        this.formQuestionData = null
+        
+        this.stepper.reset()
+      }
+    })
   }
 
   onSubmitHandler() {
