@@ -19,6 +19,7 @@ import {
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { TQueryExpression } from './index.type';
+import { ENUMCOLLECTION } from '../../utils/constant';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,7 @@ export class FirebaseService {
    * @returns Observable data with type generic
    *
    */
-  getCollectionDataWithObservable<T>(collectionName: string): Observable<T[]> {
+  getCollectionDataWithObservable<T>(collectionName: ENUMCOLLECTION): Observable<T[]> {
     const collectionReference = collection(this.firestore, collectionName);
     return collectionData(collectionReference) as Observable<T[]>;
   }
@@ -46,7 +47,7 @@ export class FirebaseService {
    */
   async addDocument<T extends DocumentData>(
     input: T,
-    collectionName: string
+    collectionName: ENUMCOLLECTION
   ): Promise<T & { id: string }> {
     const collectionReference = collection(this.firestore, collectionName);
     const newDocRef: DocumentReference<DocumentData> = await addDoc(
@@ -72,7 +73,7 @@ export class FirebaseService {
    * @returns Observable data with type generic
    */
   getCollectionDataWithObservableByDocId<T>(
-    collectionName: string,
+    collectionName: ENUMCOLLECTION,
     docId: string
   ): Observable<T[]> {
     const collectionReference = collection(
@@ -91,7 +92,7 @@ export class FirebaseService {
    * @returns Observable data with type generic
    */
   getCollectionDataWithObservableByQuery<T>(
-    collectionName: string,
+    collectionName: ENUMCOLLECTION,
     queryExpression: TQueryExpression[]
   ): Observable<T[]> {
     const collectionReference = collection(this.firestore, collectionName);
@@ -125,7 +126,7 @@ export class FirebaseService {
    * @returns The document that have match with doc id
    */
   async getDocumentByDocId<T>(
-    collectionName: string,
+    collectionName: ENUMCOLLECTION,
     docId: string
   ): Promise<T> {
     const docRef = doc(this.firestore, collectionName, docId);
@@ -148,7 +149,7 @@ export class FirebaseService {
    * @returns The documents that have match with queryExpression condition
    */
   async getDocumentByQuery<T>(
-    collectionName: string,
+    collectionName: ENUMCOLLECTION,
     queryExpression: TQueryExpression[]
   ): Promise<T[]> {
     try {
@@ -177,7 +178,7 @@ export class FirebaseService {
    * @param docId Document Id of your document
    * @returns void
    */
-  async deleteDocumentByDocId(collectionName: string, docId: string): Promise<void> {
+  async deleteDocumentByDocId(collectionName: ENUMCOLLECTION, docId: string): Promise<void> {
     const docRef = doc(this.firestore, collectionName, docId);
     return deleteDoc(docRef)
   }

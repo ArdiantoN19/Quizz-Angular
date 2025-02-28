@@ -6,12 +6,15 @@ import { TResponse } from '../index.type';
 import { TPayloadUser } from './index.type';
 import { environment } from '../../../environments/environment.development';
 import { HashService } from '../hashService/index.service';
+import { ENUMCOLLECTION } from '../../utils/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private authState: TAuthState = {} as TAuthState;
+  private readonly collectionName: ENUMCOLLECTION = ENUMCOLLECTION.USERS
+
   constructor(
     private firebaseService: FirebaseService,
     private authService: AuthService,
@@ -25,7 +28,7 @@ export class UserService {
 
   async getUsers(): Promise<TResponse<TUser[]>> {
     const users = await this.firebaseService.getDocumentByQuery<TUser>(
-      'users',
+      this.collectionName,
       [
         {
           fieldName: 'email',
@@ -55,7 +58,7 @@ export class UserService {
   async getUserById(id: string): Promise<TResponse<TUser>> {
     try {
       const user = await this.firebaseService.getDocumentByDocId<TUser>(
-        'users',
+        this.collectionName,
         id
       );
 
@@ -75,7 +78,7 @@ export class UserService {
   async addUser(payload: TPayloadUser): Promise<TResponse<TUser>> {
     try {
       const checkIfExistEmail =
-        await this.firebaseService.getDocumentByQuery<TUser>('users', [
+        await this.firebaseService.getDocumentByQuery<TUser>(this.collectionName, [
           {
             fieldName: 'email',
             condition: '==',
@@ -88,7 +91,7 @@ export class UserService {
       }
 
       const checkIfExistUsername =
-        await this.firebaseService.getDocumentByQuery<TUser>('users', [
+        await this.firebaseService.getDocumentByQuery<TUser>(this.collectionName, [
           {
             fieldName: 'username',
             condition: '==',
@@ -109,7 +112,7 @@ export class UserService {
       };
       const user = await this.firebaseService.addDocument<typeof data>(
         data,
-        'users'
+        this.collectionName
       );
 
       return {
@@ -131,7 +134,7 @@ export class UserService {
   ): Promise<TResponse<TUser>> {
     try {
       const user = await this.firebaseService.getDocumentByDocId<TUser>(
-        'users',
+        this.collectionName,
         id
       );
       
@@ -162,10 +165,10 @@ export class UserService {
   async deleteUserById(id: string): Promise<TResponse<string>> {
     try {
       const user = await this.firebaseService.getDocumentByDocId<TUser>(
-        'users',
+        this.collectionName,
         id
       );
-      await this.firebaseService.deleteDocumentByDocId('users', user.id);
+      await this.firebaseService.deleteDocumentByDocId(this.collectionName, user.id);
 
       return {
         status: 'success',

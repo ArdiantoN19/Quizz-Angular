@@ -4,12 +4,13 @@ import { FirebaseService } from '../firebaseService/index.service';
 import { catchError, Observable, of, switchMap } from 'rxjs';
 import { TCategory, TPayloadCategory } from './index.type';
 import { TQueryExpression } from '../firebaseService/index.type';
+import { ENUMCOLLECTION } from '../../utils/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
-  private collectionName: string = 'categories';
+  private readonly collectionName: ENUMCOLLECTION = ENUMCOLLECTION.CATEGORIES;
 
   constructor(private firebaseService: FirebaseService) {}
 

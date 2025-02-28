@@ -5,6 +5,7 @@ import { catchError, Observable, of, switchMap } from 'rxjs';
 import { TResponse } from '../index.type';
 import {
   TDifficulty,
+  TPayloadQuestion,
   TPayloadQuestionStepper,
   TPayloadQuiz,
   TPayloadQuizStepper,
@@ -15,16 +16,17 @@ import {
 import { TUser } from '../authService/index.type';
 import { TCategory } from '../categoryService/index.type';
 import { environment } from '../../../environments/environment.development';
+import { ENUMCOLLECTION } from '../../utils/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuizService {
-  private keyStepperQuiz: string;
+  private readonly keyStepperQuiz: string =
+    environment.stepperQuizLocalStorageKey;
+  private readonly collectionName: ENUMCOLLECTION = ENUMCOLLECTION.QUIZ;
 
-  constructor(private firebaseService: FirebaseService) {
-    this.keyStepperQuiz = environment.stepperQuizLocalStorageKey;
-  }
+  constructor(private firebaseService: FirebaseService) {}
 
   private async getUsers(): Promise<TUser[]> {
     const queryExpressionUser: TQueryExpression[] = [
@@ -36,7 +38,7 @@ export class QuizService {
     ];
 
     const users = await this.firebaseService.getDocumentByQuery<TUser>(
-      'users',
+      ENUMCOLLECTION.USERS,
       queryExpressionUser
     );
 
@@ -44,7 +46,10 @@ export class QuizService {
   }
 
   private async getData<T>(
-    collectionName: 'categories' | 'difficulities' | 'typeQuiz'
+    collectionName:
+      | ENUMCOLLECTION.CATEGORIES
+      | ENUMCOLLECTION.DIFFICULITIES
+      | ENUMCOLLECTION.TYPE_QUIZ
   ): Promise<T[]> {
     const queryExpressionData: TQueryExpression[] = [
       {
@@ -64,9 +69,11 @@ export class QuizService {
 
   async getQuiz(): Promise<Observable<TResponse<TQuizTransform[]>>> {
     const users = await this.getUsers();
-    const categories = await this.getData<TCategory>('categories');
-    const difficulities = await this.getData<TDifficulty>('difficulities');
-    const typeQuiz = await this.getData<TTypeQuiz>('typeQuiz');
+    const categories = await this.getData<TCategory>(ENUMCOLLECTION.CATEGORIES);
+    const difficulities = await this.getData<TDifficulty>(
+      ENUMCOLLECTION.DIFFICULITIES
+    );
+    const typeQuiz = await this.getData<TTypeQuiz>(ENUMCOLLECTION.TYPE_QUIZ);
 
     const queryExpressionQuiz: TQueryExpression[] = [
       {
@@ -97,7 +104,7 @@ export class QuizService {
 
     return this.firebaseService
       .getCollectionDataWithObservableByQuery<TQuiz>(
-        'quiz',
+        this.collectionName,
         queryExpressionQuiz
       )
       .pipe(
@@ -142,13 +149,13 @@ export class QuizService {
   async updatePublishQuiz(id: string): Promise<TResponse<string>> {
     try {
       const quiz = await this.firebaseService.getDocumentByDocId<TQuiz>(
-        'quiz',
+        this.collectionName,
         id
       );
 
       await this.firebaseService.updateDocumentByDocId<{
         isPublished: boolean;
-      }>(`quiz/${quiz.id}`, {
+      }>(`${this.collectionName}/${quiz.id}`, {
         isPublished: !quiz.isPublished,
       });
 
@@ -167,6 +174,11 @@ export class QuizService {
     }
   }
 
+  async addQuiz(payload: {
+    quiz: TPayloadQuiz;
+    questions: TPayloadQuestion[];
+  }) {}
+
   getSetupQuizFromLocalStorage<T>(stepIndex: number): T | null {
     const quiz = localStorage.getItem(this.keyStepperQuiz);
     if (!quiz) return null;
@@ -178,7 +190,8 @@ export class QuizService {
   saveSetupQuizToLocalStorage(
     data: TPayloadQuizStepper | TPayloadQuestionStepper[]
   ): void {
-    const isExistQuiz = this.getSetupQuizFromLocalStorage<TPayloadQuizStepper>(0);
+    const isExistQuiz =
+      this.getSetupQuizFromLocalStorage<TPayloadQuizStepper>(0);
     let storeData: any = [];
 
     if (!isExistQuiz) {
@@ -191,6 +204,6 @@ export class QuizService {
   }
 
   removeSetupQuizFromLocalStorage(): void {
-    localStorage.removeItem(this.keyStepperQuiz)
+    localStorage.removeItem(this.keyStepperQuiz);
   }
 }

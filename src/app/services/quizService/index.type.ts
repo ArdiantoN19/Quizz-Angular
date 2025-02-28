@@ -58,6 +58,8 @@ export type TPayloadQuestionStepper = {
   isCorrect: number;
 };
 
+export type TPayloadQuestion = TPayloadQuestionStepper;
+
 export type TPayloadQuizStepper = {
   totalQuestion: number;
   typeQuiz: TYPEQUIZENUM;

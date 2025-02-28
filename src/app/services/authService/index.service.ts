@@ -12,14 +12,17 @@ import { catchError, Observable, of, switchMap } from 'rxjs';
 import { FirebaseService } from '../firebaseService/index.service';
 import { TQueryExpression } from '../firebaseService/index.type';
 import { TResponse } from '../index.type';
+import { ENUMCOLLECTION } from '../../utils/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private readonly collectionName: ENUMCOLLECTION = ENUMCOLLECTION.USERS;
+
   constructor(
     private hashService: HashService,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
   ) {}
 
   setAccountCredentialsLocalStorage(credential: TAuthCredential): void {
@@ -60,7 +63,7 @@ export class AuthService {
     ];
 
     return this.firebaseService
-      .getCollectionDataWithObservableByQuery<TUser>('users', expression)
+      .getCollectionDataWithObservableByQuery<TUser>(this.collectionName, expression)
       .pipe(
         switchMap((users: TUser[]) => {
           if (!users.length) {
@@ -115,7 +118,7 @@ export class AuthService {
 
       const checkIfExistEmail: TUser[] =
         await this.firebaseService.getDocumentByQuery(
-          'users',
+          this.collectionName,
           queryExpressionEmail
         );
       if (checkIfExistEmail.length) {
@@ -132,7 +135,7 @@ export class AuthService {
 
       const checkIfExistUsername =
         await this.firebaseService.getDocumentByQuery(
-          'users',
+          this.collectionName,
           queryExpressionUsername
         );
 
@@ -151,7 +154,7 @@ export class AuthService {
 
       const data: TUser = await this.firebaseService.addDocument(
         payload,
-        'users'
+        this.collectionName
       );
       return { status: 'success', message: 'Register successfully', data };
     } catch (error: any) {
