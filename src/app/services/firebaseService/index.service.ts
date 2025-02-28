@@ -16,6 +16,7 @@ import {
   QuerySnapshot,
   updateDoc,
   where,
+  writeBatch,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { TQueryExpression } from './index.type';
@@ -34,7 +35,9 @@ export class FirebaseService {
    * @returns Observable data with type generic
    *
    */
-  getCollectionDataWithObservable<T>(collectionName: ENUMCOLLECTION): Observable<T[]> {
+  getCollectionDataWithObservable<T>(
+    collectionName: ENUMCOLLECTION
+  ): Observable<T[]> {
     const collectionReference = collection(this.firestore, collectionName);
     return collectionData(collectionReference) as Observable<T[]>;
   }
@@ -97,7 +100,9 @@ export class FirebaseService {
   ): Observable<T[]> {
     const collectionReference = collection(this.firestore, collectionName);
 
-    const compositeFilters: QueryFieldFilterConstraint[] = queryExpression.map(({fieldName, condition, value}) => where(fieldName, condition, value))
+    const compositeFilters: QueryFieldFilterConstraint[] = queryExpression.map(
+      ({ fieldName, condition, value }) => where(fieldName, condition, value)
+    );
 
     const queryCollectionData = query(collectionReference, ...compositeFilters);
     return new Observable((observer) => {
@@ -120,7 +125,7 @@ export class FirebaseService {
   }
 
   /**
-   * 
+   *
    * @param collectionName Name of your collection that you want get
    * @param docId Document Id of your document
    * @returns The document that have match with doc id
@@ -130,9 +135,7 @@ export class FirebaseService {
     docId: string
   ): Promise<T> {
     const docRef = doc(this.firestore, collectionName, docId);
-    const docSnapshot: DocumentSnapshot<DocumentData> = await getDoc(
-      docRef
-    );
+    const docSnapshot: DocumentSnapshot<DocumentData> = await getDoc(docRef);
     if (!docSnapshot.exists()) {
       throw new Error(
         'Failed when get document, please check your document Id'
@@ -143,7 +146,7 @@ export class FirebaseService {
   }
 
   /**
-   * 
+   *
    * @param collectionName Name of your collection that you want get
    * @param queryExpression Must type object same as TQueryExpression
    * @returns The documents that have match with queryExpression condition
@@ -154,9 +157,15 @@ export class FirebaseService {
   ): Promise<T[]> {
     try {
       const collectionReference = collection(this.firestore, collectionName);
-      const compositeFilters: QueryFieldFilterConstraint[] = queryExpression.map(({fieldName, condition, value}) => where(fieldName, condition, value))
+      const compositeFilters: QueryFieldFilterConstraint[] =
+        queryExpression.map(({ fieldName, condition, value }) =>
+          where(fieldName, condition, value)
+        );
 
-      const queryCollectionData = query(collectionReference, ...compositeFilters);
+      const queryCollectionData = query(
+        collectionReference,
+        ...compositeFilters
+      );
 
       const docSnapshot: QuerySnapshot = await getDocs(queryCollectionData);
       const result = docSnapshot.docs.map(
@@ -173,25 +182,58 @@ export class FirebaseService {
   }
 
   /**
-   * 
+   *
    * @param collectionName Name of your collection that you want get
    * @param docId Document Id of your document
    * @returns void
    */
-  async deleteDocumentByDocId(collectionName: ENUMCOLLECTION, docId: string): Promise<void> {
+  async deleteDocumentByDocId(
+    collectionName: ENUMCOLLECTION,
+    docId: string
+  ): Promise<void> {
     const docRef = doc(this.firestore, collectionName, docId);
-    return deleteDoc(docRef)
+    return deleteDoc(docRef);
   }
 
   /**
-   * 
+   *
    * @param path Represent collection name and document id. Ex: collectionName/docId
    * @param docId Document Id of your document
    * @returns void
    */
-  async updateDocumentByDocId<T extends DocumentData>(path: string, input: T): Promise<void> {
-    const [collectionName, docId] = path.split('/')
+  async updateDocumentByDocId<T extends DocumentData>(
+    path: string,
+    input: T
+  ): Promise<void> {
+    const [collectionName, docId] = path.split('/');
     const docRef = doc(this.firestore, collectionName, docId);
-    return updateDoc(docRef, input)
+    return updateDoc(docRef, input);
+  }
+
+  /**
+   * @param inputs Represet payload that you want to store
+   * @param collectionName Name of your collection that you want store
+   * @returns list document that have been stored before
+   */
+  async addMultipleDocuments<T extends DocumentData>(
+    inputs: T[],
+    collectionName: ENUMCOLLECTION
+  ): Promise<Array<T & { id: string }>> {
+    const batch = writeBatch(this.firestore);
+    let results: Array<T & { id: string }> = [];
+
+    inputs.forEach((input: T) => {
+      const collectionRef = collection(this.firestore, collectionName);
+      const newDocRef = doc(collectionRef);
+      const id = newDocRef.id;
+
+      batch.set(newDocRef, input);
+
+      results.push({ id, ...input });
+    });
+
+    await batch.commit();
+
+    return results;
   }
 }
