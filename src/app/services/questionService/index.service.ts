@@ -1,0 +1,121 @@
+import { Injectable } from '@angular/core';
+import { FirebaseService } from '../firebaseService/index.service';
+import {
+  payloadAnswerAdd,
+  TAddQuestionResponse,
+  TPayloadQuestionAdd,
+  TQuestion,
+  TResultAnswer,
+} from './index.type';
+import { ENUMCOLLECTION } from '../../utils/constant';
+import { TResponse } from '../index.type';
+import {
+  collection,
+  doc,
+  Firestore,
+  writeBatch,
+} from '@angular/fire/firestore';
+import { TAnswer } from '../answerService/index.type';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class QuestionService {
+  private readonly collectionName: ENUMCOLLECTION = ENUMCOLLECTION.QUESTIONS;
+  private readonly collectionAnswerName: ENUMCOLLECTION =
+    ENUMCOLLECTION.ANSWERS;
+
+  constructor(
+    private firebaseService: FirebaseService,
+    private firestore: Firestore
+  ) {}
+
+  async addQuestionsWithAnswers(
+    payloads: TPayloadQuestionAdd[]
+  ): Promise<TResponse<TAddQuestionResponse[]>> {
+    try {
+      const batchQuestions = writeBatch(this.firestore);
+      const questionRefs: Array<
+        payloadAnswerAdd & { questionId: string; question: string }
+      > = [];
+
+      payloads.forEach((payload) => {
+        const collectionRef = collection(this.firestore, this.collectionName);
+        const docRef = doc(collectionRef);
+
+        questionRefs.push({
+          questionId: docRef.id,
+          question: payload.question,
+          answers: payload.answers,
+          isCorrect: payload.isCorrect,
+        });
+
+        const payloadQuestion: Omit<TQuestion, 'id'> = {
+          question: payload.question,
+          quizId: payload.quizId,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        batchQuestions.set(docRef, payloadQuestion);
+      });
+
+      await batchQuestions.commit();
+
+      const batchAnswers = writeBatch(this.firestore);
+      let resultAnswers: TResultAnswer[] = [];
+
+      questionRefs.forEach((questionRef) => {
+        const questionId: string = questionRef.questionId;
+        let answers: { id: string; answer: string }[] = [];
+
+        questionRef.answers.forEach((answer, index) => {
+          const collectionRef = collection(
+            this.firestore,
+            this.collectionAnswerName
+          );
+          const docRef = doc(collectionRef);
+
+          const payloadAnswer: Omit<TAnswer, 'id'> = {
+            answer,
+            isCorrect: questionRef.isCorrect === index,
+            questionId,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+
+          answers.push({ id: docRef.id, answer });
+
+          batchAnswers.set(docRef, payloadAnswer);
+        });
+
+        resultAnswers.push({
+          id: questionId,
+          question: questionRef.question,
+          answers,
+          isCorrect: questionRef.isCorrect,
+        });
+      });
+
+      await batchAnswers.commit();
+
+      const results: TAddQuestionResponse[] = resultAnswers.map(
+        (resultAnswer) => ({
+          ...resultAnswer,
+          quizId: payloads[0].quizId,
+        })
+      );
+
+      return {
+        status: 'success',
+        message: 'Success add questions',
+        data: results,
+      };
+    } catch (error) {
+      return {
+        status: 'fail',
+        message: 'Failed add questions',
+      };
+    }
+  }
+}

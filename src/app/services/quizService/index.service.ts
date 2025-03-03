@@ -4,6 +4,7 @@ import { TQueryExpression } from '../firebaseService/index.type';
 import { catchError, Observable, of, switchMap } from 'rxjs';
 import { TResponse } from '../index.type';
 import {
+  TAddQuizResponse,
   TDifficulty,
   TPayloadQuestion,
   TPayloadQuestionStepper,
@@ -13,10 +14,17 @@ import {
   TQuizTransform,
   TTypeQuiz,
 } from './index.type';
-import { TUser } from '../authService/index.type';
+import { TAuthState, TUser } from '../authService/index.type';
 import { TCategory } from '../categoryService/index.type';
 import { environment } from '../../../environments/environment.development';
 import { ENUMCOLLECTION } from '../../utils/constant';
+import { formatSlug } from '../../utils';
+import { AuthService } from '../authService/index.service';
+import {
+  TAddQuestionResponse,
+  TPayloadQuestionAdd,
+} from '../questionService/index.type';
+import { QuestionService } from '../questionService/index.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +33,18 @@ export class QuizService {
   private readonly keyStepperQuiz: string =
     environment.stepperQuizLocalStorageKey;
   private readonly collectionName: ENUMCOLLECTION = ENUMCOLLECTION.QUIZ;
+  private authState = {} as TAuthState;
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(
+    private firebaseService: FirebaseService,
+    private authService: AuthService,
+    private questionService: QuestionService
+  ) {
+    const authState = authService.getAuthState();
+    if (authState) {
+      this.authState = authState;
+    }
+  }
 
   private async getUsers(): Promise<TUser[]> {
     const queryExpressionUser: TQueryExpression[] = [
@@ -177,7 +195,64 @@ export class QuizService {
   async addQuiz(payload: {
     quiz: TPayloadQuiz;
     questions: TPayloadQuestion[];
-  }) {}
+  }): Promise<TResponse<TAddQuizResponse>> {
+    try {
+      const payloadQuiz: Omit<TQuiz, 'id'> = {
+        ...payload.quiz,
+        isPublished: false,
+        slug: formatSlug(payload.quiz.title),
+        createdBy: this.authState.id,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      const quiz = await this.firebaseService.addDocument<typeof payloadQuiz>(
+        payloadQuiz,
+        this.collectionName
+      );
+
+      const payloadQuestions: TPayloadQuestionAdd[] = payload.questions.map(
+        ({ question, answers, isCorrect }) => ({
+          question,
+          quizId: quiz.id,
+          answers,
+          isCorrect,
+        })
+      );
+
+      const resQuestion = await this.questionService.addQuestionsWithAnswers(
+        payloadQuestions
+      );
+
+      if (resQuestion.status === 'fail') {
+        throw new Error(resQuestion.message);
+      }
+
+      let questions: Omit<TAddQuestionResponse, 'quizId'>[] = [];
+
+      if (resQuestion.data) {
+        questions = resQuestion.data.map((questionData) => ({
+          id: questionData.id,
+          answers: questionData.answers,
+          isCorrect: questionData.isCorrect,
+          question: questionData.question,
+        }));
+      }
+
+      const results: TAddQuizResponse = { ...quiz, questions };
+
+      return {
+        status: 'success',
+        message: 'Success add quiz',
+        data: results,
+      };
+    } catch (error) {
+      return {
+        status: 'fail',
+        message: 'Failed add quiz',
+      };
+    }
+  }
 
   getSetupQuizFromLocalStorage<T>(stepIndex: number): T | null {
     const quiz = localStorage.getItem(this.keyStepperQuiz);

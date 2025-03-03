@@ -1,4 +1,5 @@
 import { TYPEQUIZENUM } from '../../utils/constant';
+import { TResultAnswer } from '../questionService/index.type';
 
 type TCategory = {
   id: string;
@@ -64,3 +65,5 @@ export type TPayloadQuizStepper = {
   totalQuestion: number;
   typeQuiz: TYPEQUIZENUM;
 } & TPayloadQuiz;
+
+export type TAddQuizResponse = { questions: TResultAnswer[] } & TQuiz;
