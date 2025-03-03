@@ -170,6 +170,8 @@ export class QuizStepperAppComponent implements AfterViewInit {
     this.formQuestionData = data;
     this.quizService.saveSetupQuizToLocalStorage(data);
 
+    this.totalQuestion = data.length;
+
     this.changeDetectorRef.detectChanges();
     this.stepper.next();
   }
