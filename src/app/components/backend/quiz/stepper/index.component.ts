@@ -18,8 +18,10 @@ import {
 import { debounceTime, fromEvent } from 'rxjs';
 import { QuizFormAppComponent } from './formQuiz/index.component';
 import {
+  TPayloadQuestion,
   TPayloadQuestionStepper,
   TPayloadQuiz,
+  TPayloadQuizAdd,
   TPayloadQuizStepper,
 } from '../../../../services/quizService/index.type';
 import { QuestionQuizFormAppComponent } from './formQuestion/index.component';
@@ -30,9 +32,11 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogResetQuizAppComponent } from './dialogResetQuiz/index.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 type TPayloadEmitFormQuiz = TPayloadQuizStepper;
-type TPayloadEmitFormQuestion = TPayloadQuestionStepper;
+type TPayloadEmitFormQuestion = TPayloadQuestion;
 
 @Component({
   selector: 'quiz-stepper-app',
@@ -48,17 +52,19 @@ type TPayloadEmitFormQuestion = TPayloadQuestionStepper;
     QuestionQuizFormAppComponent,
     MatIconModule,
     MatDividerModule,
-    MatTooltip
+    MatTooltip,
   ],
 })
 export class QuizStepperAppComponent implements AfterViewInit {
   private maxWidthMobile: number = 500;
   private changeDetectorRef = inject(ChangeDetectorRef);
   private quizService = inject(QuizService);
-  private dialog = inject(MatDialog)
+  private dialog = inject(MatDialog);
+  private snackbar = inject(MatSnackBar)
+  private router = inject(Router)
 
-  formQuizData!: TPayloadQuiz | null;
-  formQuestionData!: TPayloadQuestionStepper[] | null;
+  formQuizData: TPayloadQuiz | null = null;
+  formQuestionData: TPayloadQuestion[] | null = null;
   protected totalQuestion: number = 0;
   protected typeQuiz: TYPEQUIZENUM = TYPEQUIZENUM.MULTIPLE_CHOICE;
 
@@ -81,7 +87,9 @@ export class QuizStepperAppComponent implements AfterViewInit {
     const quizData =
       this.quizService.getSetupQuizFromLocalStorage<TPayloadQuizStepper>(0);
     const questionData =
-      this.quizService.getSetupQuizFromLocalStorage<TPayloadQuestionStepper[]>(1);
+      this.quizService.getSetupQuizFromLocalStorage<TPayloadQuestionStepper[]>(
+        1
+      );
 
     if (quizData) {
       const {
@@ -167,23 +175,34 @@ export class QuizStepperAppComponent implements AfterViewInit {
   }
 
   onResetSetupQuizHandler() {
-    const dialogRef = this.dialog.open(DialogResetQuizAppComponent)
+    const dialogRef = this.dialog.open(DialogResetQuizAppComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      if(result) {
+      if (result) {
         this.quizService.removeSetupQuizFromLocalStorage();
         this.totalQuestion = 0;
-        this.typeQuiz = TYPEQUIZENUM.MULTIPLE_CHOICE
-        
-        this.formQuizData = null
-        this.formQuestionData = null
-        
-        this.stepper.reset()
+        this.typeQuiz = TYPEQUIZENUM.MULTIPLE_CHOICE;
+
+        this.formQuizData = null;
+        this.formQuestionData = null;
+
+        this.stepper.reset();
       }
-    })
+    });
   }
 
-  onSubmitHandler() {
-    console.log(this.formQuizData, this.formQuestionData)
+  async onSubmitHandler() {
+    if (this.formQuizData && this.formQuestionData) {
+      const payload: TPayloadQuizAdd = {
+        quiz: this.formQuizData,
+        questions: this.formQuestionData,
+      };
+
+      const response = await this.quizService.addQuiz(payload);
+
+      this.quizService.removeSetupQuizFromLocalStorage();
+      this.snackbar.open(response.message, 'close')
+      this.router.navigate(['/admin/quiz'])
+    }
   }
 }

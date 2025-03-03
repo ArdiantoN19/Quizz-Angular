@@ -66,4 +66,8 @@ export type TPayloadQuizStepper = {
   typeQuiz: TYPEQUIZENUM;
 } & TPayloadQuiz;
 
+export type TPayloadQuizAdd = {
+  quiz: TPayloadQuiz;
+  questions: TPayloadQuestion[];
+};
 export type TAddQuizResponse = { questions: TResultAnswer[] } & TQuiz;

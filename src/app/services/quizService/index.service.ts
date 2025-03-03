@@ -9,6 +9,7 @@ import {
   TPayloadQuestion,
   TPayloadQuestionStepper,
   TPayloadQuiz,
+  TPayloadQuizAdd,
   TPayloadQuizStepper,
   TQuiz,
   TQuizTransform,
@@ -192,10 +193,7 @@ export class QuizService {
     }
   }
 
-  async addQuiz(payload: {
-    quiz: TPayloadQuiz;
-    questions: TPayloadQuestion[];
-  }): Promise<TResponse<TAddQuizResponse>> {
+  async addQuiz(payload: TPayloadQuizAdd): Promise<TResponse<TAddQuizResponse>> {
     try {
       const payloadQuiz: Omit<TQuiz, 'id'> = {
         ...payload.quiz,
