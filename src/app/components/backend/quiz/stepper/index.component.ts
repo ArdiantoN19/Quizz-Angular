@@ -4,6 +4,7 @@ import {
   Component,
   HostListener,
   inject,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -55,13 +56,13 @@ type TPayloadEmitFormQuestion = TPayloadQuestion;
     MatTooltip,
   ],
 })
-export class QuizStepperAppComponent implements AfterViewInit {
+export class QuizStepperAppComponent implements AfterViewInit, OnDestroy {
   private maxWidthMobile: number = 500;
   private changeDetectorRef = inject(ChangeDetectorRef);
   private quizService = inject(QuizService);
   private dialog = inject(MatDialog);
-  private snackbar = inject(MatSnackBar)
-  private router = inject(Router)
+  private snackbar = inject(MatSnackBar);
+  private router = inject(Router);
 
   formQuizData: TPayloadQuiz | null = null;
   formQuestionData: TPayloadQuestion[] | null = null;
@@ -129,6 +130,10 @@ export class QuizStepperAppComponent implements AfterViewInit {
     this.formQuestionData = questionData;
   }
 
+  ngOnDestroy(): void {
+    this.resetQuiz()
+  }
+
   @HostListener('window:resize', [])
   private checkMobileMode(): void {
     const isMobileMode = window.innerWidth < this.maxWidthMobile;
@@ -176,19 +181,23 @@ export class QuizStepperAppComponent implements AfterViewInit {
     this.stepper.next();
   }
 
+  private resetQuiz() {
+    this.quizService.removeSetupQuizFromLocalStorage();
+    this.totalQuestion = 0;
+    this.typeQuiz = TYPEQUIZENUM.MULTIPLE_CHOICE;
+
+    this.formQuizData = null;
+    this.formQuestionData = null;
+
+    this.stepper.reset();
+  }
+
   onResetSetupQuizHandler() {
     const dialogRef = this.dialog.open(DialogResetQuizAppComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.quizService.removeSetupQuizFromLocalStorage();
-        this.totalQuestion = 0;
-        this.typeQuiz = TYPEQUIZENUM.MULTIPLE_CHOICE;
-
-        this.formQuizData = null;
-        this.formQuestionData = null;
-
-        this.stepper.reset();
+        this.resetQuiz()
       }
     });
   }
@@ -203,8 +212,8 @@ export class QuizStepperAppComponent implements AfterViewInit {
       const response = await this.quizService.addQuiz(payload);
 
       this.quizService.removeSetupQuizFromLocalStorage();
-      this.snackbar.open(response.message, 'close')
-      this.router.navigate(['/admin/quiz'])
+      this.snackbar.open(response.message, 'close');
+      this.router.navigate(['/admin/quiz']);
     }
   }
 }
