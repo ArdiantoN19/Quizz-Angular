@@ -128,6 +128,8 @@ export class QuizStepperAppComponent implements AfterViewInit, OnDestroy {
       this.stepper.selectedIndex = 2;
     }
     this.formQuestionData = questionData;
+
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {
