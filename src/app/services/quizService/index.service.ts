@@ -6,9 +6,7 @@ import { TResponse } from '../index.type';
 import {
   TAddQuizResponse,
   TDifficulty,
-  TPayloadQuestion,
   TPayloadQuestionStepper,
-  TPayloadQuiz,
   TPayloadQuizAdd,
   TPayloadQuizStepper,
   TQuiz,
@@ -121,6 +119,8 @@ export class QuizService {
       };
     };
 
+    const totalQuestions = await this.questionService.getTotalQuestions()
+
     return this.firebaseService
       .getCollectionDataWithObservableByQuery<TQuiz>(
         this.collectionName,
@@ -147,7 +147,7 @@ export class QuizService {
                 users.find((user) => user.id === item.createdBy)?.fullname ??
                 'Quiz Admin',
             },
-            totalQuestion: 25,
+            totalQuestion: totalQuestions.data?.length ? totalQuestions.data.find(({quizId}) => quizId === item.id)?.totalQuestion ?? 0 : 0,
           }));
 
           return of({
@@ -193,7 +193,9 @@ export class QuizService {
     }
   }
 
-  async addQuiz(payload: TPayloadQuizAdd): Promise<TResponse<TAddQuizResponse>> {
+  async addQuiz(
+    payload: TPayloadQuizAdd
+  ): Promise<TResponse<TAddQuizResponse>> {
     try {
       const payloadQuiz: Omit<TQuiz, 'id'> = {
         ...payload.quiz,

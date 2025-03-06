@@ -25,3 +25,8 @@ export type TPayloadQuestionAdd = Omit<
   'id' | 'createdAt' | 'updatedAt'
 > &
   payloadAnswerAdd;
+
+export type TTotalQuestionsResponse = {
+  quizId: string;
+  totalQuestion: number
+}

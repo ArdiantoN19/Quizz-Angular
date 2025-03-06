@@ -9,6 +9,7 @@ import {
   DocumentReference,
   DocumentSnapshot,
   Firestore,
+  getCountFromServer,
   getDoc,
   getDocs,
   query,
@@ -235,5 +236,20 @@ export class FirebaseService {
     await batch.commit();
 
     return results;
+  }
+
+  /**
+   *
+   * @param collectionName Name of your collection that you want get
+   * @param queryExpression Must type object same as TQueryExpression
+   * @returns Total count from the documents
+   */
+  async getFilteredCount(collectioName: ENUMCOLLECTION, queryExpression: TQueryExpression): Promise<number> {
+    const collectionReference = collection(this.firestore, collectioName);
+    const {fieldName, condition, value} = queryExpression
+    const queryCollectionData = query(collectionReference, where(fieldName, condition, value));
+    const snapshot = await getCountFromServer(queryCollectionData);
+
+    return snapshot.data().count;
   }
 }

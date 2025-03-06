@@ -6,6 +6,7 @@ import {
   TPayloadQuestionAdd,
   TQuestion,
   TResultAnswer,
+  TTotalQuestionsResponse,
 } from './index.type';
 import { ENUMCOLLECTION } from '../../utils/constant';
 import { TResponse } from '../index.type';
@@ -16,6 +17,7 @@ import {
   writeBatch,
 } from '@angular/fire/firestore';
 import { TAnswer } from '../answerService/index.type';
+import { TQueryExpression } from '../firebaseService/index.type';
 
 @Injectable({
   providedIn: 'root',
@@ -115,6 +117,46 @@ export class QuestionService {
       return {
         status: 'fail',
         message: 'Failed add questions',
+      };
+    }
+  }
+
+  async getTotalQuestions(): Promise<TResponse<TTotalQuestionsResponse[]>> {
+    try {
+      const queryExpression: TQueryExpression = {
+        fieldName: 'question',
+        condition: '!=',
+        value: '',
+      };
+
+      const getAllQuestions =
+        await this.firebaseService.getDocumentByQuery<TQuestion>(
+          this.collectionName,
+          [queryExpression]
+        );
+
+      const result = getAllQuestions.reduce((currVal, item) => {
+        const existQuiz = currVal.find((val) => val.quizId === item.quizId);
+
+        if (!existQuiz) {
+          currVal.push({ quizId: item.quizId, totalQuestion: 1 });
+        } else {
+          existQuiz.totalQuestion += 1;
+        }
+
+        return currVal;
+      }, [] as TTotalQuestionsResponse[]);
+
+      return {
+        status: 'success',
+        message: 'Success get total questions',
+        data: result,
+      };
+    } catch (error) {
+      return {
+        status: 'fail',
+        message: 'Failed get total questions',
+        data: []
       };
     }
   }
