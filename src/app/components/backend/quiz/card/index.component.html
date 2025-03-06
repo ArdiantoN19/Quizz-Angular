@@ -16,8 +16,8 @@
             class="card-item__content-info-header__btn"
             labelPosition="before"
             [name]="quiz.id"
-            [matTooltip]="!togglePublish.checked || !quiz.isPublished ? 'Publish Quiz' : 'Unpublish Quiz'"
             [checked]="quiz.isPublished"
+            [matTooltip]="!togglePublish.checked || !quiz.isPublished ? 'Publish Quiz' : 'Unpublish Quiz'"
             #togglePublish
             (change)="onPublishHandler(quiz.id)"
           >
