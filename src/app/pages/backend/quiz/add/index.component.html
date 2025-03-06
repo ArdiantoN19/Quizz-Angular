@@ -1,2 +1,7 @@
-<title-backend-app [data]="dataTitle"/>
+<title-backend-app [data]="dataTitle">
+  <button mat-flat-button matTooltip="Back to quiz" class="btn-admin" (click)="onBackHandler()">
+    Back
+    <mat-icon fontIcon="chevron_left" />
+  </button>
+</title-backend-app>
 <quiz-stepper-app />
