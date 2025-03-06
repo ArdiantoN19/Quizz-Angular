@@ -41,6 +41,7 @@
             <button
               mat-icon-button
               class="card-item__content-info-footer__action__btn"
+              matTooltip="Edit quiz {{$index + 1}}"
             >
               <mat-icon fontIcon="edit" />
             </button>
@@ -48,6 +49,7 @@
               mat-icon-button
               class="card-item__content-info-footer__action__btn"
               (click)="onDeleteHandler(quiz.id)"
+              matTooltip="Delete quiz {{$index + 1}}"
             >
               <mat-icon fontIcon="delete" />
             </button>
