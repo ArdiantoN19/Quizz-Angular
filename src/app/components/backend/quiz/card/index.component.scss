@@ -26,6 +26,8 @@
                     width: 100%;
                     display: flex;
                     justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 8px;
 
                     &__title {
                         font-size: 1.2rem;
@@ -100,6 +102,30 @@
                         }
                     }
 
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $max-width-mobile) {
+    .card-wrapper {
+
+        .card-item {
+            
+            &__content {
+                flex-direction: column;
+                row-gap: 18px;
+
+                &-image {
+                    max-width: 100%;
+                }
+
+                &-info {
+
+                    &__description {
+                        width: 100%;
+                    }
                 }
             }
         }
