@@ -49,7 +49,11 @@
 
       .form-group {
         width: 100%;
-        margin-bottom: 13px;
+        transition: margin-bottom .25s ease;
+
+        &:has(.form-group__error-message) {
+          margin-bottom: 13px;
+        }
 
         &__error-message {
           margin: 0 -12px;
