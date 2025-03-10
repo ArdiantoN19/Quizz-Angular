@@ -119,7 +119,7 @@ export class QuizService {
       };
     };
 
-    const totalQuestions = await this.questionService.getTotalQuestions()
+    const totalQuestions = await this.questionService.getTotalQuestions();
 
     return this.firebaseService
       .getCollectionDataWithObservableByQuery<TQuiz>(
@@ -147,7 +147,10 @@ export class QuizService {
                 users.find((user) => user.id === item.createdBy)?.fullname ??
                 'Quiz Admin',
             },
-            totalQuestion: totalQuestions.data?.length ? totalQuestions.data.find(({quizId}) => quizId === item.id)?.totalQuestion ?? 0 : 0,
+            totalQuestion: totalQuestions.data?.length
+              ? totalQuestions.data.find(({ quizId }) => quizId === item.id)
+                  ?.totalQuestion ?? 0
+              : 0,
           }));
 
           return of({
@@ -250,6 +253,31 @@ export class QuizService {
       return {
         status: 'fail',
         message: 'Failed add quiz',
+      };
+    }
+  }
+
+  async deleteQuizById(quizId: string): Promise<TResponse<any>> {
+    try {
+      const quiz = await this.firebaseService.getDocumentByDocId<TQuiz>(
+        this.collectionName,
+        quizId
+      );
+
+      await this.firebaseService.deleteDocumentByDocId(
+        this.collectionName,
+        quizId
+      );
+
+      return {
+        status: 'success',
+        message: 'Success deleted quiz',
+        data: quiz.id,
+      };
+    } catch (error) {
+      return {
+        status: 'fail',
+        message: 'Failed delete quiz',
       };
     }
   }
