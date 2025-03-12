@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TQuizTransform } from '../../../../services/quiz/quiz.type';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'card-quiz-app',
@@ -16,6 +17,7 @@ import { TQuizTransform } from '../../../../services/quiz/quiz.type';
     MatIconModule,
     MatTooltip,
     MatSlideToggleModule,
+    RouterLink
   ],
 })
 export class QuizCardAppComponent {

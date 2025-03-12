@@ -42,14 +42,14 @@ export class QuizPageApp implements OnInit {
 
   ngOnInit(): void {
     (async () => {
-      (await this.quizService.getQuiz()).subscribe((result) => {
-        if (result.status === ESTATUS.SUCCESS && result.data) {
-          this.dataQuiz$ = result.data;
-        }
+      const response = await this.quizService.getQuiz()
 
-        this.isLoading = false;
-      });
-    })();
+      if(response.status === ESTATUS.SUCCESS && response.data) {
+        this.dataQuiz$ = response.data
+      }
+
+      this.isLoading = false;
+    })()
   }
 
   async onPublishHandler(id: string) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService } from '../firebase/firebase.service';
 import { TQueryExpression } from '../firebase/firebase.type';
-import { catchError, Observable, of, switchMap } from 'rxjs';
+import { catchError, firstValueFrom, Observable, of, switchMap } from 'rxjs';
 import { ESTATUS, TResponse } from '../response.type';
 import {
   TAddQuizResponse,
@@ -25,6 +25,7 @@ import {
 } from '../question/question.type';
 import { QuestionService } from '../question/question.service';
 import { AnswerService } from '../answer/answer.service';
+import { HashService } from '../hash/hash.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,12 +35,14 @@ export class QuizService {
     environment.stepperQuizLocalStorageKey;
   private readonly collectionName: ECOLLECTION = ECOLLECTION.QUIZ;
   private authState = {} as TAuthState;
+  private readonly keyListQuiz: string = environment.listQuizLocalStorageKey
 
   constructor(
     private firebaseService: FirebaseService,
     private authService: AuthService,
     private questionService: QuestionService,
-    private answerService: AnswerService
+    private answerService: AnswerService,
+    private hashService: HashService
   ) {
     const authState = authService.getAuthState();
     if (authState) {
@@ -86,7 +89,50 @@ export class QuizService {
     return datas;
   }
 
-  async getQuiz(): Promise<Observable<TResponse<TQuizTransform[]>>> {
+  private saveQuizDataToLocalStorage<T>(quiz: T): void {
+    const expired = Date.now() + 1000 * 10
+    const dataQuizString = JSON.stringify({quiz, expired });
+
+    const hashDataQuiz = this.hashService.hash(dataQuizString);
+    localStorage.setItem(this.keyListQuiz, hashDataQuiz)
+  }
+
+  private getQuizDataFromLocalStorage<T>(): { quiz: T[], expired: number } | null {
+    const dataQuizString = localStorage.getItem(this.keyListQuiz)
+
+    if(!dataQuizString) {
+      return null
+    }
+
+    const decodeQuiz = this.hashService.decode(dataQuizString)
+    const result = JSON.parse(decodeQuiz)
+
+    return result as { quiz: T[], expired: number }
+  }
+  
+  async getQuiz(): Promise<TResponse<TQuizTransform[]>> {
+    const now = Date.now();
+
+    const dataQuizLocalStorage = this.getQuizDataFromLocalStorage<TQuizTransform>();
+
+    if(!dataQuizLocalStorage || dataQuizLocalStorage.expired < now) {
+      const result = await firstValueFrom(await this.getQuizObservable())
+
+      if(result.status === ESTATUS.SUCCESS && result.data) {
+        this.saveQuizDataToLocalStorage(result.data)
+      }
+
+      return result;
+    } 
+
+    return {
+      status: ESTATUS.SUCCESS,
+      message: 'Success get quiz',
+      data: dataQuizLocalStorage.quiz
+    }
+  }
+
+  private async getQuizObservable(): Promise<Observable<TResponse<TQuizTransform[]>>> {
     const users = await this.getUsers();
     const categories = await this.getData<TCategory>(ECOLLECTION.CATEGORIES);
     const difficulities = await this.getData<TDifficulty>(

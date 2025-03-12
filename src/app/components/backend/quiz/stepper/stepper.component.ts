@@ -213,7 +213,6 @@ export class StepperQuizAppComponent implements AfterViewInit, OnDestroy {
 
       const response = await this.quizService.addQuiz(payload);
 
-      this.quizService.removeSetupQuizFromLocalStorage();
       this.snackbar.open(response.message, 'close');
       this.router.navigate(['/admin/quiz']);
     }
