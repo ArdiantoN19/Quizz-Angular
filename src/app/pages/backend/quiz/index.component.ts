@@ -9,6 +9,8 @@ import { TQuizTransform } from '../../../services/quizService/index.type';
 import { SkeletonAppComponent } from '../../../components/skeleton/index.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmQuizAppComponent } from '../../../components/backend/quiz/dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'quiz-page-app',
@@ -27,6 +29,7 @@ import { RouterLink } from '@angular/router';
 export class QuizPageApp implements OnInit {
   private quizService = inject(QuizService);
   private snackbar = inject(MatSnackBar);
+  private dialog = inject(MatDialog)
 
   protected dataTitle = {
     title: 'Quiz',
@@ -70,6 +73,16 @@ export class QuizPageApp implements OnInit {
   }
 
   onDeleteHandler(id: string) {
-    console.log('delete', id)
+    const dialogRef = this.dialog.open(DialogConfirmQuizAppComponent, {
+      data: {
+        id
+      }
+    })
+
+    dialogRef.afterClosed().subscribe((result: string) => {
+      let quiz = [...this.dataQuiz$]
+      quiz = quiz.filter((data) => data.id !== result);
+      this.dataQuiz$ = quiz
+    })
   }
 }

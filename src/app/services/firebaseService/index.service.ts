@@ -244,12 +244,44 @@ export class FirebaseService {
    * @param queryExpression Must type object same as TQueryExpression
    * @returns Total count from the documents
    */
-  async getFilteredCount(collectioName: ENUMCOLLECTION, queryExpression: TQueryExpression): Promise<number> {
+  async getFilteredCount(
+    collectioName: ENUMCOLLECTION,
+    queryExpression: TQueryExpression
+  ): Promise<number> {
     const collectionReference = collection(this.firestore, collectioName);
-    const {fieldName, condition, value} = queryExpression
-    const queryCollectionData = query(collectionReference, where(fieldName, condition, value));
+    const { fieldName, condition, value } = queryExpression;
+    const queryCollectionData = query(
+      collectionReference,
+      where(fieldName, condition, value)
+    );
     const snapshot = await getCountFromServer(queryCollectionData);
 
     return snapshot.data().count;
+  }
+
+  /**
+   *
+   * @param collectionName Name of your collection that you want get
+   * @param ids id for documents that you want to delete
+   * @returns ids from the documents same with your input or empty arrays when delete is failed
+   */
+  async deleteMultipleDocuments(
+    collectionName: ENUMCOLLECTION,
+    ids: string[]
+  ): Promise<string[]> {
+    try {
+      const batch = writeBatch(this.firestore);
+
+      ids.forEach((id) => {
+        const docRef = doc(this.firestore, collectionName, id);
+        batch.delete(docRef);
+      });
+
+      await batch.commit();
+
+      return ids;
+    } catch (error) {
+      return [];
+    }
   }
 }

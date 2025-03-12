@@ -29,7 +29,7 @@ export class QuestionService {
 
   constructor(
     private firebaseService: FirebaseService,
-    private firestore: Firestore
+    private firestore: Firestore,
   ) {}
 
   async addQuestionsWithAnswers(
@@ -158,6 +158,51 @@ export class QuestionService {
         message: 'Failed get total questions',
         data: []
       };
+    }
+  }
+
+  async getQuestionsByQuizId(quizId: string): Promise<TResponse<TQuestion[]>> {
+    const queryExpression: TQueryExpression = {
+      fieldName: 'quizId',
+      condition: '==',
+      value: quizId
+    }
+
+    const questions = await this.firebaseService.getDocumentByQuery<TQuestion>(this.collectionName, [queryExpression]);
+
+    return {
+      status: 'success',
+      message: 'Success get questions by quiz id',
+      data: questions
+    }
+  }
+
+  async deleteQuestionByQuizId(quizId: string): Promise<TResponse<any>> {
+    try {
+      const questionResponse = await this.getQuestionsByQuizId(quizId);
+
+      if(questionResponse.data && !questionResponse.data.length) {
+        throw new Error('Failed get questions by quiz id')
+      }
+
+      const questionIds = questionResponse.data?.map(({ id }) => id) as string[];
+
+      const deleteQuestionsResponse = await this.firebaseService.deleteMultipleDocuments(this.collectionName, questionIds);
+
+      if(!deleteQuestionsResponse.length) {
+        throw new Error('Failed delete questions by quiz id')
+      }
+
+      return {
+        status: 'success',
+        message: 'Success delete questions by quiz id',
+        data: deleteQuestionsResponse
+      }
+    } catch (error: any) {
+      return {
+        status: 'fail',
+        message: error.message ?? 'Failed delete questions by quiz id'
+      }
     }
   }
 }

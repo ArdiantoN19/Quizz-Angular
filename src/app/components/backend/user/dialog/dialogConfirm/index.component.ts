@@ -18,11 +18,11 @@ type TDataDialog = {
 export class DialogConfirmBackendAppComponent {
     private data = inject<TDataDialog>(MAT_DIALOG_DATA)
     private dialogRef = inject(MatDialogRef<UserPageApp>)
-    private userServie = inject(UserService);
+    private userService = inject(UserService);
     private snackbar = inject(MatSnackBar);
     
     async onDeleteHandler(): Promise<void> {
-        const response = await this.userServie.deleteUserById(this.data.id)
+        const response = await this.userService.deleteUserById(this.data.id)
         
        if(response.status === 'success') {
             this.dialogRef.close(response)

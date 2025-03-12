@@ -24,6 +24,7 @@ import {
   TPayloadQuestionAdd,
 } from '../questionService/index.type';
 import { QuestionService } from '../questionService/index.service';
+import { AnswerService } from '../answerService/index.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,8 @@ export class QuizService {
   constructor(
     private firebaseService: FirebaseService,
     private authService: AuthService,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private answerService: AnswerService
   ) {
     const authState = authService.getAuthState();
     if (authState) {
@@ -266,18 +268,28 @@ export class QuizService {
 
       await this.firebaseService.deleteDocumentByDocId(
         this.collectionName,
-        quizId
+        quiz.id
       );
+
+      const deleteQuestionResponse = await this.questionService.deleteQuestionByQuizId(quiz.id);
+      if(deleteQuestionResponse.status === 'fail') {
+        throw new Error(deleteQuestionResponse.message);
+      }
+
+      const deleteAnswerResponse = await this.answerService.deleteAnswerByQuestionIds(deleteQuestionResponse.data);
+      if(deleteAnswerResponse.status === 'fail') {
+        throw new Error(deleteAnswerResponse.message);
+      }
 
       return {
         status: 'success',
         message: 'Success deleted quiz',
-        data: quiz.id,
+        data: quiz.id
       };
-    } catch (error) {
+    } catch (error: any) {
       return {
         status: 'fail',
-        message: 'Failed delete quiz',
+        message: error.message ?? 'Failed delete quiz',
       };
     }
   }
