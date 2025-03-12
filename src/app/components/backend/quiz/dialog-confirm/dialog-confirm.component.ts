@@ -6,8 +6,8 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { QuizService } from '../../../../services/quizService/index.service';
-import { ESTATUS } from '../../../../services/index.type';
+import { QuizService } from '../../../../services/quiz/quiz.service';
+import { ESTATUS } from '../../../../services/response.type';
 
 type TDialogData = {
   id: string;

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { FrontendLayoutAppComponent } from './layouts/frontend/index.component';
-import { BackendLayoutAppComponent } from "./layouts/backend/index.component";
+import { LayoutFrontendAppComponent } from './layouts/frontend/frontend.component';
+import { LayoutBackendAppComponent } from "./layouts/backend/backend.component";
 import { RouterOutlet } from '@angular/router';
 
 @Component({

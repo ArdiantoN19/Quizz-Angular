@@ -1,0 +1,22 @@
+import { Component, HostListener, ViewEncapsulation } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+@Component({
+  selector: 'scroll-to-top-app',
+  templateUrl: 'scroll-to-top.component.html',
+  styleUrl: 'scroll-to-top.component.scss',
+  imports: [MatIconModule, MatTooltipModule],
+})
+export class ScrollToTopAppComponent {
+  isVisible: boolean = false;
+
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    this.isVisible = window.scrollY > 200;
+  }
+
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}

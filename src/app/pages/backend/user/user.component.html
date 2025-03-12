@@ -1,0 +1,17 @@
+<header-title-backend-app [data]="dataTitle">
+  <button mat-flat-button class="btn-admin" matTooltip="Add user" (click)="onOpenDialogNewUser()">
+    <mat-icon fontIcon="add" />
+    Add
+  </button>
+</header-title-backend-app>
+@if (isLoading) {
+<skeleton-app size="full" />
+} @else {
+<table-backend-app
+  [data]="data"
+  [columns]="columns"
+  [isAction]="isAction"
+  (eventEdit)="onEditHandler($event)"
+  (eventDelete)="onDeleteHandler($event)"
+/>
+}

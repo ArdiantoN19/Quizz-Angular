@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { ROLE } from './services/authService/index.type';
-import { AuthService } from './services/authService/index.service';
+import { ROLE } from './services/auth/auth.type';
+import { AuthService } from './services/auth/auth.service';
 
 const authRoutes: string[] = ['/login', '/register'];
 

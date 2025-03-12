@@ -3,7 +3,7 @@ export enum TYPEQUIZENUM {
   TRUE_OR_FALSE = 'true-or-false',
 }
 
-export enum ENUMCOLLECTION {
+export enum ECOLLECTION {
   QUIZ = 'quiz',
   USERS = 'users',
   ANSWERS = 'answers',

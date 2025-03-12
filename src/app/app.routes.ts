@@ -1,19 +1,19 @@
 import { Route } from "@angular/router";
-import { routes as frontendRoutes } from "./routes/frontend/index.routes";
-import { routes as backendRoutes } from "./routes/backend/index.routes";
-import { NotFoundAppComponent } from "./components/404/index.component";
-import { FrontendLayoutAppComponent } from "./layouts/frontend/index.component";
-import { BackendLayoutAppComponent } from "./layouts/backend/index.component";
+import { routes as frontendRoutes } from "./routes/frontend/frontend.routes";
+import { routes as backendRoutes } from "./routes/backend/backend.routes";
+import { NotFoundAppComponent } from "./components/404/404-notfound.component";
+import { LayoutFrontendAppComponent } from "./layouts/frontend/frontend.component";
+import { LayoutBackendAppComponent } from "./layouts/backend/backend.component";
 
 export const routes: Route[] = [
     {
         path: '',
-        component: FrontendLayoutAppComponent,
+        component: LayoutFrontendAppComponent,
         children: frontendRoutes,
     },
     {
         path: 'admin',
-        component: BackendLayoutAppComponent,
+        component: LayoutBackendAppComponent,
         children: backendRoutes,
     },
     {
