@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FirebaseService } from '../firebaseService/index.service';
 import { ROLE, TAuthState, TUser } from '../authService/index.type';
 import { AuthService } from '../authService/index.service';
-import { TResponse } from '../index.type';
+import { ESTATUS, TResponse } from '../index.type';
 import { TPayloadUser } from './index.type';
 import { environment } from '../../../environments/environment.development';
 import { HashService } from '../hashService/index.service';
@@ -49,7 +49,7 @@ export class UserService {
     });
 
     return {
-      status: 'success',
+      status: ESTATUS.SUCCESS,
       message: 'Success get list of users',
       data: data,
     };
@@ -63,13 +63,13 @@ export class UserService {
       );
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success get user',
         data: user,
       };
     } catch (error: any) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: error.message,
       };
     }
@@ -116,13 +116,13 @@ export class UserService {
       );
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success add user',
         data: user,
       };
     } catch (error: any) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: error.message,
       };
     }
@@ -147,7 +147,7 @@ export class UserService {
       await this.firebaseService.updateDocumentByDocId(`users/${id}`, payload)
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success update user',
         data: {
           ...user,
@@ -156,7 +156,7 @@ export class UserService {
       }
     } catch (error: any) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: error.message ?? 'Error occured, please check your network',
       };
     }
@@ -171,13 +171,13 @@ export class UserService {
       await this.firebaseService.deleteDocumentByDocId(this.collectionName, user.id);
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success deleted user',
         data: user.id,
       };
     } catch (error: any) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: error.message ?? 'Error occured, please check your network',
       };
     }

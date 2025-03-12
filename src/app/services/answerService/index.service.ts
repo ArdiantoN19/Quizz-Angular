@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService } from '../firebaseService/index.service';
-import { TResponse } from '../index.type';
+import { ESTATUS, TResponse } from '../index.type';
 import { TAnswer, TPayloadAnswerAdd } from './index.type';
 import { ENUMCOLLECTION } from '../../utils/constant';
 import { TQueryExpression } from '../firebaseService/index.type';
@@ -28,13 +28,13 @@ export class AnswerService {
       >(payloadAnswers, this.collectionName);
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success add answers',
         data: answers,
       };
     } catch (error) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: 'Failed add answers',
       };
     }
@@ -50,7 +50,7 @@ export class AnswerService {
     const answers = await this.firebaseService.getDocumentByQuery<TAnswer>(this.collectionName, [queryExpression]);
 
     return {
-      status: 'success',
+      status: ESTATUS.SUCCESS,
       message: 'Success get answers by question id',
       data: answers
     }
@@ -72,13 +72,13 @@ export class AnswerService {
       }
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success delete answers by question ids',
         data: deleteAnswerResponse
       }
     } catch (error: any) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: error.message ?? 'Failed delete answers by question ids',
       }
     }

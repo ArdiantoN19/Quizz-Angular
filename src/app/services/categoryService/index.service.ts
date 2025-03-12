@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TResponse } from '../index.type';
+import { ESTATUS, TResponse } from '../index.type';
 import { FirebaseService } from '../firebaseService/index.service';
 import { catchError, Observable, of, switchMap } from 'rxjs';
 import { TCategory, TPayloadCategory } from './index.type';
@@ -35,14 +35,14 @@ export class CategoryService {
           })
 
           return of({
-            status: 'success',
+            status: ESTATUS.SUCCESS,
             message: 'Success get categories',
             data,
           });
         }),
         catchError((_err) => {
           return of({
-            status: 'fail',
+            status: ESTATUS.FAIL,
             message: 'Failed get categories',
           });
         })
@@ -63,13 +63,13 @@ export class CategoryService {
       );
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Succes add category',
         data: category,
       };
     } catch (error: any) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: error.message,
       };
     }
@@ -87,7 +87,7 @@ export class CategoryService {
       await this.firebaseService.updateDocumentByDocId<typeof data>(`categories/${id}`, data);
 
       return  {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Succes update category',
         data: {
           ...category,
@@ -96,7 +96,7 @@ export class CategoryService {
       }
     } catch (error: any) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: error.message ?? 'Error occured, please check your network'
       }
     }
@@ -109,13 +109,13 @@ export class CategoryService {
       await this.firebaseService.deleteDocumentByDocId(this.collectionName, id);
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success delete category',
         data: category.id
       }
     } catch (error: any) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: error.message ?? 'Error occured, please check your network'
       }
     }

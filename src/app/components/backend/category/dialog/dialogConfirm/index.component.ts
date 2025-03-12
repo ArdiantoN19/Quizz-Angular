@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/materia
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { CategoryService } from "../../../../../services/categoryService/index.service";
 import { CategoryPageApp } from "../../../../../pages/backend/category/index.component";
+import { ESTATUS } from "../../../../../services/index.type";
 
 type TDataDialog = {
     id: string;
@@ -23,7 +24,7 @@ export class DialogConfirmCategoryBackendAppComponent {
     async onDeleteHandler(): Promise<void> {
         const response = await this.categoryService.deleteCategoryById(this.data.id)
         
-       if(response.status === 'success') {
+       if(response.status === ESTATUS.SUCCESS) {
             this.dialogRef.close(response)
        }
 

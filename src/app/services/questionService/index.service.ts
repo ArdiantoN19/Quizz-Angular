@@ -9,7 +9,7 @@ import {
   TTotalQuestionsResponse,
 } from './index.type';
 import { ENUMCOLLECTION } from '../../utils/constant';
-import { TResponse } from '../index.type';
+import { ESTATUS, TResponse } from '../index.type';
 import {
   collection,
   doc,
@@ -109,13 +109,13 @@ export class QuestionService {
       );
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success add questions',
         data: results,
       };
     } catch (error) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: 'Failed add questions',
       };
     }
@@ -148,13 +148,13 @@ export class QuestionService {
       }, [] as TTotalQuestionsResponse[]);
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success get total questions',
         data: result,
       };
     } catch (error) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: 'Failed get total questions',
         data: []
       };
@@ -171,7 +171,7 @@ export class QuestionService {
     const questions = await this.firebaseService.getDocumentByQuery<TQuestion>(this.collectionName, [queryExpression]);
 
     return {
-      status: 'success',
+      status: ESTATUS.SUCCESS,
       message: 'Success get questions by quiz id',
       data: questions
     }
@@ -194,13 +194,13 @@ export class QuestionService {
       }
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success delete questions by quiz id',
         data: deleteQuestionsResponse
       }
     } catch (error: any) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: error.message ?? 'Failed delete questions by quiz id'
       }
     }

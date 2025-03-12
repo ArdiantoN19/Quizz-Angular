@@ -7,6 +7,7 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { QuizService } from '../../../../services/quizService/index.service';
+import { ESTATUS } from '../../../../services/index.type';
 
 type TDialogData = {
   id: string;
@@ -29,7 +30,7 @@ export class DialogConfirmQuizAppComponent {
     const { id } = this.data;
 
     const result = await this.quizService.deleteQuizById(id);
-    if (result.status === 'success') {
+    if (result.status === ESTATUS.SUCCESS) {
         this.dialogRef.close(result.data);
     }
     

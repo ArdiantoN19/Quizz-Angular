@@ -27,6 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TYPEQUIZENUM } from '../../../../../utils/constant';
 import { AlertAppComponent } from "../../../../alert/index.component";
+import { ESTATUS } from '../../../../../services/index.type';
 
 type TOption = {
   name: string;
@@ -119,7 +120,7 @@ export class QuizFormAppComponent implements OnInit {
   ngOnInit(): void {
     (async () => {
       this.categoryService.getCategories().subscribe((result) => {
-        if (result.data && result.status === 'success') {
+        if (result.data && result.status === ESTATUS.SUCCESS) {
           this.categoryOptions = result.data.map(({ id, name, slug }) => ({
             name,
             slug,
@@ -133,8 +134,8 @@ export class QuizFormAppComponent implements OnInit {
         this.typeQuizService.getTypeQuiz(),
       ]);
       if (
-        difficultData.status === 'success' &&
-        typeQuizData.status === 'success'
+        difficultData.status === ESTATUS.SUCCESS &&
+        typeQuizData.status === ESTATUS.SUCCESS
       ) {
         if (difficultData.data) {
           this.difficultOptions = difficultData.data.map(({ id, name, slug }) => ({

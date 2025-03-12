@@ -22,7 +22,7 @@ import { UserService } from '../../../../../services/userService/index.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserPageApp } from '../../../../../pages/backend/user/index.component';
 import { HashService } from '../../../../../services/hashService/index.service';
-import { TResponse } from '../../../../../services/index.type';
+import { ESTATUS, TResponse } from '../../../../../services/index.type';
 
 export type TDataDialog = {
   mode: 'new' | 'edit';
@@ -116,7 +116,7 @@ export class DialogFormUserAppComponent implements OnInit {
         response = await this.userService.updateUserById(this.data.data?.id!, payload)
       }
       
-      if (response.status === 'success') {
+      if (response.status === ESTATUS.SUCCESS) {
         this.dialogRef.close(response);
       }
       this.snackbar.open(response.message, 'close');

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FirebaseService } from '../firebaseService/index.service';
 import { TQueryExpression } from '../firebaseService/index.type';
 import { catchError, Observable, of, switchMap } from 'rxjs';
-import { TResponse } from '../index.type';
+import { ESTATUS, TResponse } from '../index.type';
 import {
   TAddQuizResponse,
   TDifficulty,
@@ -156,14 +156,14 @@ export class QuizService {
           }));
 
           return of({
-            status: 'success',
+            status: ESTATUS.SUCCESS,
             message: 'Success get quiz',
             data,
           });
         }),
         catchError((_err) => {
           return of({
-            status: 'fail',
+            status: ESTATUS.FAIL,
             message: 'Error occured when get data quiz',
           });
         })
@@ -184,7 +184,7 @@ export class QuizService {
       });
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: `Success ${
           !quiz.isPublished ? 'published' : 'unpublished'
         } quiz`,
@@ -192,7 +192,7 @@ export class QuizService {
       };
     } catch (error: any) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: error.message,
       };
     }
@@ -229,7 +229,7 @@ export class QuizService {
         payloadQuestions
       );
 
-      if (resQuestion.status === 'fail') {
+      if (resQuestion.status === ESTATUS.FAIL) {
         throw new Error(resQuestion.message);
       }
 
@@ -247,13 +247,13 @@ export class QuizService {
       const results: TAddQuizResponse = { ...quiz, questions };
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success add quiz',
         data: results,
       };
     } catch (error) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: 'Failed add quiz',
       };
     }
@@ -272,23 +272,23 @@ export class QuizService {
       );
 
       const deleteQuestionResponse = await this.questionService.deleteQuestionByQuizId(quiz.id);
-      if(deleteQuestionResponse.status === 'fail') {
+      if(deleteQuestionResponse.status === ESTATUS.FAIL) {
         throw new Error(deleteQuestionResponse.message);
       }
 
       const deleteAnswerResponse = await this.answerService.deleteAnswerByQuestionIds(deleteQuestionResponse.data);
-      if(deleteAnswerResponse.status === 'fail') {
+      if(deleteAnswerResponse.status === ESTATUS.FAIL) {
         throw new Error(deleteAnswerResponse.message);
       }
 
       return {
-        status: 'success',
+        status: ESTATUS.SUCCESS,
         message: 'Success deleted quiz',
         data: quiz.id
       };
     } catch (error: any) {
       return {
-        status: 'fail',
+        status: ESTATUS.FAIL,
         message: error.message ?? 'Failed delete quiz',
       };
     }

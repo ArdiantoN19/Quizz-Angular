@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/materia
 import { UserPageApp } from "../../../../../pages/backend/user/index.component";
 import { UserService } from "../../../../../services/userService/index.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { ESTATUS } from "../../../../../services/index.type";
 
 type TDataDialog = {
     id: string;
@@ -24,7 +25,7 @@ export class DialogConfirmBackendAppComponent {
     async onDeleteHandler(): Promise<void> {
         const response = await this.userService.deleteUserById(this.data.id)
         
-       if(response.status === 'success') {
+       if(response.status === ESTATUS.SUCCESS) {
             this.dialogRef.close(response)
        }
 

@@ -17,6 +17,7 @@ import { AuthService } from '../../../services/authService/index.service';
 import { HashService } from '../../../services/hashService/index.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ESTATUS } from '../../../services/index.type';
 
 @Component({
   selector: 'login-app',
@@ -109,7 +110,7 @@ export class LoginAppComponent implements OnInit {
         this.authService.login({email, password}).subscribe((data) => {
           const snackbarRef = this.snackbar.open(data.message, 'close')
           
-          if(data.status === 'success') {
+          if(data.status === ESTATUS.SUCCESS) {
             this.activeRoute.queryParams.subscribe((params) => {
               const path: string = decodeURIComponent(params['redirectUrl']);
               this.route.navigate([path])

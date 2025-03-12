@@ -15,6 +15,7 @@ import { Location } from '@angular/common';
 import { AuthService } from '../../../services/authService/index.service';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ESTATUS } from '../../../services/index.type';
 
 @Component({
   selector: 'register-app',
@@ -74,7 +75,7 @@ export class RegisterAppComponent {
         const response = await this.authService.register({fullname, username, email, password})
         const snackRef = this.snackbar.open(response.message, 'close')
 
-        if(response.status === 'success') {
+        if(response.status === ESTATUS.SUCCESS) {
            this.router.navigate([`/login`], {
             queryParams: {
               'redirectUrl': encodeURIComponent('/home')

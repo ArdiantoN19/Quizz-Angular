@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogFormCategoryAppComponent } from '../../../components/backend/category/dialog/form/index.component';
-import { TResponse } from '../../../services/index.type';
+import { ESTATUS, TResponse } from '../../../services/index.type';
 import { DialogConfirmCategoryBackendAppComponent } from '../../../components/backend/category/dialog/dialogConfirm/index.component';
 
 @Component({
@@ -70,7 +70,7 @@ export class CategoryPageApp implements OnInit {
 
   ngOnInit(): void {
     this.categoryService.getCategories().subscribe((result) => {
-      if (result.status !== 'success') {
+      if (result.status !== ESTATUS.SUCCESS) {
         this.snackbar.open(result.message, 'close');
       } else {
         this.data$ = result.data!;
@@ -88,7 +88,7 @@ export class CategoryPageApp implements OnInit {
     });
     
     dialogRef.afterClosed().subscribe((result: TResponse<TCategory>) => {
-        if(!!result && result.status === 'success' && result.data) {
+        if(!!result && result.status === ESTATUS.SUCCESS && result.data) {
             this.data$ = [...this.data$, result.data]
         }
     })
@@ -103,7 +103,7 @@ export class CategoryPageApp implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe((result: TResponse<TCategory>) => {
-        if(!!result && result.status === 'success' && result.data) {
+        if(!!result && result.status === ESTATUS.SUCCESS && result.data) {
             let copyCategories = [...this.data$];
             copyCategories = copyCategories.map((category) => {
                 if(result.data && category.id === result.data.id) {

@@ -11,7 +11,7 @@ import { HashService } from '../hashService/index.service';
 import { catchError, Observable, of, switchMap } from 'rxjs';
 import { FirebaseService } from '../firebaseService/index.service';
 import { TQueryExpression } from '../firebaseService/index.type';
-import { TResponse } from '../index.type';
+import { ESTATUS, TResponse } from '../index.type';
 import { ENUMCOLLECTION } from '../../utils/constant';
 
 @Injectable({
@@ -68,7 +68,7 @@ export class AuthService {
         switchMap((users: TUser[]) => {
           if (!users.length) {
             return of({
-              status: 'fail',
+              status: ESTATUS.FAIL,
               message: 'Please put your correct email!',
             });
           }
@@ -80,7 +80,7 @@ export class AuthService {
           );
           if (!comparePassword) {
             return of({
-              status: 'fail',
+              status: ESTATUS.FAIL,
               message: 'Please put your correct password',
             });
           }
@@ -96,10 +96,10 @@ export class AuthService {
           };
 
           this.setAuthState(authState);
-          return of({ status: 'success', message: 'Login successfully' });
+          return of({ status: ESTATUS.SUCCESS, message: 'Login successfully' });
         }),
         catchError((_err) => {
-          return of({ status: 'fail', message: 'Error occured when login' });
+          return of({ status: ESTATUS.FAIL, message: 'Error occured when login' });
         })
       );
   }
@@ -156,9 +156,9 @@ export class AuthService {
         payload,
         this.collectionName
       );
-      return { status: 'success', message: 'Register successfully', data };
+      return { status: ESTATUS.SUCCESS, message: 'Register successfully', data };
     } catch (error: any) {
-      return { status: 'fail', message: error.message, data: null };
+      return { status: ESTATUS.FAIL, message: error.message, data: null };
     }
   }
 

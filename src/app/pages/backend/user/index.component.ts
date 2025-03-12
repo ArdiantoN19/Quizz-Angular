@@ -10,7 +10,7 @@ import { UserService } from '../../../services/userService/index.service';
 import { TUser } from '../../../services/authService/index.type';
 import { SkeletonAppComponent } from '../../../components/skeleton/index.component';
 import { formatDate } from '@angular/common';
-import { TResponse } from '../../../services/index.type';
+import { ESTATUS, TResponse } from '../../../services/index.type';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogFormUserAppComponent } from '../../../components/backend/user/dialog/form/index.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -86,7 +86,7 @@ export class UserPageApp implements OnInit {
   ngOnInit(): void {
     (async () => {
       const response = await this.userService.getUsers();
-      if (response.data && response.status === 'success') {
+      if (response.data && response.status === ESTATUS.SUCCESS) {
         this.data = response.data;
       }
 
@@ -103,7 +103,7 @@ export class UserPageApp implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe((result: TResponse<TUser>) => {
-      if(!!result && result.status === 'success' && result.data) {
+      if(!!result && result.status === ESTATUS.SUCCESS && result.data) {
         this.data = [...this.data, result.data]
       }
     })
@@ -118,7 +118,7 @@ export class UserPageApp implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe((result: TResponse<TUser>) => {
-      if(!!result && result.status === 'success' && result.data) {
+      if(!!result && result.status === ESTATUS.SUCCESS && result.data) {
         let copyData = [...this.data];
         copyData = copyData.map((data) => {
           if(result.data && data.id === result.data.id) {
@@ -140,7 +140,7 @@ export class UserPageApp implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async (result: TResponse<string>) => {
-      if (!!result && result.status === 'success') {
+      if (!!result && result.status === ESTATUS.SUCCESS) {
         const users = this.data.filter((user) => dataDelete.id !== user.id);
         this.data = users;
       }

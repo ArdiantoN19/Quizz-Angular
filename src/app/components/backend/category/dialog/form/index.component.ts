@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CategoryService } from '../../../../../services/categoryService/index.service';
 import { formatSlug } from '../../../../../utils';
 import { TCategory } from '../../../../../services/categoryService/index.type';
-import { TResponse } from '../../../../../services/index.type';
+import { ESTATUS, TResponse } from '../../../../../services/index.type';
 
 type TDialogData = {
     mode: 'new' | 'edit',
@@ -71,7 +71,7 @@ export class DialogFormCategoryAppComponent implements OnInit {
             
             this.snackbar.open(response.message, 'close');
 
-            if(response.status === 'success') {
+            if(response.status === ESTATUS.SUCCESS) {
                 this.dialogRef.close(response)
             }
         }

@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmQuizAppComponent } from '../../../components/backend/quiz/dialog-confirm/dialog-confirm.component';
+import { ESTATUS } from '../../../services/index.type';
 
 @Component({
   selector: 'quiz-page-app',
@@ -42,7 +43,7 @@ export class QuizPageApp implements OnInit {
   ngOnInit(): void {
     (async () => {
       (await this.quizService.getQuiz()).subscribe((result) => {
-        if (result.status === 'success' && result.data) {
+        if (result.status === ESTATUS.SUCCESS && result.data) {
           this.dataQuiz$ = result.data;
         }
 
@@ -55,7 +56,7 @@ export class QuizPageApp implements OnInit {
     let copyData = [...this.dataQuiz$];
     const response = await this.quizService.updatePublishQuiz(id);
 
-    if (response.status === 'success' && response.data) {
+    if (response.status === ESTATUS.SUCCESS && response.data) {
       const indexData = copyData.findIndex((data) => data.id === response.data);
 
       if (indexData !== -1) {

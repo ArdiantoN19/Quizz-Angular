@@ -1,5 +1,10 @@
+export enum ESTATUS {
+  SUCCESS = 'SUCCESS',
+  FAIL = 'FAIL'
+}
+
 export type TResponse<T> = {
-    status: string;
+    status: ESTATUS;
     message: string;
     data?: T;
   };

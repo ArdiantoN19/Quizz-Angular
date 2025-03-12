@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService } from '../firebaseService/index.service';
-import { TResponse } from '../index.type';
+import { ESTATUS, TResponse } from '../index.type';
 import { TQueryExpression } from '../firebaseService/index.type';
 import { TDifficulty } from './index.type';
 import { ENUMCOLLECTION } from '../../utils/constant';
@@ -28,7 +28,7 @@ export class DifficultyService {
     );
 
     return {
-      status: 'success',
+      status: ESTATUS.SUCCESS,
       message: 'Success get difficulities',
       data,
     };
