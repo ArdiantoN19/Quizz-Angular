@@ -25,7 +25,7 @@ import {
 } from '../question/question.type';
 import { QuestionService } from '../question/question.service';
 import { AnswerService } from '../answer/answer.service';
-import { HashService } from '../hash/hash.service';
+import { CacheService } from '../cache/cache.service';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +42,7 @@ export class QuizService {
     private authService: AuthService,
     private questionService: QuestionService,
     private answerService: AnswerService,
-    private hashService: HashService
+    private cacheService: CacheService
   ) {
     const authState = authService.getAuthState();
     if (authState) {
@@ -88,38 +88,17 @@ export class QuizService {
 
     return datas;
   }
-
-  private saveQuizDataToLocalStorage<T>(quiz: T): void {
-    const expired = Date.now() + 1000 * 10
-    const dataQuizString = JSON.stringify({quiz, expired });
-
-    const hashDataQuiz = this.hashService.hash(dataQuizString);
-    localStorage.setItem(this.keyListQuiz, hashDataQuiz)
-  }
-
-  private getQuizDataFromLocalStorage<T>(): { quiz: T[], expired: number } | null {
-    const dataQuizString = localStorage.getItem(this.keyListQuiz)
-
-    if(!dataQuizString) {
-      return null
-    }
-
-    const decodeQuiz = this.hashService.decode(dataQuizString)
-    const result = JSON.parse(decodeQuiz)
-
-    return result as { quiz: T[], expired: number }
-  }
   
   async getQuiz(): Promise<TResponse<TQuizTransform[]>> {
     const now = Date.now();
 
-    const dataQuizLocalStorage = this.getQuizDataFromLocalStorage<TQuizTransform>();
+    const dataQuizLocalStorage = this.cacheService.getCache<TQuizTransform>(this.keyListQuiz);
 
     if(!dataQuizLocalStorage || dataQuizLocalStorage.expired < now) {
       const result = await firstValueFrom(await this.getQuizObservable())
 
       if(result.status === ESTATUS.SUCCESS && result.data) {
-        this.saveQuizDataToLocalStorage(result.data)
+        this.cacheService.saveCache(this.keyListQuiz, result.data)
       }
 
       return result;
@@ -128,7 +107,7 @@ export class QuizService {
     return {
       status: ESTATUS.SUCCESS,
       message: 'Success get quiz',
-      data: dataQuizLocalStorage.quiz
+      data: dataQuizLocalStorage.data
     }
   }
 
